@@ -103,6 +103,129 @@ const getObservations = async (req, res) => {
     }
 }
 
+// Obtener avistamientos para un día concreto (desde el año 1800)
+const getHistory = async (req, res) => {
+    const { date } = req.query; // obtain Hotspot
+    if (!date) {
+        return res.status(400).json({ message: 'Hotspot code is required' });
+    }
+    const url = `https://api.ebird.org/v2/data/obs/ES-VC/historic/${date}`; // date en formato 2025/12/9
+    //https://api.ebird.org/v2/data/obs/{{regionCode}}/historic/{{y}}/{{m}}/{{d}}
+    try {
+        const response = await fetch(url, {
+            headers: { "X-eBirdApiToken": "so7u5sv82cup" }
+        });
+
+        if (!response.ok) {
+            throw new Error(`eBird API error: ${response.status}`);
+        }
+
+        const data = await response.json();
+        res.status(200).json(data);
+    } catch (error) {
+        res.status(500).json({ message: 'Server error', error: error.message });
+    }
+}
+
+// Obtener avistamientos para un rango de fechas
+/*const getHistoryRange = async (req, res) => { //http://localhost:5000/api/eBird/history/range?start=2025-01-01&end=2025-01-10
+    const { start, end } = req.query;
+
+    if (!start || !end) {
+        return res.status(400).json({ message: "start and end dates are required" });
+    }
+
+    // Convertimos a Date
+    const startDate = new Date(start);
+    const endDate = new Date(end);
+
+    if (startDate > endDate) {
+        return res.status(400).json({ message: "start date must be <= end date" });
+    }
+
+    const API_KEY = "so7u5sv82cup";
+    const regionCode = "ES-VC";
+
+    const results = [];
+    let current = new Date(startDate);
+
+    try {
+        while (current <= endDate) {
+            const y = current.getFullYear();
+            const m = current.getMonth() + 1;
+            const d = current.getDate();
+
+            const url = `https://api.ebird.org/v2/data/obs/${regionCode}/historic/${y}/${m}/${d}`;
+
+            console.log("Запрос:", url);
+
+            const response = await fetch(url, {
+                headers: { "X-eBirdApiToken": API_KEY }
+            });
+
+            if (!response.ok) {
+                console.warn(`Ошибка eBird ${response.status} для ${url}`);
+            } else {
+                const dayData = await response.json();
+                results.push(...dayData);
+            }
+
+            // Día siguiente
+            current.setDate(current.getDate() + 1);
+        }
+
+        res.status(200).json(results);
+
+    } catch (error) {
+        res.status(500).json({ message: "Server error", error: error.message });
+    }
+};*/
+
+// Obtener avistamientos para un rango de fechas (optimizado para hacer peticiones paralelas)
+const getHistoryRange = async (req, res) => {
+    const { start, end } = req.query;
+
+    if (!start || !end) {
+        return res.status(400).json({ message: "start and end dates are required" });
+    }
+
+    const startDate = new Date(start);
+    const endDate = new Date(end);
+    const API_KEY = "so7u5sv82cup";
+    const region = "ES-VC";
+
+    try {
+        // Generamos un array de fechas
+        const dates = [];
+        for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
+            dates.push(new Date(d)); // copia
+        }
+
+        // Generamos un array de promesas
+        const requests = dates.map(date => {
+            const y = date.getFullYear();
+            const m = date.getMonth() + 1;
+            const day = date.getDate();
+
+            const url = `https://api.ebird.org/v2/data/obs/${region}/historic/${y}/${m}/${day}`;
+
+            return fetch(url, {
+                headers: { "X-eBirdApiToken": API_KEY }
+            }).then(r => r.json()).catch(() => []);
+        });
+
+        // Lanzamos todo de manera paralela
+        const results = await Promise.all(requests);
+
+        // Unimos
+        const flat = results.flat();
+
+        res.status(200).json(flat);
+
+    } catch (err) {
+        res.status(500).json({ message: "Server error", error: err.message });
+    }
+};
 
 /*const getObservations = async (req, res) => {
     //const { hotspot } = req.query; // obtain Hotspot
@@ -146,4 +269,6 @@ const getObservations = async (req, res) => {
 
 module.exports = {
     getObservations, // http://localhost:5000/api/eBird?hotspot=L123456
+    getHistory,
+    getHistoryRange,
 }
