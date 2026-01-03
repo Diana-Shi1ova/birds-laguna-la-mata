@@ -58,3 +58,17 @@ body{
 html, body, #root{
     height: 100%;
 }
+
+.error-message-general{
+  display: none;
+  background-color: #ffe4f0;
+  color: #960000;
+  width: 100%;
+  padding: .5em;
+  border-radius: 7px;
+  box-sizing: border-box;
+}
+
+.error-message-general.opened{
+  display: block;
+}

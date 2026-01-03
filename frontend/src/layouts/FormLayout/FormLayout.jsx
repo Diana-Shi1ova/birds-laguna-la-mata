@@ -17,13 +17,13 @@ function FormLayout ({ children, title, url="", submit="Enviar", submitFunction,
 
     return (
         <div className="form-container">
-            <form action="" className="auth-form">
+            <form onSubmit={submitFunction} className="auth-form">
                 {close && (<Button classAdditional="close-button" type="icon" func={(e) => navFunction(e)}><FaTimes /></Button>)}
                 <h1>{title}</h1>
                 {children}
                 <Button
                     name={submit}
-                    func={submitFunction}
+                    submit={true}
                 >
                 </Button>
                 {url === "login" && (
