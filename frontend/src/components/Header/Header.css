@@ -1,0 +1,28 @@
+header{
+    display: flex;
+    flex-direction: row;
+    gap: 1em;
+    align-items: center;
+    position: absolute;
+    top: .3em;
+    right: .3em;
+    padding: 0 !important;
+    width: fit-content;
+    .sidebar-container{
+        display: none;
+    }
+}
+
+@media (max-width: 600px) {
+    header {
+        .sidebar-container{
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+
+            .sidebar{
+                width: 100%;
+            }
+        }
+    }
+}

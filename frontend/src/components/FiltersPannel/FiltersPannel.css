@@ -1,0 +1,14 @@
+.filters-pannel.closed{
+    transform: translateX(100%);
+}
+
+.filters-pannel{
+    position: fixed;
+    right: 0;
+    top: 4em;
+    background-color: var(--green);
+    padding: 1em;
+
+    transform: translateX(0);
+    transition: transform 0.3s ease;
+}

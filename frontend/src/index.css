@@ -1,4 +1,4 @@
-:root {
+/*:root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -65,4 +65,18 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+*/
+
+
+/* Variables */
+:root {
+  --text-colour: #000;
+  --text-size: 16pt;
+  --big-icon: 30pt;
+  --green: #87ffc9;
+  /* --green-hover: #3cd590; */
+  --green-hover: #5fe1a7;
+  --green-active-light: #d2ffeb;
+  --green-active-dark: #3cd590;
 }

@@ -1,0 +1,12 @@
+.logo-container{
+    display: flex;
+    border-radius: 100%;
+    background-color: #fff;
+    height: fit-content;
+    width: fit-content;
+    padding: .3em;
+
+    svg{
+        font-size: 24pt;
+    }
+}

@@ -1,4 +1,4 @@
-# React + Vite
+<!-- # React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
@@ -13,4 +13,68 @@ The React Compiler is not enabled on this template because of its impact on dev 
 
 ## Expanding the ESLint configuration
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project. -->
+
+# Iniciar aplicación
+Backend:
+```bash
+cd backend
+npm i              # instalación de dependencias
+npm start
+```
+
+Frontend:
+```bash
+cd frontend
+npm i              # instalación de dependencias
+npm run dev
+```
+
+# Estructura del proyecto
+## Componentes clave
+```bash
+/backend
+    /controllers          # funcionalidad de rutas API
+    /routes               # definición de rutas API
+    server.js             # servidor
+
+/frontend
+    /src
+        /api
+            api.js        # conexión a la API
+        /assets           # imágenes decorativas
+        /components       # componentes reusables
+        /layouts          # maquetado
+        /pages            # páginas
+        App.css           # estilos generales
+        App.jsx           # enrutado de la app
+        index.css         # variables CSS
+        main.jsx          # punto de entrada
+    index.html            # plantilla HTML principal
+```
+## Pages
+|Página|Descripción|
+|------|-----------|
+|**Index**|Página principal|
+|**Catalogue**|Página de catálogo de todas las especies de aves|
+|**Favourites**|Página de especies guardadas por el usuario|
+|**Graphs**|Página de gráficas que describen la dinámica de aparición de las especies|
+
+## Components
+|Componente|Descripción|
+|------|-----------|
+|**Map**|Componente mapa que muestra los avistamientos|
+|**Sidebar**|Componente barra lateral para la navegación entre diferentes|
+|**Searchbar**|Componente barra de búsqueda|
+
+## Layouts
+|Layout|Descripción|
+|------|-----------|
+|**MainLayout**|Sidebar + contenido principal horizontalmente|
+
+# Descripción de API
+|Método|Ruta|Descripción|
+|------|----|-----------|
+|GET|eBird/|Obtener avistamientos recientes (últimos 30 días) de aves fitrados para el parque indicado de [eBird](https://ebird.org/)
+|GET|eBird/history|Obtener avistamientos de aves fitrados para el parque indicado y en una fecha indicada de [eBird](https://ebird.org/)
+|GET|eBird/history/range|Obtener avistamientos fitrados para el parque indicado en un rango de fechas de [eBird](https://ebird.org/)

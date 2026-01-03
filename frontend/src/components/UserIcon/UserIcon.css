@@ -1,0 +1,7 @@
+.user-icon-container{
+    font-size: 40pt;
+    a{
+        display: flex;
+        color: #606060;
+    }
+}

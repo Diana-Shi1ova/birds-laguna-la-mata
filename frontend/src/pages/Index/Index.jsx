@@ -4,6 +4,8 @@ import "./Index.css" ;
 
 // Import map
 import Map from '../../components/Map/Map';
+import MainLayout from "../../layouts/MainLayout/MainLayout";
+import FiltersPannel from "../../components/FiltersPannel/FiltersPannel";
 
 function Index(){
     //const [birds, setBirds] = useState([]); // Birds list
@@ -22,22 +24,12 @@ function Index(){
     
 
     return(
-        <>
+        <MainLayout>
             <h1>Página inicio</h1>
             <h2>Prueba obtención datos de eBird:</h2>
             <Map></Map>
-            {/* {birds.length > 0 && <Map observations={birds} />} */}
-
-            {/* <ul>
-                {birds.map((obs, index) => (
-                    <li key={`${obs.subId}-${index}`}>
-                        <strong>{obs.comName}</strong> ({obs.sciName}) <br />
-                        Location: {obs.locName} ({obs.lat}, {obs.lng}) <br />
-                        Observed at: {obs.obsDt}
-                    </li>
-                ))}
-            </ul> */}
-        </>
+            <FiltersPannel></FiltersPannel>
+        </MainLayout>
     );
 }
 

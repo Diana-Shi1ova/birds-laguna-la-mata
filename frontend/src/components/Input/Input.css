@@ -1,0 +1,25 @@
+.input-container{
+    text-align: left;
+    width: fit-content;
+    width: 20em;
+
+    p{
+        margin: 0;
+    }
+
+    input{
+        display: flex;
+        box-sizing: border-box;
+        width: 100%;
+        font-size: var(--text-size);
+        border: 3px var(--green) solid;
+        border-radius: 10px;
+        padding: .3em;
+    }
+}
+
+@media (max-width: 515px){
+    .input-container{
+        width: 100%;
+    }
+}

@@ -1,0 +1,23 @@
+.normal-button{
+    font-size: var(--text-size);
+    padding: .5em;
+    border: 2px solid black;
+    border-radius: 7px;
+    background-color: var(--green);
+    cursor: pointer;
+}
+
+.icon-button{
+    font-size: var(--text-size);
+    padding: 0;
+    border: 0;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.close-button{
+    font-size: 32px;
+    position: absolute;
+    top: .5em;
+    right: .5em;
+}
