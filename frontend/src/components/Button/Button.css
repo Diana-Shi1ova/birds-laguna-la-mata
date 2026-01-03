@@ -5,6 +5,7 @@
     border-radius: 7px;
     background-color: var(--green);
     cursor: pointer;
+    width: fit-content;
 }
 
 .icon-button{

@@ -8,6 +8,7 @@ function Register () {
         name: "",
         email: "",
         password: "",
+        password2: "",
     });
 
     const [responseData, setResponseData] = useState();
@@ -15,8 +16,53 @@ function Register () {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
 
+    const [errors, setErrors] = useState({});
+
+    const validate = () => {
+        const newErrors = {};
+
+        // 1. Email
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!formData.email) {
+            newErrors.email = 'Campo "Email" es obligatorio';
+        } else if (!emailRegex.test(formData.email)) {
+            newErrors.email = "Formato incorrecto";
+        }
+
+        // 2. Name
+        if (!formData.name) {
+            newErrors.name = 'Campo "Nombre" es obligatorio';
+        }
+
+        // 3. Password
+        if (!formData.password) {
+            newErrors.password = 'Campo "Contraseña" es obligatorio';
+        } else if (formData.password.length < 8) {
+            newErrors.password = "La contraseña debe tener como mínimo 8 caracteres";
+        } else {
+            const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).+$/;
+            if (!passwordRegex.test(formData.password)) {
+                newErrors.password = "La contraseña debe contener mayúscula, minúscula, número y símbolo";
+            }
+        }
+
+        // 4. Confirm Password
+        if (formData.password !== formData.password2) {
+            newErrors.password2 = "Las contraseñas no coinciden";
+        }
+
+        setErrors(newErrors);
+
+        return Object.keys(newErrors).length === 0;
+    };
+
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
+        setErrors(prev => {
+            const newErrors = { ...prev };
+            delete newErrors[e.target.name];
+            return newErrors;
+        });
     };
 
     const handleSubmit = async (e) => {
@@ -48,23 +94,31 @@ function Register () {
             setLoading(false);
         }*/
        // Petición al servidor
-        api.post('/user', formData)
-        .then(response => {
-            console.log(response.data);
-            setResponseData(response.data);
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
+        if (validate()) {
+            api.post('/user', formData)
+            .then(response => {
+                console.log(response.data);
+                setResponseData(response.data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                setError(error.response.data.message);
+            });
+        }
     };
 
     return (
         <>
             <FormLayout title={'Registrarse'} url="register" submit="Registrarse" submitFunction={handleSubmit} close={true}>
-                <Input type={'text'} label={'Email'} name={'email'} change={handleChange} req={true} auto="email"></Input>
-                <Input type={'text'} label={'Nombre'} name={'name'} change={handleChange} req={true} auto="name"></Input>
-                <Input type={'password'} label={'Contraseña'} name={'password'} change={handleChange} req={true}></Input>
-                <Input type={'password'} label={'Repetir contraseña'} change={handleChange} name={'password2'} req={true}></Input>
+                <p className={error ? ('error-message-general opened') : ('error-message-general')}>{error}</p>
+                <Input type={'text'} label={'Email'} name={'email'} change={handleChange} req={true} auto="email" classAdditional={errors.email ? "error" : ""}></Input>
+                {errors.email && <p className={errors.email ? ('error-message-general opened') : ('error-message-general')}>{errors.email}</p>}
+                <Input type={'text'} label={'Nombre'} name={'name'} change={handleChange} req={true} auto="name" classAdditional={errors.email ? "error" : ""}></Input>
+                {errors.name && <p className={errors.name ? ('error-message-general opened') : ('error-message-general')}>{errors.name}</p>}
+                <Input type={'password'} label={'Contraseña'} name={'password'} change={handleChange} req={true} classAdditional={errors.email ? "error" : ""}></Input>
+                {errors.password && <p className={errors.password ? ('error-message-general opened') : ('error-message-general')}>{errors.password}</p>}
+                <Input type={'password'} label={'Repetir contraseña'} change={handleChange} name={'password2'} req={true} classAdditional={errors.email ? "error" : ""}></Input>
+                {errors.password2 && <p className={errors.password2 ? ('error-message-general opened') : ('error-message-general')}>{errors.password2}</p>}
             </FormLayout>
         </>
     );
