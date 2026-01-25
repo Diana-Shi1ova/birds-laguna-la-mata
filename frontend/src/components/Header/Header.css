@@ -4,10 +4,14 @@ header{
     gap: 1em;
     align-items: center;
     position: absolute;
-    top: .3em;
-    right: .3em;
-    padding: 0 !important;
-    width: fit-content;
+    top: 0;
+    /* right: .3em; */
+    right: 0;
+    padding: .3em !important;
+    /* width: fit-content; */
+    width: 100%;
+    justify-content: right !important;
+    box-sizing: border-box !important;
     .sidebar-container{
         display: none;
     }

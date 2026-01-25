@@ -46,7 +46,7 @@ function Sidebar () {
                     </NavLink>
                 </li>
                 <li>
-                    <NavLink to="/catalogue" end className={({ isActive }) => isActive ? "active" : ""}>
+                    <NavLink to="/catalog" end className={({ isActive }) => isActive ? "active" : ""}>
                         <FaBook />
                         <p className="p-mobile">Catálogo de especies</p>
                     </NavLink>

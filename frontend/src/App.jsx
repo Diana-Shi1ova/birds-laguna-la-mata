@@ -4,7 +4,7 @@ import SiteTitle from './components/SiteTitle/SiteTitle';
 
 // Importing pages
 import Index from './pages/Index/Index';
-import Catalogue from './pages/Catalogue/Catalogue';
+import Catalog from './pages/Catalog/Catalog';
 import Favourites from './pages/Favourites/Favourites';
 import Graphs from './pages/Graphs/Graphs';
 import Login from './pages/Login/Login';
@@ -19,7 +19,7 @@ function App() {
           <Routes>
             <Route path='/' element={<Index/>}/>
             {/* <Route path='/home' element={<Home/>}/> */}
-            <Route path='/catalogue' element={<Catalogue/>}/>
+            <Route path='/catalog' element={<Catalog/>}/>
             <Route path='/favourites' element={<Favourites/>}/>
             <Route path='/graphs' element={<Graphs/>}/>
             <Route path='/login' element={<Login/>}/>

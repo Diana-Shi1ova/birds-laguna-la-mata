@@ -80,6 +80,7 @@
         /* left: -13.7em; */
         left: -291px;
         transition: left 0.3s ease;
+        position: absolute;
     }
 
     .sidebar{

@@ -1,6 +1,7 @@
 main{
     display: flex;
     flex-direction: row;
+    padding-left: 64px;
 }
 
 .main-content{
@@ -17,5 +18,9 @@ main{
         position: absolute;
         top: .3em;
         left: .3em;
+    }
+
+    main{
+        padding-left: 0;
     }
 }

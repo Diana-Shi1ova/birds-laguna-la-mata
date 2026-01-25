@@ -3,27 +3,41 @@ import { FaSearch } from "react-icons/fa";
 import { FaFilter } from "react-icons/fa";
 import Button from "../Button/Button";
 import { useRef, useState, useEffect } from "react";
+import { useSearchUI } from "../../contexts/SearchUIProvider";
+
+import { FaArrowLeft } from "react-icons/fa";
 
 
 function Searchbar () {
     const inputRef = useRef(null);
+    const filtersRef = useRef(null);
     const [focus, setFocus] = useState(false);
     const [mobile, setMobile] = useState(false);
+
+    const { isSearchOpen, openSearch, closeSearch } = useSearchUI();
 
     const open = () => {
         document.querySelector('.filters-pannel').classList.remove('closed');
     }
 
-    const showSearchbar = () => {
+    const showSearchbar = () => { // Añadir que si el tamaño es menor que 465px, se esconden los otros elementos
         /*console.log(document.querySelector(".searchbar-input"));*/
         // document.querySelector(".searchbar-input").classList.add('mobile');
         setMobile(true);
         setFocus(true);
+        openSearch(); // uso del contexto para esconder otros elementos
+    }
+
+    const hideSearchBar = () => {
+        setFocus(false);
+        setMobile(false);
+        closeSearch(); // uso del contexto para volver a mostrar otros elementos
     }
 
     const handleBlur = () => {
-        setFocus(false);
+        /*setFocus(false);
         setMobile(false);
+        closeSearch(); // uso del contexto para volver a mostrar otros elementos*/
     }
 
     useEffect(() => {
@@ -34,6 +48,11 @@ function Searchbar () {
 
     return (
         <div className="searchbar-container">
+            {isSearchOpen && 
+                <Button type="icon" classAdditional="arrow-button" func={hideSearchBar}>
+                    <FaArrowLeft />
+                </Button>
+            }
             <div className="searchbar">
                 <input
                     ref={inputRef}
@@ -50,7 +69,9 @@ function Searchbar () {
                 </Button>
             </div>
             <Button
-                classAdditional="filters"
+                // ref={filtersRef}
+                // classAdditional={`filters${mobile ? '-show' : ''}`}
+                classAdditional='filters'
                 func={open}
             >
                 <FaFilter />

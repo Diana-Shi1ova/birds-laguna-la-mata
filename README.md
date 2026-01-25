@@ -56,7 +56,7 @@ npm run dev
 |Página|Descripción|
 |------|-----------|
 |**Index**|Página principal|
-|**Catalogue**|Página de catálogo de todas las especies de aves|
+|**Catalog**|Página de catálogo de todas las especies de aves|
 |**Favourites**|Página de especies guardadas por el usuario|
 |**Graphs**|Página de gráficas que describen la dinámica de aparición de las especies|
 

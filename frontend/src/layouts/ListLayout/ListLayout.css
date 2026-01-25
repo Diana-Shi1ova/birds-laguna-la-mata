@@ -1,0 +1,11 @@
+.catalog-list{
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0 1em 0 1em;
+    gap: .5em;
+    margin-bottom: 1em;
+}

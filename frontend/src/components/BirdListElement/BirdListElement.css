@@ -1,0 +1,99 @@
+.bird-list-element{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: .5em 1em .5em 1em;
+    box-sizing: border-box;
+    background-color: var(--green);
+    gap: 3em;
+
+    p{
+        margin: 0;
+    }
+
+    .obs{
+        font-weight: bold;
+        
+        span{
+            font-weight: normal;
+        }
+    }
+
+    .bird{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 1em;
+
+        .bird-image-link{
+            order: 1;
+        }
+        .bird-image{
+            width: auto;
+            height: 100px;
+        }
+
+        .bird-names{
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+            gap: .3em;
+            order: 2;
+
+            .cientific{
+                font-style: italic;
+            }
+            .common{
+                font-weight: bold;
+            }
+        }
+    }
+
+    .buttons{
+        display: flex;
+        flex-direction: row;
+        gap: .5em;
+        justify-content: center;
+        align-items: center;
+        box-sizing: border-box;
+    }
+}
+
+@media (max-width: 780px){
+    .bird-list-element{
+        flex-direction: column;
+        padding: 0;
+        gap: 1em;
+
+        .bird{
+            padding: 1em 1em 0 1em;
+            flex-direction: column;
+
+            .bird-image-link{
+                order: 2;
+
+                .bird-image{
+                    width: 100%;
+                    height: auto;
+                }
+            }
+
+            .bird-names{
+                order: 1;
+            }
+        }
+
+        .buttons{
+            width: 100%;
+            background-color: var(--green-active-light);
+            padding: .3em;
+            
+        }
+
+        .obs{
+            margin-left: 1em;
+            margin-right: 1em;
+        }
+    }
+}

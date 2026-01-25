@@ -19,7 +19,7 @@ function SiteTitle() {
         case "/favourites":
             document.title = "Especies guardadas | " + title;
             break;
-        case "/catalogue":
+        case "/catalog":
             document.title = "Catálogo de especies | " + title;
             break;graphs
         case "/graphs":

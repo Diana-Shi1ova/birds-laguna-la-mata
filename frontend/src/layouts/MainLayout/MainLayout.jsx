@@ -1,21 +1,14 @@
-import "./MainLayout.css";
-import Sidebar from "../../components/Sidebar/Sidebar";
-// import Footer from "../../components/Footer/Footer";
-import Header from "../../components/Header/Header";
+import { SearchUIProvider} from "../../contexts/SearchUIProvider";
+import MainLayoutContent from "./MainLayoutContent";
 
 
 function MainLayout ({ children }) {
     return (
-        <>
-            <Header></Header>
-            <main>
-                <Sidebar></Sidebar>
-                <div className="main-content">
-                    {children}
-                </div>
-            </main>
-            {/* <Footer></Footer> */}
-        </>
+        <SearchUIProvider>
+            <MainLayoutContent>
+                {children}
+            </MainLayoutContent>
+        </SearchUIProvider>
     );
 };
 
