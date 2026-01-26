@@ -267,8 +267,40 @@ const getHistoryRange = async (req, res) => {
     }
 }*/
 
+// Species codes list of the region (Comunidad Valenciana)
+const getSpecies = async (req, res) => {
+    const API_KEY = "so7u5sv82cup";
+    const region = "ES-VC";
+
+    try {
+        const url = `https://api.ebird.org/v2/product/spplist/${region}`;
+        const response = await fetch(url, {
+            headers: { "X-eBirdApiToken": "so7u5sv82cup" }
+        });
+
+        if (!response.ok) {
+            throw new Error(`eBird API error: ${response.status}`);
+        }
+
+        const data = await response.json();
+        res.status(200).json(data);
+
+    } catch (err) {
+        res.status(500).json({ message: "Server error", error: err.message });
+    }
+};
+
+// Bird names by code
+//https://api.ebird.org/v2/ref/taxonomy/ebird
+//const url = `https://api.ebird.org/v2/ref/taxonomy/ebird?species=cangoo,duskin1,brant1&fmt=json`;
+const getSpecieName = async (req, res) => {
+
+};
+
+
 module.exports = {
     getObservations, // http://localhost:5000/api/eBird?hotspot=L123456
     getHistory,
     getHistoryRange,
+    getSpecies
 }
