@@ -268,12 +268,13 @@ const getHistoryRange = async (req, res) => {
 }*/
 
 // Species codes list of the region (Comunidad Valenciana)
-const getSpecies = async (req, res) => {
+/*const getSpecies = async (req, res) => {
     const API_KEY = "so7u5sv82cup";
     const region = "ES-VC";
 
     try {
         const url = `https://api.ebird.org/v2/product/spplist/${region}`;
+        // const url = `https://api.ebird.org/v2/ref/taxonomy/ebird?species=cangoo,duskin1,brant1&fmt=json&locale=es`;
         const response = await fetch(url, {
             headers: { "X-eBirdApiToken": "so7u5sv82cup" }
         });
@@ -283,18 +284,87 @@ const getSpecies = async (req, res) => {
         }
 
         const data = await response.json();
-        res.status(200).json(data);
+        const dataString = data.join(",");
+
+        // Search common & scientific names
+        const urlNames = `https://api.ebird.org/v2/ref/taxonomy/ebird?species=${dataString}&fmt=json&locale=es`;
+        console.log(urlNames);
+        const names = await fetch(urlNames, {
+            headers: { "X-eBirdApiToken": "so7u5sv82cup" }
+        });
+
+        res.status(200).json(names);
 
     } catch (err) {
         res.status(500).json({ message: "Server error", error: err.message });
     }
+};*/
+
+// helper: dividir en chunks
+const chunkArray = (arr, size) => {
+    const chunks = [];
+    for (let i = 0; i < arr.length; i += size) {
+        chunks.push(arr.slice(i, i + size));
+    }
+    return chunks;
 };
 
-// Bird names by code
-//https://api.ebird.org/v2/ref/taxonomy/ebird
-//const url = `https://api.ebird.org/v2/ref/taxonomy/ebird?species=cangoo,duskin1,brant1&fmt=json`;
-const getSpecieName = async (req, res) => {
+// Species codes list of the region (Comunidad Valenciana)
+const getSpecies = async (req, res) => {
+    const API_KEY = "so7u5sv82cup";
+    const region = "ES-VC";
+    const CHUNK_SIZE = 150; // tamaño seguro
 
+    try {
+        // 1. Obtenemos la lista de códigos de las especies
+        const url = `https://api.ebird.org/v2/product/spplist/${region}`;
+        const response = await fetch(url, {
+            headers: { "X-eBirdApiToken": API_KEY }
+        });
+
+        if (!response.ok) {
+            throw new Error(`eBird API error: ${response.status}`);
+        }
+
+        const speciesCodes = await response.json();
+        console.log("Initial species count:", speciesCodes.length);
+
+
+        // 2. Dividimos en chunks
+        const chunks = chunkArray(speciesCodes, CHUNK_SIZE);
+
+        // 3. Varias peticiones
+        const requests = chunks.map(chunk => {
+            const speciesParam = chunk.join(",");
+            const urlNames =
+                `https://api.ebird.org/v2/ref/taxonomy/ebird` +
+                `?species=${speciesParam}&fmt=json&locale=es`;
+
+            return fetch(urlNames, {
+                headers: { "X-eBirdApiToken": API_KEY }
+            }).then(r => {
+                if (!r.ok) {
+                    throw new Error(`Taxonomy error: ${r.status}`);
+                }
+                return r.json();
+            });
+        });
+
+        // 4. Esperamos todas las respuestas
+        const results = await Promise.all(requests);
+
+        // 5. Unimos en un array
+        const mergedResults = results.flat();
+        console.log("Final taxonomy count:", mergedResults.length);
+
+        res.status(200).json(mergedResults);
+
+    } catch (err) {
+        res.status(500).json({
+            message: "Server error",
+            error: err.message
+        });
+    }
 };
 
 
