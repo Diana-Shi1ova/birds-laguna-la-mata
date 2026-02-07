@@ -13,5 +13,6 @@ app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 app.use('/api/eBird', require('./routes/eBird'));
 app.use('/api/user', require('./routes/user'));
+app.use('/api/bird', require('./routes/bird'));
 
 app.listen(port, () => console.log(`Server started on port ${port}`));

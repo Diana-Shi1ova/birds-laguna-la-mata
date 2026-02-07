@@ -1,0 +1,34 @@
+.pagination-container{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: .5em;
+
+    input[type="number"]{
+        width: 3.7em;
+        text-align: center;
+    }
+
+    /* Quitar spinner */
+    /* Chrome, Safari, Edge, Opera */
+    input[type=number]::-webkit-outer-spin-button,
+    input[type=number]::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    /* Firefox */
+    input[type=number] {
+        -moz-appearance: textfield;
+    }
+
+    .total{
+        display: flex;
+        flex-direction: row;
+        gap: .3em;
+    }
+
+    .normal-button{
+        display: flex;
+    }
+}

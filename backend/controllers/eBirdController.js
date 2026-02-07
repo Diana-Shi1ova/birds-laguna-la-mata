@@ -357,7 +357,35 @@ const getSpecies = async (req, res) => {
         const mergedResults = results.flat();
         console.log("Final taxonomy count:", mergedResults.length);
 
-        res.status(200).json(mergedResults);
+        // 6. Cogemos sciName y hacemos peticiones a Wikidata
+        const scientificNames = mergedResults
+            .map(s => s.sciName)
+            .filter(Boolean);
+
+        const wikidataChunks = chunkArray(scientificNames, 50);
+
+        let wikidataMap = {};
+
+        for (const chunk of wikidataChunks) {
+            const data = await fetchWikidataData(chunk);
+            wikidataMap = { ...wikidataMap, ...data };
+        }
+
+        // 7. Unimos los resultados
+        const enrichedResults = mergedResults.map(species => {
+            const wd = wikidataMap[species.sciName] || {};
+
+            return {
+                ...species,
+                wikidata: {
+                    id: wd.wikidataId || null,
+                    images: wd.images || null,
+                    wikipediaURL: wd.wikipediaURL || null
+                }
+            };
+        });
+
+        res.status(200).json(enrichedResults);
 
     } catch (err) {
         res.status(500).json({
@@ -366,6 +394,81 @@ const getSpecies = async (req, res) => {
         });
     }
 };
+
+
+async function fetchWikidataData(scientificNames) {
+    const values = scientificNames
+        .map(name => `"${name}"`)
+        .join("\n");
+    const sparql = `
+        SELECT ?item ?image ?wikipediaURL ?scientificName
+        WHERE {
+            VALUES ?scientificName {
+                ${values}
+            }
+
+            ?item p:P31 ?statement0.
+            ?statement0 (ps:P31/(wdt:P279*)) wd:Q16521.
+            ?item p:P225 ?statement1.
+            ?statement1 (ps:P225) ?scientificName.
+
+            OPTIONAL { ?item wdt:P18 ?image. }
+            
+            OPTIONAL {
+                ?wikipediaURL schema:about ?item;
+                        schema:isPartOf <https://es.wikipedia.org/>.
+            }
+
+            SERVICE wikibase:label { bd:serviceParam wikibase:language "es". }
+        }
+    `;
+
+    const url =
+        "https://query.wikidata.org/sparql?format=json&query=" +
+        encodeURIComponent(sparql);
+
+    const response = await fetch(url, {
+        headers: {
+            "Accept": "application/sparql+json",
+            "User-Agent": "Avistory/1.0"
+        }
+    });
+
+    if (!response.ok) {
+        throw new Error("Wikidata query failed");
+    }
+
+    const json = await response.json();
+
+    // Diccionario por nombre científico
+    const map = {};
+    for (const row of json.results.bindings) {
+        const name = row.scientificName.value;
+
+        if (!map[name]) {
+            map[name] = {
+                wikidataId: row.item.value,
+                images: [],
+                wikipediaURL: null
+            };
+        }
+
+        if (row.image) {
+            const img = row.image.value;
+
+            // Sin duplicados
+            if (!map[name].images.includes(img)) {
+                map[name].images.push(img);
+            }
+        }
+
+        if (!map[name].wikipediaURL && row.wikipediaURL) {
+            map[name].wikipediaURL = row.wikipediaURL.value;
+        }
+    }
+
+    return map;
+}
 
 
 module.exports = {

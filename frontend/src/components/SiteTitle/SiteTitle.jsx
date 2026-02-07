@@ -3,7 +3,7 @@ import { useEffect } from "react";
 
 function SiteTitle() {
     const location = useLocation();
-    const title = "Avi"
+    const title = "Avistory"
 
     useEffect(() => {
         switch (location.pathname) {

@@ -23,7 +23,7 @@ function BirdListElement ({ type='normal', data }) {
                         {/* <p className='common'>Gavión atlántico</p> */}
                         {data.name}
                     </Link>
-                    <p className='cientific'>({data.cientific})</p>
+                    <p className='scientific'>({data.scientific})</p>
                 </div>
             </div>
             

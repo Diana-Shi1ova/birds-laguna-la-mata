@@ -1,7 +1,13 @@
 import "./Input.css";
 
 
-function Input ({name, classAdditional="", label, type, req=false, auto=null, change=()=>{}}) {
+function Input ({name, classAdditional="", label, type, req=false, auto=null, change=()=>{}, enter=()=>{}, value=""}) {
+    const handleKeyDown = (event) => {
+        if (event.key === "Enter") {
+            enter(event);
+        }
+    };
+
     return (
         <div className="input-container">
             <p>{label} {req && ("*")}</p>
@@ -12,6 +18,8 @@ function Input ({name, classAdditional="", label, type, req=false, auto=null, ch
                 className={classAdditional}
                 autoComplete={auto}
                 onChange={change}
+                onKeyDown={handleKeyDown}
+                value={value}
             />
         </div>
     );
