@@ -1,5 +1,8 @@
 .user-icon-container{
     font-size: 40pt;
+    background-color: #fff;
+    border-radius: 100%;
+    border: 1px #fff solid;
     a{
         display: flex;
         color: #606060;

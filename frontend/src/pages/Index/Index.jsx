@@ -25,8 +25,8 @@ function Index(){
 
     return(
         <MainLayout>
-            <h1>Página inicio</h1>
-            <h2>Prueba obtención datos de eBird:</h2>
+            {/* <h1>Página inicio</h1>
+            <h2>Prueba obtención datos de eBird:</h2> */}
             <Map></Map>
             <FiltersPannel></FiltersPannel>
         </MainLayout>

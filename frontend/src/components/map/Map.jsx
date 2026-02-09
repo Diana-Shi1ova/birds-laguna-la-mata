@@ -2,6 +2,7 @@ import { useRef, useEffect, useState } from "react";
 import maplibregl from "maplibre-gl"; // importar librería de mapas
 import "maplibre-gl/dist/maplibre-gl.css"; // importar estilos mapas
 import { api } from "../../api/api";
+import './Map.css';
 
 
 // Componente mapa
@@ -9,15 +10,47 @@ function Map () {
     const mapContainer = useRef(null); // container de mapa
     const map = useRef(null); // mapa
     const markersRef = useRef([]); // markers
-    const [lng, setLng] = useState(37.9778); // coordenadas Torrevieja
-    const [lat, setLat] = useState(-0.6833); // coordenadas Torrevieja
-    const [zoom, setZoom] = useState(14); // zoom
+    const [lng, setLng] = useState(38.01041); // coordenadas Torrevieja
+    const [lat, setLat] = useState(-0.70461); // coordenadas Torrevieja
+    const [zoom, setZoom] = useState(12); // zoom
     const [style, setStyle] = // estilo mapa (satélite)
         useState("https://api.maptiler.com/maps/019a6b22-5021-75fc-9452-2530f937c6dc/style.json?key=Yu7DuOP1wu6AkLyJkHAt");
     const [area, setArea] = useState("L3906629"); // Área a mostrar
     const [marker, setMarker] = useState(null); // marker
     const [birds, setBirds] = useState([]); // Birds list
     const [is3D, setIs3D] = useState(false); // cambio 3D/2D
+
+    const parks = {
+        "L3906629": { // general
+            name: "Lagunas de La Mata y Torrevieja",
+            lat: 38.01041,
+            lng: -0.70461,
+            zoom: 12
+            //38.01531,-0.70111
+            // L6177434, L6121785, L7241499, L6121783, L3906629
+        },
+        "L3905205": {
+            name: "Hondo de Elche",
+            lat: 38.18057,
+            lng: -0.74918,
+            zoom: 12
+            //38.18121,-0.75270
+        },
+        "L3919198": {
+            name: "Salinas de Santa Pola",
+            lat: 38.18614,
+            lng: -0.61303,
+            zoom: 12
+            //38.18819,-0.61898
+        },
+        "L1121988": {
+            name: "Albufera de Valencia",
+            lat: 39.28346,
+            lng: -0.33191,
+            zoom: 10
+            //39.28032,-0.34112
+        }
+    };
 
     // Hacer petición de pájaros
     useEffect(() => {
@@ -40,7 +73,7 @@ function Map () {
             map.current = new maplibregl.Map({
             container: mapContainer.current,
             style: style,
-            center: [lng, lat],
+            center: [lat, lng],
             zoom: zoom,
             pitch: 0,
             bearing: 0
@@ -51,7 +84,7 @@ function Map () {
 
 
     // Añadimos markers al actualizar observations
-    useEffect(() => {
+    /*useEffect(() => {
         if (!map.current) return;
         if (!birds || birds.length === 0) return;
 
@@ -70,13 +103,113 @@ function Map () {
             .setPopup(popup)
             .addTo(map.current);
 
-        markersRef.current.push(marker);
+            markersRef.current.push(marker);
         });
 
         // Centrar el mapa por primer avistamiento
-        map.current.flyTo({ center: [birds[0].lng, birds[0].lat], zoom: 13 });
+        // map.current.flyTo({ center: [birds[0].lng, birds[0].lat], zoom: 13 });
 
+    }, [birds]);*/
+    function groupByCoords(observations, precision = 5) {
+        return observations.reduce((acc, obs) => {
+            const lat = obs.lat.toFixed(precision);
+            const lng = obs.lng.toFixed(precision);
+            const key = `${lat},${lng}`;
+
+            if (!acc[key]) {
+            acc[key] = {
+                lat: obs.lat,
+                lng: obs.lng,
+                items: []
+            };
+            }
+
+            acc[key].items.push(obs);
+            return acc;
+        }, {});
+    }
+
+    function createCarouselHTML(items) {
+        return `
+            <div class="carousel" data-index="0">
+            <div class="carousel-header">
+                <span class="counter">1 / ${items.length}</span>
+            </div>
+
+            <div class="carousel-content">
+                ${items.map((obs, i) => `
+                <div class="slide" style="display:${i === 0 ? 'block' : 'none'}">
+                    <strong>${obs.comName}</strong><br/>
+                    <em>${obs.sciName}</em><br/>
+                    ${obs.obsDt}
+                </div>
+                `).join('')}
+            </div>
+
+            ${items.length > 1 ? `
+                <div class="carousel-controls">
+                <button onclick="prevSlide(this)">◀</button>
+                <button onclick="nextSlide(this)">▶</button>
+                </div>
+            ` : ''}
+            </div>
+        `;
+    }
+
+    function updateCounter(carousel) {
+        const index = +carousel.dataset.index;
+        const total = carousel.querySelectorAll('.slide').length;
+        carousel.querySelector('.counter').textContent = `${index + 1} / ${total}`;
+    }
+
+    window.nextSlide = (btn) => {
+        const carousel = btn.closest('.carousel');
+        const slides = carousel.querySelectorAll('.slide');
+        let index = +carousel.dataset.index;
+
+        slides[index].style.display = 'none';
+        index = (index + 1) % slides.length;
+        slides[index].style.display = 'block';
+
+        carousel.dataset.index = index;
+        updateCounter(carousel);
+    };
+
+    window.prevSlide = (btn) => {
+        const carousel = btn.closest('.carousel');
+        const slides = carousel.querySelectorAll('.slide');
+        let index = +carousel.dataset.index;
+
+        slides[index].style.display = 'none';
+        index = (index - 1 + slides.length) % slides.length;
+        slides[index].style.display = 'block';
+
+        carousel.dataset.index = index;
+        updateCounter(carousel);
+    };
+
+
+    useEffect(() => {
+        if (!map.current || !birds?.length) return;
+
+        markersRef.current.forEach(m => m.remove());
+        markersRef.current = [];
+
+        const grouped = Object.values(groupByCoords(birds));
+
+        grouped.forEach(group => {
+            const popup = new maplibregl.Popup({ offset: 25 })
+            .setHTML(createCarouselHTML(group.items));
+
+            const marker = new maplibregl.Marker({ color: "#e74c3c" })
+            .setLngLat([group.lng, group.lat])
+            .setPopup(popup)
+            .addTo(map.current);
+
+            markersRef.current.push(marker);
+        });
     }, [birds]);
+
 
     // Cambiar el estilo del mapa
     useEffect(() => {
@@ -124,31 +257,44 @@ function Map () {
     const toggle3D = () => {
         if (!map.current) return;
         if (!is3D) {
-        map.current.setPitch(60);
-        map.current.setBearing(-45);
-        //   add3DBuildings();
+            map.current.setPitch(60);
+            map.current.setBearing(-45);
+            //   add3DBuildings();
         } else {
-        map.current.setPitch(0);
-        map.current.setBearing(0);
-        if (map.current.getLayer("3d-buildings")) map.current.removeLayer("3d-buildings");
+            map.current.setPitch(0);
+            map.current.setBearing(0);
+            if (map.current.getLayer("3d-buildings")) map.current.removeLayer("3d-buildings");
         }
         setIs3D(!is3D);
     };
 
+    // Mostrar parque
+    const showPark = (e) => {
+        setArea(e.target.value);
+
+        setLat(parks[e.target.value].lat);
+        setLng(parks[e.target.value].lng);
+        setZoom(parks[e.target.value].zoom);
+
+        map.current.flyTo({ center: [parks[e.target.value].lng, parks[e.target.value].lat], zoom: parks[e.target.value].zoom});
+    }
+
     return (
         <>
-            <button onClick={toggle3D}>{is3D ? "Vista 2D" : "Vista 3D"}</button>
-            <select onChange={(e) => setStyle(e.target.value)} value={style}>
-                <option value="https://api.maptiler.com/maps/019a6b22-5021-75fc-9452-2530f937c6dc/style.json?key=Yu7DuOP1wu6AkLyJkHAt">Satélite</option>
-                <option value="https://api.maptiler.com/maps/openstreetmap/style.json?key=Yu7DuOP1wu6AkLyJkHAt">Calles</option>
-            </select>
-            <select onChange={(e) => setArea(e.target.value)} value={area}>
-                <option value="L3906629">Lagunas de La Mata y Torrevieja</option>
-                <option value="L3905205">Hondo de Elche</option>
-                <option value="L3919198">Salinas de Santa Pola</option>
-                <option value="L1121988">Albufera de Valencia</option>
-            </select>
-            <div ref={mapContainer} style={{ width: "80vw", height: "80vh" }}/>
+            <div className="map-controls-container">
+                <button onClick={toggle3D}>{is3D ? "Vista 2D" : "Vista 3D"}</button>
+                <select onChange={(e) => setStyle(e.target.value)} value={style}>
+                    <option value="https://api.maptiler.com/maps/019a6b22-5021-75fc-9452-2530f937c6dc/style.json?key=Yu7DuOP1wu6AkLyJkHAt">Satélite</option>
+                    <option value="https://api.maptiler.com/maps/openstreetmap/style.json?key=Yu7DuOP1wu6AkLyJkHAt">Calles</option>
+                </select>
+                <select onChange={(e) => showPark(e)} value={area}>
+                    <option value="L3906629">Lagunas de La Mata y Torrevieja</option>
+                    <option value="L3905205">Hondo de Elche</option>
+                    <option value="L3919198">Salinas de Santa Pola</option>
+                    <option value="L1121988">Albufera de Valencia</option>
+                </select>
+            </div>
+            <div ref={mapContainer} style={{ width: "100%", height: "100vh" }}/>
         </>
     );
 };
