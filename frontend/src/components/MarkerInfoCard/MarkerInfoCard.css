@@ -1,0 +1,119 @@
+.marker-info-container{
+    /* position: absolute;
+    top: 0;
+    left: 5em; */
+    z-index: 100;
+    background-color: #fff;
+    /* padding: .5em; */
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* justify-content: center; */
+    /* gap: .5em; */
+    width: 300px;
+    height: fit-content;
+    max-height: 450px;
+    border: solid 3px var(--green-active-dark);
+    box-sizing: border-box;
+    /* overflow-y: scroll; */
+
+    .info-img{
+        height: 180px;
+        width: auto;
+        max-width: 200px;
+        object-fit: cover;
+        object-position: center;
+        margin-bottom: .2em;
+    }
+
+    .source{
+        position: absolute;
+        top: 0;
+        left: 0;
+        margin: 0;
+        background-color: var(--green);
+        border-top-left-radius: 12px;
+        border-bottom-right-radius: 15px;
+        padding: .3em;
+        font-weight: bold;
+        font-size: 12pt;
+    }
+
+    h1{
+        font-size: 14pt;
+        margin-top: 1.7em;
+        margin-bottom: 0;
+    }
+
+    .lat-name{
+        font-style: italic;
+        font-size: 11pt;
+        margin-top: .1em;
+        color: #5d5d5d;
+        margin-bottom: .5em;
+    }
+
+    .info{
+        display: flex;
+        width: 100%;
+        gap: .5em;
+        font-weight: bold;
+        font-size: 11pt;
+        margin: 0;
+        margin-top: .5em;
+        padding-left: 2.5em;
+
+        span{
+            font-weight: normal;
+        }
+    }
+
+    button{
+        display: flex;
+    }
+
+    .save-button{
+        position: absolute;
+        top: .3em;
+        right: .3em;
+    }
+    
+    .chart-button{
+        gap: .5em;
+        align-items: center;
+        font-size: 14pt;
+        margin-top: 1em;
+        padding: .3em;
+    }
+
+    .buttons{
+        display: flex;
+        flex-direction: row;
+        position: absolute;
+        top: 45%;
+        width: 97%;
+        justify-content: space-between;
+        
+        .normal-button{
+            padding: .3em;
+        }
+    }
+
+    .pages{
+        font-size: 12pt;
+        display: flex;
+        width: 100%;
+        background-color: #cdffec;
+        /* position: absolute;
+        bottom: 0;
+        left: 0; */
+        margin-bottom: 0;
+        border-bottom-right-radius: 15px;
+        border-bottom-left-radius: 15px;
+        padding: .3em;
+        box-sizing: border-box;
+        align-items: center;
+        justify-content: center;
+    }
+}

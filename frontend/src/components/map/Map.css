@@ -16,3 +16,21 @@
 .maplibregl-ctrl-top-right{
     top: 45%;
 }
+
+.maplibregl-popup-content, .maplibregl-popup, .maplibregl-popup-anchor-bottom {
+    max-width: none !important;
+    width: fit-content;
+    max-height: none !important;
+    height: fit-content;
+    padding: 0;
+    background-color: transparent;
+}
+
+.maplibregl-popup{
+    /*max-width: 240px;
+    transform: translate(-50%, 0px) translate(201px, 184px);*/
+}
+
+.maplibregl-popup-close-button{
+    display: none;
+}

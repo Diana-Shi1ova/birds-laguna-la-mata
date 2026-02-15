@@ -2,7 +2,9 @@ import { useRef, useEffect, useState } from "react";
 import maplibregl from "maplibre-gl"; // importar librería de mapas
 import "maplibre-gl/dist/maplibre-gl.css"; // importar estilos mapas
 import { api } from "../../api/api";
+import MarkerInfoCard from "../MarkerInfoCard/MarkerInfoCard";
 import './Map.css';
+import { createRoot } from "react-dom/client";
 
 
 // Componente mapa
@@ -129,7 +131,8 @@ function Map () {
         }, {});
     }
 
-    function createCarouselHTML(items) {
+    /*function createCarouselHTML(items) {
+        console.log('Items a mostrar: ', items);
         return `
             <div class="carousel" data-index="0">
             <div class="carousel-header">
@@ -154,7 +157,7 @@ function Map () {
             ` : ''}
             </div>
         `;
-    }
+    }*/
 
     function updateCounter(carousel) {
         const index = +carousel.dataset.index;
@@ -189,7 +192,7 @@ function Map () {
     };
 
 
-    useEffect(() => {
+    /*useEffect(() => {
         if (!map.current || !birds?.length) return;
 
         markersRef.current.forEach(m => m.remove());
@@ -208,6 +211,48 @@ function Map () {
 
             markersRef.current.push(marker);
         });
+    }, [birds]);*/
+
+    useEffect(() => {
+        if (!map.current || !birds?.length) return;
+
+        markersRef.current.forEach(m => m.remove());
+        markersRef.current = [];
+
+        const grouped = Object.values(groupByCoords(birds));
+
+        console.log('grouped: ', grouped);
+        console.log('What birds: ', birds);
+
+        grouped.forEach(group => {
+
+            // 1️⃣ создаём контейнер
+            const container = document.createElement("div");
+
+            // 2️⃣ создаём React root
+            const root = createRoot(container);
+
+            // 3️⃣ рендерим компонент
+            root.render(
+                <MarkerInfoCard birds={group.items} />
+            );
+
+            // 4️⃣ создаём popup с DOM, а не HTML
+            const popup = new maplibregl.Popup({ offset: 25 })
+                .setDOMContent(container);
+
+            popup.on('close', () => {
+                root.unmount();
+            });
+
+            const marker = new maplibregl.Marker({ color: "#e74c3c" })
+                .setLngLat([group.lng, group.lat])
+                .setPopup(popup)
+                .addTo(map.current);
+
+            markersRef.current.push(marker);
+        });
+
     }, [birds]);
 
 
@@ -281,6 +326,7 @@ function Map () {
 
     return (
         <>
+            {/* <MarkerInfoCard></MarkerInfoCard> */}
             <div className="map-controls-container">
                 <button onClick={toggle3D}>{is3D ? "Vista 2D" : "Vista 3D"}</button>
                 <select onChange={(e) => setStyle(e.target.value)} value={style}>

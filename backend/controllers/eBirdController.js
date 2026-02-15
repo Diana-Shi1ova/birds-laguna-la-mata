@@ -82,7 +82,7 @@ const getObservations = async (req, res) => {
     if (!hotspot) {
         return res.status(400).json({ message: 'Hotspot code is required' });
     }
-    const url = `https://api.ebird.org/v2/data/obs/geo/recent?lat=${parks[hotspot].lat}&lng=${parks[hotspot].lng}&dist=${parks[hotspot].radius}`;
+    const url = `https://api.ebird.org/v2/data/obs/geo/recent?lat=${parks[hotspot].lat}&lng=${parks[hotspot].lng}&dist=${parks[hotspot].radius}&sppLocale=es`;
     //console.log(url);
     
     try {
