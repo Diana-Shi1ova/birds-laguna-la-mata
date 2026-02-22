@@ -213,7 +213,7 @@ function Map () {
         });
     }, [birds]);*/
 
-    useEffect(() => {
+    /*useEffect(() => {
         if (!map.current || !birds?.length) return;
 
         markersRef.current.forEach(m => m.remove());
@@ -226,18 +226,18 @@ function Map () {
 
         grouped.forEach(group => {
 
-            // 1️⃣ создаём контейнер
+            // Creamos container
             const container = document.createElement("div");
 
-            // 2️⃣ создаём React root
+            // Creamos React root
             const root = createRoot(container);
 
-            // 3️⃣ рендерим компонент
+            // Renderizamos el componente
             root.render(
                 <MarkerInfoCard birds={group.items} />
             );
 
-            // 4️⃣ создаём popup с DOM, а не HTML
+            // Creamos popup con DOM
             const popup = new maplibregl.Popup({ offset: 25 })
                 .setDOMContent(container);
 
@@ -253,6 +253,66 @@ function Map () {
             markersRef.current.push(marker);
         });
 
+    }, [birds]);*/
+
+    // Array para guardar enlaces a root en useRef
+    const rootsRef = useRef([]);
+
+    useEffect(() => {
+        if (!map.current || !birds?.length) return;
+
+        // Limpiamos los marcadores antiguos y desmontamos los roots de React
+        /*markersRef.current.forEach(m => m.remove());
+        markersRef.current = [];
+        
+        rootsRef.current.forEach(root => root.unmount());
+        rootsRef.current = [];*/
+
+        const grouped = Object.values(groupByCoords(birds));
+
+        grouped.forEach(group => {
+            const container = document.createElement("div");
+            const root = createRoot(container);
+            
+            root.render(<MarkerInfoCard birds={group.items} />);
+            
+            // Guardamos root para poder limpiarlo correctamente
+            rootsRef.current.push(root);
+
+            const popup = new maplibregl.Popup({ 
+                offset: 25,
+                anchor: 'bottom', // Fuerza a que la "punta" del popup esté abajo (el contenido arriba)
+            })
+                .setDOMContent(container);
+
+            const marker = new maplibregl.Marker({ color: "#e74c3c" })
+                .setLngLat([group.lng, group.lat])
+                .setPopup(popup)
+                .addTo(map.current);
+
+            // Añadimos el evento de centrado
+            marker.getElement().addEventListener('click', () => {
+                map.current.flyTo({
+                    center: [group.lng, group.lat],
+                    offset: [0, 200],
+                    zoom: 12,      // Ajusta el nivel de zoom deseado al acercarse
+                    speed: 0.8,    // Velocidad del vuelo (opcional)
+                    curve: 1,      // Suavidad del vuelo (opcional)
+                    essential: true // Asegura que la animación se ejecute incluso si el usuario tiene "reduce motion"
+                });
+            });
+
+            markersRef.current.push(marker);
+        });
+
+        // Limpieza
+        return () => {
+            // Esta función se ejecuta ANTES de la siguiente ejecución del useEffect
+            const rootsToCleanup = [...rootsRef.current];
+            setTimeout(() => {
+                rootsToCleanup.forEach(r => r.unmount());
+            }, 0);
+        };
     }, [birds]);
 
 
@@ -299,7 +359,7 @@ function Map () {
     };*/
 
     // Cambiar a 3D
-    const toggle3D = () => {
+    /*const toggle3D = () => {
         if (!map.current) return;
         if (!is3D) {
             map.current.setPitch(60);
@@ -309,6 +369,36 @@ function Map () {
             map.current.setPitch(0);
             map.current.setBearing(0);
             if (map.current.getLayer("3d-buildings")) map.current.removeLayer("3d-buildings");
+        }
+        setIs3D(!is3D);
+    };*/
+
+    const toggle3D = () => {
+        if (!map.current) return;
+
+        if (!is3D) {
+            // Pasamos a 3D
+            map.current.setProjection({
+                type: 'globe' // Visualización como globo
+            });
+            map.current.setPitch(60);
+            map.current.setBearing(-45);
+            
+            // Mostrar todo el planeta
+            // map.current.flyTo({ zoom: 1 }); 
+            
+            // add3DBuildings();
+        } else {
+            // Volver a 2D
+            map.current.setProjection({
+                type: 'mercator' // Visualización plana
+            });
+            map.current.setPitch(0);
+            map.current.setBearing(0);
+            
+            if (map.current.getLayer("3d-buildings")) {
+                map.current.removeLayer("3d-buildings");
+            }
         }
         setIs3D(!is3D);
     };
