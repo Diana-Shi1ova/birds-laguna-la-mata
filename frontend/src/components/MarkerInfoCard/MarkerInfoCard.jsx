@@ -1,14 +1,15 @@
+import { useState, useEffect } from 'react';
+import { api } from '../../api/api';
+
 import './MarkerInfoCard.css';
 import Button from '../Button/Button';
-import Pagination from '../Pagination/Pagination';
 
 import { FaCaretLeft } from "react-icons/fa";
 import { FaCaretRight } from "react-icons/fa";
 import { FaRegBookmark } from "react-icons/fa";
 import { FaBookmark } from "react-icons/fa"; // filled
 import { FaChartBar } from "react-icons/fa";
-import { useState, useEffect } from 'react';
-import { api } from '../../api/api';
+
 
 
 function MarkerInfoCard({birds}) {
@@ -74,17 +75,26 @@ function MarkerInfoCard({birds}) {
             {/* <div className='marker-info-main'> */}
                 <p className='source'>eBird</p>
                 <Button type='icon' classAdditional='save-button'><FaRegBookmark /></Button>
-                <h1>{birds && birds[current-1]['comName']}</h1>
+                <a href={wikidata && wikidata['wikipediaURL']}>
+                    <h1>{birds && birds[current-1]['comName']}</h1>
+                </a>
                 <p className='lat-name'>({birds[current-1]['sciName']})</p>
-                <img className='info-img' src={wikidata && wikidata['images'][0]} alt={birds[current-1]['comName']} />
+                <a href={wikidata && wikidata['wikipediaURL']}>
+                    <img className='info-img' src={wikidata && wikidata['images'][0]} alt={birds[current-1]['comName']} />
+                </a>
                 <p className='info'>Avistado: <span>{formatDateTime(birds[current-1]['obsDt'])}</span></p>
                 <p className='info'>Coordenadas: <span>({birds[current-1]['lat'].toFixed(3)}, {birds[current-1]['lng'].toFixed(3)})</span></p>
                 <Button classAdditional='chart-button'><FaChartBar />Ver dinámica</Button>
-                <p className='pages'><span>{current}</span>/<span>{total}</span></p>
-                <div className='buttons'>
-                    <Button func={previousPage}><FaCaretLeft /></Button>
-                    <Button func={nextPage}><FaCaretRight /></Button>
-                </div>
+                {total>1 && (
+                    <>
+                        <p className='pages'><span>{current}</span>/<span>{total}</span></p>
+                        <div className='buttons'>
+                            <Button func={previousPage}><FaCaretLeft /></Button>
+                            <Button func={nextPage}><FaCaretRight /></Button>
+                        </div>
+                    </>
+                )}
+                
         </div>
     );
 }

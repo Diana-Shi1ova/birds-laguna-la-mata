@@ -21,6 +21,11 @@ function Map () {
     const [marker, setMarker] = useState(null); // marker
     const [birds, setBirds] = useState([]); // Birds list
     const [is3D, setIs3D] = useState(false); // cambio 3D/2D
+    const [raspImage, setRaspImage] = useState();
+    const [raspAudio, setRaspAudio] = useState();
+
+    // Array para guardar enlaces a root en useRef
+    const rootsRef = useRef([]);
 
     const parks = {
         "L3906629": { // general
@@ -69,6 +74,7 @@ function Map () {
         });
     }, [area]);
 
+
     // Inicializar el mapa
     useEffect(() => {
         if (map.current) return;
@@ -82,36 +88,19 @@ function Map () {
         });
 
         map.current.addControl(new maplibregl.NavigationControl());
+
+        // Añadir marcadores de Raspderries
+        //38°11'13.6"N 0°47'20.1"W    ->    38.187111, -0.788916
+        const marker = new maplibregl.Marker({ color: "#3c94e7" })
+                .setLngLat([-0.788916, 38.187111])
+                // .setPopup(popup)
+                .addTo(map.current);
+
+        // markersRef.current.push(marker);
     }, []);
 
 
-    // Añadimos markers al actualizar observations
-    /*useEffect(() => {
-        if (!map.current) return;
-        if (!birds || birds.length === 0) return;
-
-        // Eliminamos markers anteriores
-        markersRef.current.forEach(marker => marker.remove());
-        markersRef.current = [];
-
-        birds.forEach(obs => {
-        const popup = new maplibregl.Popup({ offset: 25 }).setHTML(`
-            <strong>${obs.comName}</strong> (${obs.sciName})<br/>
-            Location: ${obs.locName}
-        `);
-
-        const marker = new maplibregl.Marker({ color: "#e74c3c" })
-            .setLngLat([obs.lng, obs.lat])
-            .setPopup(popup)
-            .addTo(map.current);
-
-            markersRef.current.push(marker);
-        });
-
-        // Centrar el mapa por primer avistamiento
-        // map.current.flyTo({ center: [birds[0].lng, birds[0].lat], zoom: 13 });
-
-    }, [birds]);*/
+    // Agrupar aves por coordenadas
     function groupByCoords(observations, precision = 5) {
         return observations.reduce((acc, obs) => {
             const lat = obs.lat.toFixed(precision);
@@ -131,142 +120,10 @@ function Map () {
         }, {});
     }
 
-    /*function createCarouselHTML(items) {
-        console.log('Items a mostrar: ', items);
-        return `
-            <div class="carousel" data-index="0">
-            <div class="carousel-header">
-                <span class="counter">1 / ${items.length}</span>
-            </div>
 
-            <div class="carousel-content">
-                ${items.map((obs, i) => `
-                <div class="slide" style="display:${i === 0 ? 'block' : 'none'}">
-                    <strong>${obs.comName}</strong><br/>
-                    <em>${obs.sciName}</em><br/>
-                    ${obs.obsDt}
-                </div>
-                `).join('')}
-            </div>
-
-            ${items.length > 1 ? `
-                <div class="carousel-controls">
-                <button onclick="prevSlide(this)">◀</button>
-                <button onclick="nextSlide(this)">▶</button>
-                </div>
-            ` : ''}
-            </div>
-        `;
-    }*/
-
-    function updateCounter(carousel) {
-        const index = +carousel.dataset.index;
-        const total = carousel.querySelectorAll('.slide').length;
-        carousel.querySelector('.counter').textContent = `${index + 1} / ${total}`;
-    }
-
-    window.nextSlide = (btn) => {
-        const carousel = btn.closest('.carousel');
-        const slides = carousel.querySelectorAll('.slide');
-        let index = +carousel.dataset.index;
-
-        slides[index].style.display = 'none';
-        index = (index + 1) % slides.length;
-        slides[index].style.display = 'block';
-
-        carousel.dataset.index = index;
-        updateCounter(carousel);
-    };
-
-    window.prevSlide = (btn) => {
-        const carousel = btn.closest('.carousel');
-        const slides = carousel.querySelectorAll('.slide');
-        let index = +carousel.dataset.index;
-
-        slides[index].style.display = 'none';
-        index = (index - 1 + slides.length) % slides.length;
-        slides[index].style.display = 'block';
-
-        carousel.dataset.index = index;
-        updateCounter(carousel);
-    };
-
-
-    /*useEffect(() => {
-        if (!map.current || !birds?.length) return;
-
-        markersRef.current.forEach(m => m.remove());
-        markersRef.current = [];
-
-        const grouped = Object.values(groupByCoords(birds));
-
-        grouped.forEach(group => {
-            const popup = new maplibregl.Popup({ offset: 25 })
-            .setHTML(createCarouselHTML(group.items));
-
-            const marker = new maplibregl.Marker({ color: "#e74c3c" })
-            .setLngLat([group.lng, group.lat])
-            .setPopup(popup)
-            .addTo(map.current);
-
-            markersRef.current.push(marker);
-        });
-    }, [birds]);*/
-
-    /*useEffect(() => {
-        if (!map.current || !birds?.length) return;
-
-        markersRef.current.forEach(m => m.remove());
-        markersRef.current = [];
-
-        const grouped = Object.values(groupByCoords(birds));
-
-        console.log('grouped: ', grouped);
-        console.log('What birds: ', birds);
-
-        grouped.forEach(group => {
-
-            // Creamos container
-            const container = document.createElement("div");
-
-            // Creamos React root
-            const root = createRoot(container);
-
-            // Renderizamos el componente
-            root.render(
-                <MarkerInfoCard birds={group.items} />
-            );
-
-            // Creamos popup con DOM
-            const popup = new maplibregl.Popup({ offset: 25 })
-                .setDOMContent(container);
-
-            popup.on('close', () => {
-                root.unmount();
-            });
-
-            const marker = new maplibregl.Marker({ color: "#e74c3c" })
-                .setLngLat([group.lng, group.lat])
-                .setPopup(popup)
-                .addTo(map.current);
-
-            markersRef.current.push(marker);
-        });
-
-    }, [birds]);*/
-
-    // Array para guardar enlaces a root en useRef
-    const rootsRef = useRef([]);
-
+    // Mostrar marcadores
     useEffect(() => {
         if (!map.current || !birds?.length) return;
-
-        // Limpiamos los marcadores antiguos y desmontamos los roots de React
-        /*markersRef.current.forEach(m => m.remove());
-        markersRef.current = [];
-        
-        rootsRef.current.forEach(root => root.unmount());
-        rootsRef.current = [];*/
 
         const grouped = Object.values(groupByCoords(birds));
 
@@ -326,53 +183,8 @@ function Map () {
         });
     }, [style]);
 
-    // 3D-buildings
-    /*const add3DBuildings = () => {
-        if (!map.current) return;
-        if (!map.current.getSource("openmaptiles")) {
-        map.current.addSource("openmaptiles", {
-            type: "vector",
-            url: "https://demotiles.maplibre.org/tiles/tiles.json"
-        });
-        }
-        if (!map.current.getLayer("3d-buildings")) {
-        map.current.addLayer({
-            id: "3d-buildings",
-            source: "openmaptiles",
-            "source-layer": "building",
-            type: "fill-extrusion",
-            paint: {
-            "fill-extrusion-color": "#aaa",
-            "fill-extrusion-height": [
-                "interpolate",
-                ["linear"],
-                ["zoom"],
-                15,
-                0,
-                16,
-                ["get", "render_height"]
-            ],
-            "fill-extrusion-opacity": 0.6
-            }
-        });
-        }
-    };*/
 
-    // Cambiar a 3D
-    /*const toggle3D = () => {
-        if (!map.current) return;
-        if (!is3D) {
-            map.current.setPitch(60);
-            map.current.setBearing(-45);
-            //   add3DBuildings();
-        } else {
-            map.current.setPitch(0);
-            map.current.setBearing(0);
-            if (map.current.getLayer("3d-buildings")) map.current.removeLayer("3d-buildings");
-        }
-        setIs3D(!is3D);
-    };*/
-
+    // 3D/2D
     const toggle3D = () => {
         if (!map.current) return;
 
