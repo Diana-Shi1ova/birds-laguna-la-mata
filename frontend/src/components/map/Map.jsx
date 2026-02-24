@@ -90,13 +90,18 @@ function Map () {
         map.current.addControl(new maplibregl.NavigationControl());
 
         // Añadir marcadores de Raspderries
+
         //38°11'13.6"N 0°47'20.1"W    ->    38.187111, -0.788916
-        const marker = new maplibregl.Marker({ color: "#3c94e7" })
+        const audio = new maplibregl.Marker({ color: "#3c94e7" })
                 .setLngLat([-0.788916, 38.187111])
                 // .setPopup(popup)
                 .addTo(map.current);
 
-        // markersRef.current.push(marker);
+        // De momento, coordenadas ficticias
+        const image = new maplibregl.Marker({ color: "#d8e356" })
+                .setLngLat([-0.75299, 38.1811])
+                // .setPopup(popup)
+                .addTo(map.current);
     }, []);
 
 
