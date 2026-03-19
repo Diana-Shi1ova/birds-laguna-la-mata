@@ -5,6 +5,7 @@ import { api } from "../../api/api";
 import MarkerInfoCard from "../MarkerInfoCard/MarkerInfoCard";
 import './Map.css';
 import { createRoot } from "react-dom/client";
+import { useBirds } from "../../contexts/BirdsProvider";
 
 
 // Componente mapa
@@ -16,13 +17,15 @@ function Map () {
     const [lat, setLat] = useState(-0.70461); // coordenadas Torrevieja
     const [zoom, setZoom] = useState(12); // zoom
     const [style, setStyle] = // estilo mapa (satélite)
-        useState("https://api.maptiler.com/maps/019a6b22-5021-75fc-9452-2530f937c6dc/style.json?key=Yu7DuOP1wu6AkLyJkHAt");
-    const [area, setArea] = useState("L3906629"); // Área a mostrar
+        useState(`https://api.maptiler.com/maps/019a6b22-5021-75fc-9452-2530f937c6dc/style.json?key=${import.meta.env.VITE_MAPTILER_KEY}`);
+    //const [area, setArea] = useState("L3906629"); // Área a mostrar
     const [marker, setMarker] = useState(null); // marker
-    const [birds, setBirds] = useState([]); // Birds list
+    //const [birds, setBirds] = useState([]); // Birds list
     const [is3D, setIs3D] = useState(false); // cambio 3D/2D
     const [raspImage, setRaspImage] = useState();
     const [raspAudio, setRaspAudio] = useState();
+
+    const { birds, filteredBirds, area, setArea } = useBirds();
 
     // Array para guardar enlaces a root en useRef
     const rootsRef = useRef([]);
@@ -60,7 +63,7 @@ function Map () {
     };
 
     // Hacer petición de pájaros
-    useEffect(() => {
+    /*useEffect(() => {
         // Petición al servidor
         api.get('/eBird', {
             params: { hotspot: area }
@@ -72,7 +75,7 @@ function Map () {
         .catch(error => {
             console.error('Error:', error);
         });
-    }, [area]);
+    }, [area]);*/
 
 
     // Inicializar el mapa
@@ -127,7 +130,7 @@ function Map () {
 
 
     // Mostrar marcadores
-    useEffect(() => {
+    /*useEffect(() => {
         if (!map.current || !birds?.length) return;
 
         const grouped = Object.values(groupByCoords(birds));
@@ -175,8 +178,55 @@ function Map () {
                 rootsToCleanup.forEach(r => r.unmount());
             }, 0);
         };
-    }, [birds]);
+    }, [birds]);*/
+    
+useEffect(() => {
+    if (!map.current) return;
 
+    // Borramos marcadores antiguos
+    markersRef.current.forEach(marker => marker.remove());
+    markersRef.current = [];
+
+    // Limpiamos contenedores antiguos
+    rootsRef.current.forEach(root => {
+        const container = root._internalRoot?.containerInfo; // obtener div del contenedor
+        if (container) container.innerHTML = "";
+    });
+    rootsRef.current = [];
+
+    if (!filteredBirds?.length) return;
+
+    // Creamos marcadores nuevos
+    const grouped = Object.values(groupByCoords(filteredBirds));
+
+    grouped.forEach(group => {
+        const container = document.createElement("div");
+        const root = createRoot(container);
+        root.render(<MarkerInfoCard birds={group.items} />);
+        rootsRef.current.push(root);
+
+        const popup = new maplibregl.Popup({ offset: 25, anchor: 'bottom' })
+            .setDOMContent(container);
+
+        const marker = new maplibregl.Marker({ color: "#e74c3c" })
+            .setLngLat([group.lng, group.lat])
+            .setPopup(popup)
+            .addTo(map.current);
+
+        marker.getElement().addEventListener('click', () => {
+            map.current.flyTo({
+                center: [group.lng, group.lat],
+                offset: [0, 200],
+                zoom: 12,
+                speed: 0.8,
+                curve: 1,
+                essential: true
+            });
+        });
+
+        markersRef.current.push(marker);
+    });
+}, [filteredBirds]);
 
     // Cambiar el estilo del mapa
     useEffect(() => {
@@ -237,8 +287,8 @@ function Map () {
             <div className="map-controls-container">
                 <button onClick={toggle3D}>{is3D ? "Vista 2D" : "Vista 3D"}</button>
                 <select onChange={(e) => setStyle(e.target.value)} value={style}>
-                    <option value="https://api.maptiler.com/maps/019a6b22-5021-75fc-9452-2530f937c6dc/style.json?key=Yu7DuOP1wu6AkLyJkHAt">Satélite</option>
-                    <option value="https://api.maptiler.com/maps/openstreetmap/style.json?key=Yu7DuOP1wu6AkLyJkHAt">Calles</option>
+                    <option value={`https://api.maptiler.com/maps/019a6b22-5021-75fc-9452-2530f937c6dc/style.json?key=${import.meta.env.VITE_MAPTILER_KEY}`}>Satélite</option>
+                    <option value={`https://api.maptiler.com/maps/openstreetmap/style.json?key=${import.meta.env.VITE_MAPTILER_KEY}`}>Calles</option>
                 </select>
                 <select onChange={(e) => showPark(e)} value={area}>
                     <option value="L3906629">Lagunas de La Mata y Torrevieja</option>

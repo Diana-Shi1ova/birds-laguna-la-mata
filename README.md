@@ -34,9 +34,14 @@ npm run dev
 ## Componentes clave
 ```bash
 /backend
-    /controllers          # funcionalidad de rutas API
-    /routes               # definición de rutas API
-    server.js             # servidor
+    /config                  # ficheros de configuración
+        db.js                # conexión a la base de datos
+    /controllers             # funcionalidad de rutas API
+    /middleware              # intermediarios
+        authMiddleware.js    # verificación de autenticación
+    /models                  # esquemas de datos de la BD
+    /routes                  # definición de rutas API
+    server.js                # servidor
 
 /frontend
     /src
@@ -59,17 +64,30 @@ npm run dev
 |**Catalog**|Página de catálogo de todas las especies de aves|
 |**Favourites**|Página de especies guardadas por el usuario|
 |**Graphs**|Página de gráficas que describen la dinámica de aparición de las especies|
+|**Login**|Página para iniciar sesión|
+|**Register**|Página para registrarse|
 
 ## Components
 |Componente|Descripción|
 |------|-----------|
+|**BirdListElement**|Componente para listar especies|
+|**Button**|Componente botón (con texto y fondo o solo icono sin fondo)|
+|**FiltersPannel**|Componente con el formulario para filtrar avistamientos|
+|**Header**|Componente con icono de usuario y barra de búsqueda que se ubica arriba|
+|**Input**|Componente campos para introducir información de diferentes tipos (texto, números, fechas, etc.)|
 |**Map**|Componente mapa que muestra los avistamientos|
-|**Sidebar**|Componente barra lateral para la navegación entre diferentes|
+|**MarkerInfoCard**|Componente-popup del mapa que visualiza el avistamiento (nombre de ave, foto, etc.)|
+|**Pagination**|Componente paginación|
 |**Searchbar**|Componente barra de búsqueda|
+|**Sidebar**|Componente barra lateral para la navegación entre diferentes|
+|**SiteTitle**|Componente para mostrar diferentes títulos en la pestaña al abrir diferentes páginas (no renderiza nada)|
+|**UserIcon**|Componente icono de usuario en el header|
 
 ## Layouts
 |Layout|Descripción|
 |------|-----------|
+|**FormLayout**|Formulario centrado (login y registro)|
+|**ListLayout**|Lista elementos horizontalmente|
 |**MainLayout**|Sidebar + contenido principal horizontalmente|
 
 # Descripción de API

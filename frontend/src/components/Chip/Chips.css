@@ -1,0 +1,23 @@
+.chip-list{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    li{
+        display: flex;
+        flex-direction: row;
+        gap: .2em;
+        background-color: var(--green-active-light);
+        padding: .3em;
+        border-radius: 30px;
+        margin: .3em;
+
+        button{
+            display: flex;
+            align-items: center;
+        }
+    }
+}

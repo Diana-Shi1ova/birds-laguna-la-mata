@@ -4,6 +4,7 @@ import { FaFilter } from "react-icons/fa";
 import Button from "../Button/Button";
 import { useRef, useState, useEffect } from "react";
 import { useSearchUI } from "../../contexts/SearchUIProvider";
+import { useBirds } from "../../contexts/BirdsProvider";
 
 import { FaArrowLeft } from "react-icons/fa";
 
@@ -15,6 +16,7 @@ function Searchbar () {
     const [mobile, setMobile] = useState(false);
 
     const { isSearchOpen, openSearch, closeSearch } = useSearchUI();
+    const { filteredBirds, setFilteredBirds, birds } = useBirds();
 
     const open = () => {
         document.querySelector('.filters-pannel').classList.remove('closed');
@@ -46,6 +48,28 @@ function Searchbar () {
         }
     }, [focus]);
 
+    // Normalizar texto para búsqueda (minúsculas y no tener en cuenta los acentos y ñ)
+    const normalizeText = (text) => {
+        return text
+            .toLowerCase()
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "");
+    };
+
+    const dynamicSearch = (e) => {
+        const value = e.target.value.toLowerCase();
+
+        const result = birds.filter(bird => 
+            normalizeText(bird.comName).includes(value) ||
+            normalizeText(bird.sciName).includes(value)
+        );
+        
+        console.log(result);
+        setFilteredBirds(result);
+    }
+
+
+
     return (
         <div className="searchbar-container">
             {isSearchOpen && 
@@ -59,6 +83,8 @@ function Searchbar () {
                     type="text"
                     className={`searchbar-input ${mobile ? 'mobile' : ''}`}
                     onBlur={handleBlur}
+                    onChange={dynamicSearch}
+                    placeholder="Nombre común o científico"
                 />
                 <Button
                     type="icon"

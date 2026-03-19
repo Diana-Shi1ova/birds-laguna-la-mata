@@ -52,8 +52,8 @@ function MarkerInfoCard({birds}) {
     }
 
     useEffect(() => {
-        console.log('Birds: ', birds);
-        console.log('Birds length: ', birds.length);
+        // console.log('Birds: ', birds);
+        // console.log('Birds length: ', birds.length);
         setTotal(birds.length);
 
         // Petición al servidor
@@ -61,7 +61,7 @@ function MarkerInfoCard({birds}) {
             params: { sciName: birds[current-1]['sciName'] }
         })
         .then(response => {
-            console.log(response.data);
+            // console.log(response.data);
             setWikidata(response.data);
         })
         .catch(error => {

@@ -77,12 +77,13 @@ const parks = {
 }*/
 
 const getObservations = async (req, res) => {
-    const { hotspot } = req.query; // obtain Hotspot
+    const { hotspot, back } = req.query; // obtain Hotspot
+    
     //const url = `https://api.ebird.org/v2/data/obs/ES/recent?r=${hotspot}`; //`https://api.ebird.org/v2/data/obs/hotspot/recent?hotspotCode=${hotspot}`
     if (!hotspot) {
         return res.status(400).json({ message: 'Hotspot code is required' });
     }
-    const url = `https://api.ebird.org/v2/data/obs/geo/recent?lat=${parks[hotspot].lat}&lng=${parks[hotspot].lng}&dist=${parks[hotspot].radius}&sppLocale=es`;
+    const url = `https://api.ebird.org/v2/data/obs/geo/recent?lat=${parks[hotspot].lat}&lng=${parks[hotspot].lng}&dist=${parks[hotspot].radius}&sppLocale=es&back=${back}`;
     //console.log(url);
     
     try {
@@ -109,7 +110,7 @@ const getHistory = async (req, res) => {
     if (!date) {
         return res.status(400).json({ message: 'Hotspot code is required' });
     }
-    const url = `https://api.ebird.org/v2/data/obs/ES-VC/historic/${date}`; // date en formato 2025/12/9
+    const url = `https://api.ebird.org/v2/data/obs/ES-VC/historic/${date}?sppLocale=es`; // date en formato 2025/12/9
     //https://api.ebird.org/v2/data/obs/{{regionCode}}/historic/{{y}}/{{m}}/{{d}}
     try {
         const response = await fetch(url, {

@@ -50,7 +50,7 @@ function Login () {
             {/* <h1>Login</h1> */}
             <FormLayout title={"Login"} url="login" submit="Iniciar sesión" submitFunction={handleSubmit} close={true}>
                 <p className={error ? ('error-message-general opened') : ('error-message-general')}>{error}</p>
-                <Input label="Email" req={true} name="email" auto="email" change={handleChange} type="text"></Input>
+                <Input label="Email" req={true} name="email" auto="email" change={handleChange} type="email"></Input>
                 <Input label="Contraseña" req={true} name="password" change={handleChange} type="password"></Input>
             </FormLayout>
         </>

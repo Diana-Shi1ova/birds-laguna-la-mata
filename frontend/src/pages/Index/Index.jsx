@@ -6,6 +6,7 @@ import "./Index.css" ;
 import Map from '../../components/Map/Map';
 import MainLayout from "../../layouts/MainLayout/MainLayout";
 import FiltersPannel from "../../components/FiltersPannel/FiltersPannel";
+// import { BirdsProvider } from "../../contexts/BirdsProvider";
 
 function Index(){
     //const [birds, setBirds] = useState([]); // Birds list
@@ -24,12 +25,14 @@ function Index(){
     
 
     return(
-        <MainLayout>
-            {/* <h1>Página inicio</h1>
-            <h2>Prueba obtención datos de eBird:</h2> */}
-            <Map></Map>
-            <FiltersPannel></FiltersPannel>
-        </MainLayout>
+        // <BirdsProvider>
+            <MainLayout>
+                {/* <h1>Página inicio</h1>
+                <h2>Prueba obtención datos de eBird:</h2> */}
+                <Map></Map>
+                <FiltersPannel></FiltersPannel>
+            </MainLayout>
+        // </BirdsProvider>
     );
 }
 
