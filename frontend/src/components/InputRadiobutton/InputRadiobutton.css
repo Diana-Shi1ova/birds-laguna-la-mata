@@ -1,0 +1,10 @@
+.input-radio-container{
+    display: flex;
+    flex-direction: row;
+    gap: .5em;
+
+    input[type='radiobutton']{
+        width: 18px;
+        height: 18px;
+    }
+}

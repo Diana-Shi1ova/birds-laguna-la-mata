@@ -21,9 +21,10 @@ function Catalog(){
 
     // Hacer petición de pájaros
     useEffect(() => {
+        if(current==="") return;
         // Petición al servidor
         api.get('/bird', {
-            params: { page: current, limit:20 }
+            params: { page: Number(current), limit:20 }
         })
         .then(response => {
             console.log(response.data.data);
@@ -45,6 +46,7 @@ function Catalog(){
             observation: '-'
         };
     }
+
 
     return(
         <MainLayout>

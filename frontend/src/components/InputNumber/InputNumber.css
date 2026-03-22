@@ -1,0 +1,14 @@
+.input-number-container{
+    display: flex;
+    flex-direction: row;
+    gap: .7em;
+    align-items: center;
+
+    input{
+        width: 50px;
+        font-size: var(--text-size);
+        padding: .5em;
+        border-radius: 7px;
+        border: 3px solid var(--green);
+    }
+}

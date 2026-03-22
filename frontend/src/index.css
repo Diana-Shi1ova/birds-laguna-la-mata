@@ -72,11 +72,12 @@ button:focus-visible {
 /* Variables */
 :root {
   --text-colour: #000;
-  --text-size: 16pt;
+  --text-size: 14pt;
   --big-icon: 30pt;
   --green: #87ffc9;
   /* --green-hover: #3cd590; */
   --green-hover: #5fe1a7;
   --green-active-light: #d2ffeb;
   --green-active-dark: #3cd590;
+  --font-family: Verdana, Geneva, Tahoma, sans-serif;
 }

@@ -85,6 +85,8 @@ function Searchbar () {
                     onBlur={handleBlur}
                     onChange={dynamicSearch}
                     placeholder="Nombre común o científico"
+                    autoComplete="off"
+                    name="searchbar"
                 />
                 <Button
                     type="icon"

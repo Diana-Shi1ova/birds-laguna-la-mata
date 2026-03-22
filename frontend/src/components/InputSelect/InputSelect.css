@@ -1,0 +1,12 @@
+.select-container{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    text-align: left;
+
+    .custom-select{
+        font-size: var(--text-size);
+        padding: .5em;
+        border-radius: 10px;
+    }
+}

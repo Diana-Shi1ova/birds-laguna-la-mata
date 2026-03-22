@@ -1,7 +1,7 @@
 import "./Input.css";
 
 
-function Input ({name, classAdditional="", label, type, req=false, auto=null, change=()=>{}, enter=()=>{}, value, placeholder=""}) {
+function Input ({name, id, classAdditional="", label, type, req=false, auto=null, change=()=>{}, enter=()=>{}, value, defaultValue, placeholder=""}) {
     const isControlled = value !== undefined; // controlar value solo si ha llegado
     
     const handleKeyDown = (event) => {
@@ -11,23 +11,24 @@ function Input ({name, classAdditional="", label, type, req=false, auto=null, ch
     };
 
     return (
-        <div className="input-container">
-            <p>{label} {req && ("*")}</p>
+        <label className={"input-container "+classAdditional}>{label} {req && ("*")}
             <input
                 type={type}
                 required={req}
                 name={name}
-                className={classAdditional}
-                autoComplete={auto}
+                id={id}
+                // className={classAdditional}
+                // autoComplete={auto}
+                {...(auto ? { autoComplete: auto } : {})} 
                 onChange={change}
                 onKeyDown={handleKeyDown}
-                // value={value ?? ""}
                 placeholder={placeholder}
-                {...(isControlled
-                    ? { value }
-                    : { defaultValue: "" })}
+                // {...(isControlled
+                //     ? { value }
+                //     : { defaultValue: "" })}
+                defaultValue={defaultValue}
             />
-        </div>
+        </label>
     );
 };
 
