@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import "./Sidebar.css";
 import { NavLink, Link } from 'react-router-dom';
-import { UseAuth } from "../../auth/UseAuth";
+import { UseAuth } from "../../auth/useAuth";
 import Logo from "../Logo/Logo";
 import Button from "../Button/Button";
 

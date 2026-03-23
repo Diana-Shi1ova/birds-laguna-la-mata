@@ -1,6 +1,6 @@
 import "./Favourites.css" ;
 import MainLayout from "../../layouts/MainLayout/MainLayout";
-import { UseAuth } from "../../auth/UseAuth";
+import { UseAuth } from "../../auth/useAuth";
 import { Navigate } from "react-router-dom";
 
 function Favourites(){
