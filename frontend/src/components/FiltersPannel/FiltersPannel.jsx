@@ -249,7 +249,7 @@ function FiltersPannel () {
                     <Input label={'Empieza a introducir las especies:'} name={'birdNames'} auto='off' placeholder={'Nombre común o científico'} enter={onEnter}></Input>
                     <Chips values={formData.species} remove={deleteSpecieFromList}></Chips>
                     {isAuth === true && (
-                        <InputCheckbox name='favourites' label='Solo favoritos' classAdditional="favourite" change={onCheckboxesChange}></InputCheckbox>
+                        <InputCheckbox name='favourites' label='Solo favoritos' classAdditional="favourite" change={onCheckboxesChange} checked={formData.favourites}></InputCheckbox>
                     )}
                 </section>
                 <section className="filter-section">

@@ -1,6 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { AuthProvider } from './auth/AuthProvider.jsx'
+import { AuthProvider } from './auth/authProvider.jsx'
 import { BirdsProvider } from './contexts/BirdsProvider.jsx'
 import { SearchProvider } from './contexts/SearchProvider.jsx'
 import './index.css'
