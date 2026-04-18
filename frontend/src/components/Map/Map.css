@@ -34,3 +34,160 @@
 .maplibregl-popup-close-button{
     display: none;
 }
+
+.marker-image, .marker-audio{
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid white;
+    box-shadow: 0 0 6px rgba(0,0,0,0.3);
+    /* position: relative; */
+}
+
+.marker-image, .marker-pulse-image{
+    background-color: #d8e356;
+}
+
+.marker-audio, .marker-pulse-audio{
+    background-color: #3c94e7;
+}
+
+
+/*.marker-pulse-audio {
+  width: 20px;
+  height: 20px;
+  background: #3c94e7;
+  border-radius: 50%;
+  position: relative;
+  box-shadow: 0 0 6px rgba(0,0,0,0.5);
+}
+
+
+.marker-pulse-audio::before {
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: #3c94e7;
+  border: 2px solid white;
+  border-radius: 50%;
+  top: 0;
+  left: 0;
+}
+
+
+.marker-pulse-audio::after {
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: #3c94e7;
+  border: 2px solid white;
+  border-radius: 50%;
+  top: 0;
+  left: 0;
+  animation: pulse 1.5s infinite;
+  opacity: 0.6;
+}
+
+
+.marker-pulse-image {
+  width: 20px;
+  height: 20px;
+  background: #d8e356;
+  border-radius: 50%;
+  position: relative;
+  box-shadow: 0 0 6px rgba(0,0,0,0.5);
+}
+
+
+.marker-pulse-image::before {
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: #d8e356;
+  border: 2px solid white;
+  border-radius: 50%;
+  top: 0;
+  left: 0;
+}
+
+
+.marker-pulse-image::after {
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: #d8e356;
+  border: 2px solid white;
+  border-radius: 50%;
+  top: 0;
+  left: 0;
+  animation: pulse 1.5s infinite;
+  opacity: 0.6;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(3);
+    opacity: 0;
+  }
+}*/
+
+.marker-pulse-audio,
+.marker-pulse-image {
+  width: 23px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* position: relative; */
+}
+
+.marker-pulse-audio {
+  .dot, .pulse{
+    background: #3c94e7;
+  }
+}
+
+.marker-pulse-image {
+  .dot, .pulse{
+    background: #d8e356;
+  }
+}
+
+.dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid white;
+  z-index: 2;
+}
+
+.pulse {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid white;
+  opacity: 0.6;
+  animation: pulse 1.5s infinite;
+  z-index: 1;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(3);
+    opacity: 0;
+  }
+}

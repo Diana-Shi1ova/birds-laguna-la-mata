@@ -16,7 +16,7 @@ function Searchbar () {
     const [mobile, setMobile] = useState(false);
 
     const { isSearchOpen, openSearch, closeSearch } = useSearchUI();
-    const { filteredBirds, setFilteredBirds, birds } = useBirds();
+    const { filteredBirds, setFilteredBirds, birds, setSimpleSearch } = useBirds();
 
     const open = () => {
         document.querySelector('.filters-pannel').classList.remove('closed');
@@ -66,6 +66,7 @@ function Searchbar () {
         
         console.log(result);
         setFilteredBirds(result);
+        setSimpleSearch(value);
     }
 
 
@@ -101,6 +102,7 @@ function Searchbar () {
                 // classAdditional={`filters${mobile ? '-show' : ''}`}
                 classAdditional='filters'
                 func={open}
+                tooltip="Abrir panel con filtros"
             >
                 <FaFilter />
             </Button>

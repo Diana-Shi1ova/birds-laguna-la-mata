@@ -4,7 +4,7 @@
 // Salinas de Santa Pola:             L3919198    38.194347, -0.5939913
 // Albufera de Valencia:              L1121988    39.3337, -0.3225
 
-const parks = {
+/*const parks = {
   "L3906629": { // general
     name: "Lagunas de La Mata y Torrevieja",
     lat: 38.0238218,
@@ -28,6 +28,38 @@ const parks = {
     //38.18819,-0.61898
   },
   "L1121988": {
+    name: "Albufera de Valencia",
+    lat: 39.3337,
+    lng: -0.3225,
+    radius: 17
+    //39.28032,-0.34112
+  }
+};*/
+
+const parks = {
+  "LLMT": { // general
+    name: "Lagunas de La Mata y Torrevieja",
+    lat: 38.0238218,
+    lng: -0.6834269,
+    radius: 7
+    //38.01531,-0.70111
+    // L6177434, L6121785, L7241499, L6121783, L3906629
+  },
+  "HE": {
+    name: "Hondo de Elche",
+    lat: 38.1858471,
+    lng: -0.7809734,
+    radius: 7
+    //38.18121,-0.75270
+  },
+  "SSP": {
+    name: "Salinas de Santa Pola",
+    lat: 38.194347,
+    lng: -0.5939913,
+    radius: 7
+    //38.18819,-0.61898
+  },
+  "AV": {
     name: "Albufera de Valencia",
     lat: 39.3337,
     lng: -0.3225,

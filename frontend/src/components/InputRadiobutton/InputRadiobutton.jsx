@@ -1,7 +1,7 @@
 import "./InputRadiobutton.css";
 
 
-/*function InputRadiobutton ({id, name="", value, classAdditional="", label, change=()=>{}, checked=false}) {
+function InputRadiobutton ({id, name="", value, classAdditional="", label, change=()=>{}, checked=false}) {
     return (
         <div className="input-radio-container">
                 <input
@@ -9,15 +9,15 @@ import "./InputRadiobutton.css";
                     id={id}
                     className={classAdditional}
                     onChange={change}
-                    checked={!!checked}
+                    checked={checked}
                     name={name}
                     value={value}
                 />
             <label htmlFor={id}>{label}</label>
         </div>
     );
-};*/
-function InputRadiobutton ({id, name, value, classAdditional="", label, change=()=>{}, checked}) {
+};
+/*function InputRadiobutton ({id, name, value, classAdditional="", label, change=()=>{}, checked}) {
     const inputProps = {
         type: 'radio',
         id: id,
@@ -38,7 +38,7 @@ function InputRadiobutton ({id, name, value, classAdditional="", label, change=(
             {label}
         </label>
     );
-}
+}*/
 
 
 export default InputRadiobutton;

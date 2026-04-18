@@ -18,6 +18,13 @@
     box-sizing: border-box;
     /* overflow-y: scroll; */
 
+    .image-wrapper{
+        height: 180px;
+        width: 200px;
+        position: relative;
+        margin-bottom: .5em;
+    }
+
     .info-img{
         height: 180px;
         width: auto;
@@ -27,18 +34,50 @@
         margin-bottom: .2em;
     }
 
+    .rpi{
+        margin-top: 1em;
+        margin-bottom: 2em;
+        width: 230px;
+        height: auto;
+    }
+
+    audio{
+        margin-top: 1.5em;
+        margin-bottom: 4em;
+        max-width: 270px;
+    }
+
+    /*.spinner {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }*/
+
     .source{
         position: absolute;
         top: 2px;
         left: 2px;
         margin: 0;
-        background-color: var(--green);
         border-top-left-radius: 12px;
         border-bottom-right-radius: 15px;
         padding: .3em;
         font-weight: bold;
         font-size: 12pt;
         box-sizing: border-box;
+    }
+
+    .eBird{
+        background-color: var(--green);
+    }
+
+    .RPI{
+        background-color: #e0f02d;
+    }
+
+    .RPA{
+        background-color: #85c4ff;
     }
 
     h1{
@@ -62,7 +101,7 @@
         font-weight: bold;
         font-size: 11pt;
         margin: 0;
-        margin-top: .5em;
+        margin-top: .2em;
         padding-left: 2.5em;
 
         span{
@@ -70,14 +109,16 @@
         }
     }
 
+    .info-margin-bottom{
+        margin-bottom: 1.5em;
+    }
+
     button{
         display: flex;
     }
 
     .save-button{
-        position: absolute;
-        top: .3em;
-        right: .3em;
+        font-size: 18pt;
     }
     
     .chart-button{
@@ -102,6 +143,11 @@
         }
     }
 
+    .audio{
+        top: 50%;
+        width: 97%;
+    }
+
     .pages{
         font-size: 12pt;
         display: flex;
@@ -118,4 +164,65 @@
         align-items: center;
         justify-content: center;
     }
+
+    .close-button{
+        font-size: 14pt;
+    }
+
+    .actions{
+        display: flex;
+        flex-direction: row;
+        gap: 1em;
+        align-items: center;
+        justify-content: center;
+    }
 }
+
+.spinner-wrapper{
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.without-detections{
+    font-size: 10pt;
+
+    h1{
+        margin-bottom: 1em;
+    }
+    svg{
+        font-size: 32pt;
+        color: #d9d9d9;
+    }
+    
+    
+}
+
+
+
+/*.eBird{
+    border-color: var(--green-active-dark);
+
+    .source{
+        background-color: var(--green);
+    }
+}
+
+.RPI{
+    border-color: #d8e356;
+
+    .source{
+        background-color: #d8e356;
+    }
+}
+
+.RPA{
+    border-color: #3c94e7;
+
+    .source{
+        background-color: #3c94e7;
+    } 
+}*/

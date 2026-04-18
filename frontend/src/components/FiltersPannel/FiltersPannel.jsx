@@ -27,7 +27,8 @@ function FiltersPannel () {
             date: new Date(),
             days: 1,
             ebird: true,
-            raspberries: true,
+            rpa: true,
+            rpi: true,
         });
 
     const { area, setSearchQuery } = useBirds();
@@ -225,7 +226,8 @@ function FiltersPannel () {
             date: new Date(),
             days: 1,
             ebird: true,
-            raspberries: true,
+            rpa: true,
+            rpi: true,
         });
     }
 
@@ -236,6 +238,7 @@ function FiltersPannel () {
                 type="icon"
                 classAdditional="close-button"
                 func={(e) => close(e)}
+                tooltip="Cerrar"
             >
                 <FaTimes />
             </Button>
@@ -254,12 +257,12 @@ function FiltersPannel () {
                 </section>
                 <section className="filter-section">
                     <h2>Filtrado temporal</h2>
-                    <InputRadiobutton id='period' label='Período' name="filtrado-temporal" value='period' checked={true} change={onTemporalRadioChange}></InputRadiobutton>
-                    <InputRadiobutton id='day' label='Fecha concreta' name="filtrado-temporal" value='date' change={onTemporalRadioChange}></InputRadiobutton>
+                    <InputRadiobutton id='period' label='Período' name="filtrado-temporal" value='period' checked={formData.period} change={onTemporalRadioChange}></InputRadiobutton>
+                    <InputRadiobutton id='day' label='Fecha concreta' name="filtrado-temporal" value='date' checked={!formData.period} change={onTemporalRadioChange}></InputRadiobutton>
                     {formData.period === true ? (
                         <InputSelect name='period' label='Selecciona el período:' change={onPeriodChange} selected={formData.selectedPeriod} options={PERIOD_OPTIONS}></InputSelect>
                     ) : (
-                        <InputDate label={'Fecha:'} name={'date'} change={onChange} value={formatDate(formData.date)}></InputDate>
+                        <InputDate label={'Fecha:'} name={'date'} change={onChange} defValue={formatDate(formData.date)}></InputDate>
                     )}
                     { showPeriodInput === true && formData.period === true && (
                         <InputNumber name='days' label='Días (max. 30):' defValue={formData.days} max={30} min={1} step={1} change={onDaysChange} enter={onEnter}></InputNumber>
@@ -269,7 +272,8 @@ function FiltersPannel () {
                 <h2>Fuente</h2>
                     {/* Añadir botones con información */}
                     <InputCheckbox name='ebird' label='eBird' checked={formData.ebird} change={onCheckboxesChange}></InputCheckbox>
-                    <InputCheckbox name='raspberries' label='Raspberries' checked={formData.raspberries} change={onCheckboxesChange}></InputCheckbox>
+                    <InputCheckbox name='rpa' label='Raspberry Pi (audio)' checked={formData.rpa} change={onCheckboxesChange}></InputCheckbox>
+                    <InputCheckbox name='rpi' label='Raspberry Pi (imagen)' checked={formData.rpi} change={onCheckboxesChange}></InputCheckbox>
                 </section>
             </section>
             <Button func={resetFilters}>Reestablecer</Button>
