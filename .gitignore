@@ -27,4 +27,7 @@ dist-ssr
 .env.production
 .env.development
 raspberries
+data
+names_dictionary.js
+names_eng_es_sci.js
 utils

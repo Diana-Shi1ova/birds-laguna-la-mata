@@ -1,0 +1,15 @@
+const express = require('express');
+const {
+        buildSpeciesStatistics,
+        getSpecieStatistics,
+        getParkStatistics
+        // getWikidata
+    } = require('../controllers/statisticsController');
+const router = express.Router();
+
+router.route('/').get(buildSpeciesStatistics);
+router.route('/specie/:id').get(getSpecieStatistics);
+router.route('/park/:parkId').get(getParkStatistics);
+
+
+module.exports = router;

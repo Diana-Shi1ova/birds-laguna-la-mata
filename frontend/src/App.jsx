@@ -6,7 +6,7 @@ import SiteTitle from './components/SiteTitle/SiteTitle';
 import Index from './pages/Index/Index';
 import Catalog from './pages/Catalog/Catalog';
 import Favourites from './pages/Favourites/Favourites';
-import Graphs from './pages/Graphs/Graphs';
+import Statistics from './pages/Statistics/Statistics';
 import Login from './pages/Login/Login';
 import Register from './pages/Register/Register';
 
@@ -21,7 +21,7 @@ function App() {
             {/* <Route path='/home' element={<Home/>}/> */}
             <Route path='/catalog' element={<Catalog/>}/>
             <Route path='/favourites' element={<Favourites/>}/>
-            <Route path='/graphs' element={<Graphs/>}/>
+            <Route path='/statistics' element={<Statistics/>}/>
             <Route path='/login' element={<Login/>}/>
             <Route path='/register' element={<Register/>}/>
           </Routes>

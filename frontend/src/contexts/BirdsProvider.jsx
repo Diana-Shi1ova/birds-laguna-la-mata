@@ -22,7 +22,7 @@ export function BirdsProvider({ children }) {
         rpa: true,                   // mostrar aves de raspberries audio
         rpi: true,                   // mostrar aves de raspberries imagen
     });
-    const [area, setArea] = useState("LLMT");              // parque
+    const [area, setArea] = useState("69e16d8d48ce5b0d0d8f9b23");              // parque (LLMT)
     // const [back, setBack] = useState(1);
     const [simpleSearch, setSimpleSearch] = useState([]);                     // búsqueda simple por nombre
 
@@ -54,10 +54,10 @@ export function BirdsProvider({ children }) {
 
             api.get('/eBird', {
                 params: {
-                    hotspot: area,
+                    parkId: area,
                     // back: searchQuery.back
                     // back: back
-                    back: period
+                    back: period,
                 }
             })
             .then(response => {
@@ -74,7 +74,7 @@ export function BirdsProvider({ children }) {
             // eBird
             api.get('/eBird/history', {
                 params: {
-                    hotspot: area,
+                    parkId: area,
                     date: formatDateAPI(searchQuery.date)
                 }
             })

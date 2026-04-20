@@ -1,0 +1,32 @@
+.but-info{
+    font-size: 16pt;
+    display: flex;
+    align-items: center;
+    color: #ffffff;
+    box-sizing: content-box;
+    border-radius: 50%;
+    border: 3px solid #30619e;
+    background-color: #608fca;
+    padding: .2em;
+}
+
+
+.info-container {
+    display: inline-flex;
+    align-items: center;
+    margin-left: .5em;
+}
+
+.message{
+    /*position: absolute;
+    top: 120%;
+    left: 50%;
+    transform: translateX(-50%);*/
+    background: #333;
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 6px;
+    white-space: wrap;
+    width: 400px;
+    z-index: 1000;
+}

@@ -1,130 +1,36 @@
-// HOTSPOTS:
-// Lagunas de La Mata y Torrevieja:   L3906629    38.0238218, -0.6834269
-// Hondo de Elche:                    L3905205    38.1858471, -0.7809734
-// Salinas de Santa Pola:             L3919198    38.194347, -0.5939913
-// Albufera de Valencia:              L1121988    39.3337, -0.3225
-
-/*const parks = {
-  "L3906629": { // general
-    name: "Lagunas de La Mata y Torrevieja",
-    lat: 38.0238218,
-    lng: -0.6834269,
-    radius: 7
-    //38.01531,-0.70111
-    // L6177434, L6121785, L7241499, L6121783, L3906629
-  },
-  "L3905205": {
-    name: "Hondo de Elche",
-    lat: 38.1858471,
-    lng: -0.7809734,
-    radius: 7
-    //38.18121,-0.75270
-  },
-  "L3919198": {
-    name: "Salinas de Santa Pola",
-    lat: 38.194347,
-    lng: -0.5939913,
-    radius: 7
-    //38.18819,-0.61898
-  },
-  "L1121988": {
-    name: "Albufera de Valencia",
-    lat: 39.3337,
-    lng: -0.3225,
-    radius: 17
-    //39.28032,-0.34112
-  }
-};*/
-
-const parks = {
-  "LLMT": { // general
-    name: "Lagunas de La Mata y Torrevieja",
-    lat: 38.0238218,
-    lng: -0.6834269,
-    radius: 7
-    //38.01531,-0.70111
-    // L6177434, L6121785, L7241499, L6121783, L3906629
-  },
-  "HE": {
-    name: "Hondo de Elche",
-    lat: 38.1858471,
-    lng: -0.7809734,
-    radius: 7
-    //38.18121,-0.75270
-  },
-  "SSP": {
-    name: "Salinas de Santa Pola",
-    lat: 38.194347,
-    lng: -0.5939913,
-    radius: 7
-    //38.18819,-0.61898
-  },
-  "AV": {
-    name: "Albufera de Valencia",
-    lat: 39.3337,
-    lng: -0.3225,
-    radius: 17
-    //39.28032,-0.34112
-  }
-};
+const DEFAULT_LOCALE = 'es';
+const Park = require('../models/parkModel');
+const Bird = require('../models/birdModel');
 
 
-// Obtain bird observations
-/*const getObservations = async (req, res) => {
-    try{
-        const response = await fetch("https://api.ebird.org/v2/data/obs/geo/recent?lat=38.015&lng=-0.7", {
-            headers: { "X-eBirdApiToken": "so7u5sv82cup" }
-        });
-        const data = await response.json();
-        res.status(200).json(data);
-    }
-    catch(error){
-        res.status(500).json({ message: 'Server error', error: error.message });
-    }
-}*/
+// Calcular distancia para ajustes dentro del radio
+function getDistanceKm(lat1, lon1, lat2, lon2) {
+    const x = (lon2 - lon1) * Math.cos((lat1 + lat2) * Math.PI / 360);
+    const y = lat2 - lat1;
+    return Math.sqrt(x * x + y * y) * 111;
+}
 
-// Obtain bird observations by Hotspot
-/*const getObservations = async (req, res) => {
-    const { hotspot } = req.query; // obtain Hotspot
-    const url = `https://api.ebird.org/v2/data/obs/ES/recent?r=${hotspot}`; //`https://api.ebird.org/v2/data/obs/hotspot/recent?hotspotCode=${hotspot}`
-
-    if (!hotspot) {
-        return res.status(400).json({ message: 'Hotspot code is required' });
-    }
-
-    try {
-        const response = await fetch(url, {
-            headers: { "X-eBirdApiToken": "so7u5sv82cup" }
-        });
-
-        if (!response.ok) {
-            throw new Error(`eBird API error: ${response.status}`);
-        }
-
-        const data = await response.json();
-        res.status(200).json(data);
-    } catch (error) {
-        res.status(500).json({ message: 'Server error', error: error.message });
-    }
-}*/
 
 const getObservations = async (req, res) => {
-    const { hotspot, back } = req.query; // obtain Hotspot
+    const { parkId, back, locale} = req.query; // obtain Hotspot
+    let lang = locale;
     
     //const url = `https://api.ebird.org/v2/data/obs/ES/recent?r=${hotspot}`; //`https://api.ebird.org/v2/data/obs/hotspot/recent?hotspotCode=${hotspot}`
-    if (!hotspot) {
-        return res.status(400).json({ message: 'Hotspot code is required' });
-    }
-    const url = `https://api.ebird.org/v2/data/obs/geo/recent?lat=${parks[hotspot].lat}&lng=${parks[hotspot].lng}&dist=${parks[hotspot].radius}&sppLocale=es&back=${back}`;
+    if (!parkId) return res.status(400).json({ message: 'parkId code is required' });
+    if(!lang) lang = DEFAULT_LOCALE;
+
+    const park = await Park.findById(parkId);
+
+    const url = `https://api.ebird.org/v2/data/obs/geo/recent?lat=${park.lat}&lng=${park.long}&dist=${park.radius}&sppLocale=${lang}&back=${back}`;
     //console.log(url);
     
     try {
         const response = await fetch(url, {
-            headers: { "X-eBirdApiToken": "so7u5sv82cup" }
+            headers: { "X-eBirdApiToken": process.env.EBIRD_TOKEN }
         });
 
         if (!response.ok) {
-            throw new Error(`eBird API error: ${response.status}`);
+            res.status(504).json({ message: `eBird API error: ${response.status}` });
         }
 
         const data = await response.json();
@@ -138,23 +44,47 @@ const getObservations = async (req, res) => {
 
 // Obtener avistamientos para un día concreto (desde el año 1800)
 const getHistory = async (req, res) => {
-    const { date } = req.query; // obtain Hotspot
-    if (!date) {
-        return res.status(400).json({ message: 'Hotspot code is required' });
-    }
-    const url = `https://api.ebird.org/v2/data/obs/ES-VC/historic/${date}?sppLocale=es`; // date en formato 2025/12/9
-    //https://api.ebird.org/v2/data/obs/{{regionCode}}/historic/{{y}}/{{m}}/{{d}}
     try {
+        const { date, locale, parkId } = req.query; // obtain Hotspot
+        let lang = locale;
+        if (!date) return res.status(400).json({ message: 'Date code is required' });
+        if(!lang) lang = DEFAULT_LOCALE;
+        if(!parkId) return res.status(400).json({ message: 'parkId is required' });
+
+        const park = await Park.findById(parkId);
+        console.log(park);
+
+        const url = `https://api.ebird.org/v2/data/obs/${park.region_code}/historic/${date}?sppLocale=${lang}`; // date en formato 2025/12/9
+        console.log(url)
+        //https://api.ebird.org/v2/data/obs/{{regionCode}}/historic/{{y}}/{{m}}/{{d}}
+        
         const response = await fetch(url, {
-            headers: { "X-eBirdApiToken": "so7u5sv82cup" }
+            headers: { "X-eBirdApiToken": process.env.EBIRD_TOKEN }
         });
 
         if (!response.ok) {
-            throw new Error(`eBird API error: ${response.status}`);
+            res.status(504).json({ message: `eBird API error: ${response.status}` });
         }
 
         const data = await response.json();
-        res.status(200).json(data);
+
+        // Filtrado de resultados por radio
+        const latDelta = park.radius / 111;
+        const lngDelta = park.radius / (111 * Math.cos(park.lat * Math.PI / 180));
+
+        const filtered = data.filter(obs => {
+            if (
+                obs.lat < park.lat - latDelta ||
+                obs.lat > park.lat + latDelta ||
+                obs.lng < park.long - lngDelta ||
+                obs.lng > park.long + lngDelta
+            ) return false;
+
+            const distance = getDistanceKm(park.lat, park.long, obs.lat, obs.lng);
+            return distance <= park.radius;
+        });
+
+        res.status(200).json(filtered);
     } catch (error) {
         res.status(500).json({ message: 'Server error', error: error.message });
     }
@@ -224,7 +154,7 @@ const getHistoryRange = async (req, res) => {
 
     const startDate = new Date(start);
     const endDate = new Date(end);
-    const API_KEY = "so7u5sv82cup";
+    const API_KEY = process.env.EBIRD_TOKEN;
     const region = "ES-VC";
 
     try {
@@ -344,7 +274,6 @@ const chunkArray = (arr, size) => {
 
 // Species codes list of the region (Comunidad Valenciana)
 const getSpecies = async (req, res) => {
-    const API_KEY = "so7u5sv82cup";
     const region = "ES-VC";
     const CHUNK_SIZE = 150; // tamaño seguro
 
@@ -352,11 +281,11 @@ const getSpecies = async (req, res) => {
         // 1. Obtenemos la lista de códigos de las especies
         const url = `https://api.ebird.org/v2/product/spplist/${region}`;
         const response = await fetch(url, {
-            headers: { "X-eBirdApiToken": API_KEY }
+            headers: { "X-eBirdApiToken": process.env.EBIRD_TOKEN }
         });
 
         if (!response.ok) {
-            throw new Error(`eBird API error: ${response.status}`);
+            if (!response.ok) { res.status(504).json({message: `eBird API error (specie codes): ${response.status}`});}
         }
 
         const speciesCodes = await response.json();
@@ -377,7 +306,7 @@ const getSpecies = async (req, res) => {
                 headers: { "X-eBirdApiToken": API_KEY }
             }).then(r => {
                 if (!r.ok) {
-                    throw new Error(`Taxonomy error: ${r.status}`);
+                    if (!response.ok) { res.status(504).json({message: `eBird API error (taxonomy): ${r.status}`});}
                 }
                 return r.json();
             });
@@ -418,9 +347,19 @@ const getSpecies = async (req, res) => {
             };
         });
 
+        await Bird.deleteMany({});
+        await Bird.insertMany(results);
+
         res.status(200).json(enrichedResults);
 
     } catch (err) {
+        if (err.code === "WIKIDATA_ERROR") {
+            return res.status(504).json({
+                message: "Wikidata unavailable",
+                error: err.message
+            });
+        }
+
         res.status(500).json({
             message: "Server error",
             error: err.message
@@ -467,8 +406,13 @@ async function fetchWikidataData(scientificNames) {
         }
     });
 
-    if (!response.ok) {
+    /*if (!response.ok) {
         throw new Error("Wikidata query failed");
+    }*/
+    if (!response.ok) {
+        const error = new Error(`Wikidata error: ${response.status}`);
+        error.code = "WIKIDATA_ERROR";
+        throw error;
     }
 
     const json = await response.json();
@@ -504,9 +448,63 @@ async function fetchWikidataData(scientificNames) {
 }
 
 
+// Avistamientos recientes por especies
+//
+const getSpecieObservations = async (req, res) => {
+    const { specieId } = req.params;
+    const { back, parkId, locale } = req.query; // obtain Hotspot
+
+    let lang = locale;
+    let days = 1;
+
+    if (!parkId) return res.status(400).json({ message: 'parkId code is required' });
+    if(!lang) lang = DEFAULT_LOCALE;
+    if (back) days = back;
+
+    const park = await Park.findById(parkId);
+    const specie = await Bird.findById(specieId);
+
+    //https://api.ebird.org/v2/data/obs/{{regionCode}}/recent/{{speciesCode}}
+    const url = `https://api.ebird.org/v2/data/obs/${park.region_code}/recent/${specie.speciesCode}?sppLocale=${DEFAULT_LOCALE}&back=${days}`;
+    console.log(url)
+    
+    try {
+        const response = await fetch(url, {
+            headers: { "X-eBirdApiToken": process.env.EBIRD_TOKEN }
+        });
+
+        if (!response.ok) { res.status(504).json({message: `eBird API error: ${response.status}`});}
+
+        const data = await response.json();
+
+        // Filtrado de resultados por radio
+        const latDelta = park.radius / 111;
+        const lngDelta = park.radius / (111 * Math.cos(park.lat * Math.PI / 180));
+
+        const filtered = data.filter(obs => {
+            if (
+                obs.lat < park.lat - latDelta ||
+                obs.lat > park.lat + latDelta ||
+                obs.lng < park.long - lngDelta ||
+                obs.lng > park.long + lngDelta
+            ) return false;
+
+            const distance = getDistanceKm(park.lat, park.long, obs.lat, obs.lng);
+            return distance <= park.radius;
+        });
+
+        res.status(200).json(filtered);
+    } catch (error) {
+        res.status(500).json({ message: 'Server error', error: error.message });
+    }
+}
+
+
+
 module.exports = {
     getObservations, // http://localhost:5000/api/eBird?hotspot=L123456
     getHistory,
     getHistoryRange,
-    getSpecies
+    getSpecies,
+    getSpecieObservations
 }

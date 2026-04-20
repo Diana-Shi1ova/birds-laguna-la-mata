@@ -1,0 +1,35 @@
+.horizontal-tabs{
+    display: flex;
+    flex-direction: row;
+    list-style: none;
+    text-align: center;
+    padding: 0;
+    margin: 0;
+    background-color: var(--green);
+    border-radius: 15px;
+
+    li{
+        /*display: flex;
+        height: fit-content;
+        width: fit-content;*/
+        max-width: 300px;
+        /* min-width: 50px; */
+    }
+
+    button{
+        padding: .8em 1em .8em 1em;
+        border-radius: 15px;
+        border: none;
+        background-color: transparent;
+        height: 100%;
+        width: 100%;
+        font-size: var(--text-size);
+        cursor: pointer;
+    }
+
+    .active{
+        background-color: var(--green-active-light);
+        border-top: #4ac69b solid 4px;
+        box-sizing: borrgb(173, 209, 215);
+    }
+}

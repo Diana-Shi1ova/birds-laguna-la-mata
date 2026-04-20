@@ -1,0 +1,21 @@
+.circle-container{
+    width: fit-content;
+
+    .label{
+        font-weight: bold;
+    }
+
+    .circle{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        border: solid 15px var(--green);
+
+        p{
+            font-size: 20pt;
+        }
+    }
+}

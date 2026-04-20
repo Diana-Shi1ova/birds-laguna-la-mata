@@ -128,7 +128,7 @@ function Map () {
             console.log(response.data);
             setParks(response.data);
             const options = response.data.map(park => ({
-                value: park.code,
+                value: park._id,
                 label: park.name
             }));
             setParksOptions(options);
@@ -529,7 +529,7 @@ useEffect(() => {
 
         console.log(selectedCode)
 
-        const park = parks.find(p => p.code === selectedCode);
+        const park = parks.find(p => p._id === selectedCode);
 
         if (!park) return;
 

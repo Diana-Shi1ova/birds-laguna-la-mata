@@ -1,0 +1,9 @@
+.chart-container{
+    width: 100%;
+    border: 5px solid var(--green);
+    box-sizing: border-box;
+
+    h2{
+        margin-bottom: 0;
+    }
+}

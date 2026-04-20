@@ -33,6 +33,21 @@ const getBirds = async (req, res) => {
   }
 };
 
+const getBirdById = async (req, res) => {
+  try {
+    const { id } = req.params;
+        
+    const result = await Bird.findById(id);
+    if(!result) res.status(404).json({'message': 'Bird not found'});
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({
+      message: 'Server error',
+      error: error.message
+    });
+  }
+};
+
 // Obtener foto de Wikidata
 const getWikidata = async (req, res) => {
   const { sciName } = req.query;
@@ -110,5 +125,6 @@ const getWikidata = async (req, res) => {
 
 module.exports = {
   getBirds,
-  getWikidata
+  getWikidata,
+  getBirdById
 };

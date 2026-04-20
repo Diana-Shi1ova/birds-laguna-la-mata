@@ -21,6 +21,9 @@ const ParkSchema = new mongoose.Schema(
     },
     zoom: {
       type: Number,
+    },
+    region_code: {
+      type: String,
     }
   }
 );

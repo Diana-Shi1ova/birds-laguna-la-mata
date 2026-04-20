@@ -60,7 +60,7 @@ function Sidebar () {
                     </li>
                 )}
                 <li>
-                    <NavLink to="/graphs" end className={({ isActive }) => isActive ? "active" : ""}>
+                    <NavLink to="/statistics" end className={({ isActive }) => isActive ? "active" : ""}>
                         <FaChartBar />
                         <p className="p-mobile">Dinámica de aparición</p>
                     </NavLink>
