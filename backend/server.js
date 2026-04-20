@@ -18,5 +18,6 @@ app.use('/api/raspBird', require('./routes/raspberryBird'));
 app.use('/api/raspberry', require('./routes/raspberry'));
 app.use('/api/park', require('./routes/park'));
 app.use('/api/statistics', require('./routes/statistics'));
+app.use('/api/favorite', require('./routes/favorite'));
 
 app.listen(port, () => console.log(`Server started on port ${port}`));

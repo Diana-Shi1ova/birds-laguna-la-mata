@@ -7,7 +7,7 @@ const {
     } = require('../controllers/statisticsController');
 const router = express.Router();
 
-router.route('/').get(buildSpeciesStatistics);
+router.route('/').post(buildSpeciesStatistics);
 router.route('/specie/:id').get(getSpecieStatistics);
 router.route('/park/:parkId').get(getParkStatistics);
 
