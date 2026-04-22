@@ -1,4 +1,4 @@
-import './InfoButton.css';
+import './ButtonInfo.css';
 import Button from '../Button/Button';
 import { FcInfo } from "react-icons/fc";
 
@@ -15,7 +15,7 @@ import {
 
 
 
-function InfoButton({message='default message', question=false}) {  // type: 'info' | 'question'
+function ButtonInfo({message='default message', question=false}) {  // type: 'info' | 'question'
     const [open, setOpen] = useState(false);
     const ref = useRef(null);
 
@@ -53,4 +53,4 @@ function InfoButton({message='default message', question=false}) {  // type: 'in
     );
 }
 
-export default InfoButton;
+export default ButtonInfo;

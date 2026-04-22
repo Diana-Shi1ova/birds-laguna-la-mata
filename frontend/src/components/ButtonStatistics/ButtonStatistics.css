@@ -1,0 +1,6 @@
+.chart-button{
+        display: flex;
+        gap: .5em;
+        align-items: center;
+        padding: .3em;
+    }

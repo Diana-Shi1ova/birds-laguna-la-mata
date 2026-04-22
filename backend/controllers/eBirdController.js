@@ -303,7 +303,7 @@ const getSpecies = async (req, res) => {
                 `?species=${speciesParam}&fmt=json&locale=es`;
 
             return fetch(urlNames, {
-                headers: { "X-eBirdApiToken": API_KEY }
+                headers: { "X-eBirdApiToken": process.env.EBIRD_TOKEN }
             }).then(r => {
                 if (!r.ok) {
                     if (!response.ok) { res.status(504).json({message: `eBird API error (taxonomy): ${r.status}`});}
@@ -347,8 +347,8 @@ const getSpecies = async (req, res) => {
             };
         });
 
-        await Bird.deleteMany({});
-        await Bird.insertMany(results);
+        //await Bird.deleteMany({});
+        //await Bird.insertMany(results);
 
         res.status(200).json(enrichedResults);
 
@@ -366,6 +366,319 @@ const getSpecies = async (req, res) => {
         });
     }
 };
+
+
+// Licencias permitidas
+const ALLOWED_LICENSE_URLS = [
+  'https://creativecommons.org/licenses/by/3.0',
+  'https://creativecommons.org/licenses/by/4.0',
+  'https://creativecommons.org/licenses/by-sa/3.0',
+  'https://creativecommons.org/licenses/by-sa/4.0',
+  'https://creativecommons.org/publicdomain/',
+];
+
+// Obtención de licencia de imagen (con caché)
+/*async function getCommonsImageInfo(imageUrl) {
+
+  const fileName = decodeURIComponent(imageUrl.split('/').pop());
+
+  const apiUrl =
+    'https://commons.wikimedia.org/w/api.php' +
+    '?action=query' +
+    '&titles=File:' +
+    encodeURIComponent(fileName) +
+    '&prop=imageinfo' +
+    '&iiprop=extmetadata' +
+    '&format=json' +
+    '&origin=*';
+
+  const res = await fetch(apiUrl, {
+    headers: {
+      'User-Agent': 'Astrosync/1.0',
+    },
+  });
+  const json = await res.json();
+
+  console.log(json);
+
+  const pages = json.query.pages;
+  const page = pages[Object.keys(pages)[0]];
+  if (!page.imageinfo) {
+    return null;
+  }
+
+  const meta = page.imageinfo[0].extmetadata;
+
+  const result = {
+    license: meta.LicenseShortName?.value || null,
+    licenseUrl: meta.LicenseUrl?.value || null,
+    artist: meta.Artist?.value || null,
+    attributionRequired: meta.AttributionRequired?.value === 'true',
+    credit: meta.Credit?.value || null,
+  };
+
+  return result;
+}*/
+
+function detectSex(categories, description = '') {
+  const text = [
+    ...categories,
+    description.toLowerCase()
+  ].join(' ');
+
+  if (text.includes('male')) return 'male';
+  if (text.includes('female')) return 'female';
+
+  return 'unknown';
+}
+
+
+// Lista negra
+/*async function getCommonsImageInfo(imageUrl) {
+  const fileName = decodeURIComponent(imageUrl.split('/').pop());
+
+  const apiUrl =
+    'https://commons.wikimedia.org/w/api.php' +
+    '?action=query' +
+    '&titles=File:' + encodeURIComponent(fileName) +
+    '&prop=imageinfo|categories' +
+    '&cllimit=50' +
+    '&iiprop=extmetadata' +
+    '&format=json' +
+    '&origin=*';
+
+  const res = await fetch(apiUrl, {
+    headers: {
+      'User-Agent': 'Astrosync/1.0',
+    },
+  });
+
+  const json = await res.json();
+
+  const pages = json.query.pages;
+  const page = pages[Object.keys(pages)[0]];
+
+  if (!page.imageinfo) return null;
+
+  const meta = page.imageinfo[0].extmetadata;
+
+  const categories = (page.categories || []).map(c =>
+    c.title.toLowerCase()
+  );
+
+  // 🔴 Фильтр "яиц"
+  const isEgg =
+    categories.some(cat =>
+      cat.includes('egg') ||
+      cat.includes('eggs') ||
+      cat.includes('nest')
+    ) ||
+    meta.ImageDescription?.value?.toLowerCase().includes('egg');
+
+  if (isEgg) {
+    return null; // ❌ пропускаем такие изображения
+  }
+
+  return {
+    license: meta.LicenseShortName?.value || null,
+    licenseUrl: meta.LicenseUrl?.value || null,
+    artist: meta.Artist?.value || null,
+    attributionRequired: meta.AttributionRequired?.value === 'true',
+    credit: meta.Credit?.value || null,
+  };
+}*/
+
+/*async function getCommonsImageInfo(imageUrl) {
+  const fileName = decodeURIComponent(imageUrl.split('/').pop());
+
+  const apiUrl =
+    'https://commons.wikimedia.org/w/api.php' +
+    '?action=query' +
+    '&titles=File:' + encodeURIComponent(fileName) +
+    '&prop=imageinfo|categories' +
+    '&cllimit=50' +
+    '&iiprop=extmetadata' +
+    '&format=json' +
+    '&origin=*';
+
+  const res = await fetch(apiUrl, {
+    headers: {
+      'User-Agent': 'Astrosync/1.0',
+    },
+  });
+
+  const json = await res.json();
+  const pages = json.query.pages;
+  const page = pages[Object.keys(pages)[0]];
+
+  if (!page.imageinfo) return null;
+
+  const meta = page.imageinfo[0].extmetadata;
+
+  const categories = (page.categories || []).map(c =>
+    c.title.toLowerCase()
+  );
+
+  // 🟢 БЕЛЫЙ СПИСОК
+  const allowedKeywords = [
+    'birds',
+    'bird',
+    'aves',
+    'passeriformes',
+    'accipitriformes',
+    'falconiformes',
+    'strigiformes'
+  ];
+
+  const isAllowed = categories.some(cat =>
+    allowedKeywords.some(keyword => cat.includes(keyword))
+  );
+
+  // mejora
+  //const isEgg = categories.some(cat => cat.includes('egg'));
+
+  if (!isAllowed) {
+    return null; // ❌ не птица — скрываем
+  }
+
+  return {
+    license: meta.LicenseShortName?.value || null,
+    licenseUrl: meta.LicenseUrl?.value || null,
+    artist: meta.Artist?.value || null,
+    attributionRequired: meta.AttributionRequired?.value === 'true',
+    credit: meta.Credit?.value || null,
+  };
+}*/
+
+async function getCommonsImageInfo(imageUrl) {
+  const fileName = decodeURIComponent(imageUrl.split('/').pop());
+
+  const apiUrl =
+    'https://commons.wikimedia.org/w/api.php' +
+    '?action=query' +
+    '&titles=File:' + encodeURIComponent(fileName) +
+    '&prop=imageinfo|categories' +
+    '&cllimit=50' +
+    '&iiprop=extmetadata' +
+    '&format=json' +
+    '&origin=*';
+
+  const res = await fetch(apiUrl, {
+    headers: { 'User-Agent': 'Astrosync/1.0' },
+  });
+
+  const json = await res.json();
+  const page = json.query.pages[Object.keys(json.query.pages)[0]];
+
+  if (!page.imageinfo) return null;
+
+  const meta = page.imageinfo[0].extmetadata;
+
+  const categories = (page.categories || []).map(c =>
+    c.title.toLowerCase()
+  );
+
+  const description = meta.ImageDescription?.value || '';
+
+  // ❌ Фильтр яиц
+  const isEgg =
+    categories.some(cat =>
+      cat.includes('egg') ||
+      cat.includes('eggs') ||
+      cat.includes('nest')
+    ) ||
+    description.toLowerCase().includes('egg');
+
+  if (isEgg) return null;
+
+  // 🟢 Определение пола
+  const sex = detectSex(categories, description);
+
+  return {
+    url: imageUrl,
+    license: meta.LicenseShortName?.value || null,
+    licenseUrl: meta.LicenseUrl?.value || null,
+    artist: meta.Artist?.value || null,
+    credit: meta.Credit?.value || null,
+    sex,
+    categories
+  };
+}
+
+
+/*async function fetchWikidataData(scientificNames) {
+  const values = scientificNames.map(name => `"${name}"`).join("\n");
+
+  const sparql = `...`; // твой запрос без изменений
+
+  const url =
+    "https://query.wikidata.org/sparql?format=json&query=" +
+    encodeURIComponent(sparql);
+
+  const response = await fetch(url, {
+    headers: {
+      Accept: "application/sparql+json",
+      "User-Agent": "Avistory/1.0"
+    }
+  });
+
+  if (!response.ok) {
+    const error = new Error(`Wikidata error: ${response.status}`);
+    error.code = "WIKIDATA_ERROR";
+    throw error;
+  }
+
+  const json = await response.json();
+
+  const map = {};
+
+  // 🔷 Сначала собираем промисы
+  const tasks = [];
+
+  for (const row of json.results.bindings) {
+    const name = row.scientificName.value;
+
+    if (!map[name]) {
+      map[name] = {
+        wikidataId: row.item.value,
+        images: [],
+        wikipediaURL: null
+      };
+    }
+
+    if (row.image) {
+      const img = row.image.value;
+
+      tasks.push(
+        getCommonsImageInfo(img).then(info => {
+          if (info) {
+            map[name].images.push(info);
+          }
+        })
+      );
+    }
+
+    if (!map[name].wikipediaURL && row.wikipediaURL) {
+      map[name].wikipediaURL = row.wikipediaURL.value;
+    }
+  }
+
+  // ⏳ ждём все изображения
+  await Promise.all(tasks);
+
+  // 🔷 Фильтрация по полу (на уровне вида)
+  for (const name in map) {
+    const images = map[name].images;
+
+    const hasMale = images.some(img => img.sex === 'male');
+
+    if (hasMale) {
+      map[name].images = images.filter(img => img.sex !== 'female');
+    }
+  }
+
+  return map;
+}*/
 
 
 async function fetchWikidataData(scientificNames) {
@@ -406,9 +719,9 @@ async function fetchWikidataData(scientificNames) {
         }
     });
 
-    /*if (!response.ok) {
-        throw new Error("Wikidata query failed");
-    }*/
+    //if (!response.ok) {
+    //    throw new Error("Wikidata query failed");
+    //}
     if (!response.ok) {
         const error = new Error(`Wikidata error: ${response.status}`);
         error.code = "WIKIDATA_ERROR";
@@ -435,6 +748,9 @@ async function fetchWikidataData(scientificNames) {
 
             // Sin duplicados
             if (!map[name].images.includes(img)) {
+                // Obtener datos de Wikimedia commons
+
+
                 map[name].images.push(img);
             }
         }

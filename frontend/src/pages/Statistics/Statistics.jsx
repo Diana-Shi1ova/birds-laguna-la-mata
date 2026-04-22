@@ -8,7 +8,7 @@ import Chart from "../../components/Chart/Chart";
 import InputSelect from "../../components/InputSelect/InputSelect";
 import Tabs from "../../components/Tabs/Tabs";
 import StatisticsCircle from "../../components/StatisticsCircle/StatisticsCircle";
-import InfoButton from "../../components/InfoButton/InfoButton";
+import ButtonInfo from "../../components/ButtonInfo/ButtonInfo";
 
 function Statistics(){
     const [data, setData] = useState([]);
@@ -299,7 +299,7 @@ function Statistics(){
             {activeTab==='general' ? (
                 <>
                 {/* Estadística general */}
-                <h1 className="birdName">{parkData?.name}<InfoButton message={message}></InfoButton></h1>
+                <h1 className="birdName">{parkData?.name}<ButtonInfo message={message}></ButtonInfo></h1>
                 <div className="statistics-container">
                     <div className="horizontal horizontal-2">
                         <img src={import.meta.env.VITE_PARKS_PATH+parkData?.image} alt={parkData?.name} />
@@ -332,7 +332,7 @@ function Statistics(){
             ) : (
                 <>
                 {/* Estadística por especie */}
-                <h1 className="birdName">{birdData?.comName ?? ''}<span>({birdData?.sciName ?? ''})</span><InfoButton message={message}></InfoButton></h1>
+                <h1 className="birdName">{birdData?.comName ?? ''}<span>({birdData?.sciName ?? ''})</span><ButtonInfo message={message}></ButtonInfo></h1>
                 <div className="statistics-container">
                     <div className="horizontal">
                         <div className="image-container">

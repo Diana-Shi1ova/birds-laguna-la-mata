@@ -131,8 +131,8 @@ function MarkerInfoCard({birds, source='eBird', lat, long, popup}) {  //tipo: eB
                         <a href={wikidata && wikidata['wikipediaURL']}>
                             <img
                                 className='info-img'
-                                key={wikidata?.images?.[0]}
-                                src={wikidata && wikidata['images'][0]}
+                                key={wikidata?.images?.length-1}
+                                src={wikidata && wikidata['images'][wikidata['images'].length-1]}
                                 alt={birds[current-1]['comName']}
                                 onLoad={() => setImgLoading(false)}
                                 onError={() => setImgLoading(false)}

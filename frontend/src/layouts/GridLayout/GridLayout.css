@@ -1,0 +1,37 @@
+.catalog-list{
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0 1em 0 1em;
+    gap: .5em;
+    margin-bottom: 1em;
+}
+
+.grid{
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    /* grid-template-columns: repeat(auto-fill, minmax(300px, max-content)); */
+    gap: 1em;
+    width: 100%;
+    box-sizing: border-box;
+    justify-items: center;
+    padding: 1em;
+    margin-top: 0;
+}
+
+.bird-card, li{
+    width: 100%;
+    box-sizing: border-box;
+
+    img{
+        /*height: 300px;
+        width: 300px !important;*/
+        width: 100%;
+        object-fit: cover;
+    }
+}

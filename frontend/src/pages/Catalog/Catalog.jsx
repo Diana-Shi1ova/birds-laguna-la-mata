@@ -1,7 +1,7 @@
 import "./Catalog.css" ;
 import MainLayout from "../../layouts/MainLayout/MainLayout";
-import BirdListElement from "../../components/BirdListElement/BirdListElement";
-import ListLayout from "../../layouts/ListLayout/ListLayout";
+import BirdCard from "../../components/BirdCard/BirdCard";
+import GridLayout from "../../layouts/GridLayout/GridLayout";
 import Pagination from "../../components/Pagination/Pagination";
 import { useState, useEffect } from "react";
 import { api } from "../../api/api";
@@ -24,7 +24,7 @@ function Catalog(){
         if(current==="") return;
         // Petición al servidor
         api.get('/bird', {
-            params: { page: Number(current), limit:20 }
+            params: { page: Number(current), limit:10 }
         })
         .then(response => {
             console.log(response.data.data);
@@ -42,7 +42,7 @@ function Catalog(){
             name: item.comName,
             scientific: item.sciName,
             link: item.wikidata?.wikipediaURL || null,
-            imagelink: item.wikidata?.images?.[0] || null,
+            imagelink: item.wikidata?.images?.[item.wikidata?.images?.length-1] || null,
             observation: '-'
         };
     }
@@ -51,19 +51,29 @@ function Catalog(){
     return(
         <MainLayout>
             <h1>Catálogo de especies</h1>
-            <ListLayout>
-                {/* <BirdListElement data={data}></BirdListElement>
-                <BirdListElement data={data}></BirdListElement>
-                <BirdListElement data={data}></BirdListElement>
-                <BirdListElement data={data}></BirdListElement>
-                <BirdListElement data={data}></BirdListElement> */}
-                {birds.map((bird) => (
-                <BirdListElement
+            <GridLayout>
+                {/* <BirdCard data={data}></BirdCard>
+                <BirdCard data={data}></BirdCard>
+                <BirdCard data={data}></BirdCard>
+                <BirdCard data={data}></BirdCard>
+                <BirdCard data={data}></BirdCard> */}
+                {/*birds.map((bird) => (
+                <BirdCard
                     key={bird.speciesCode}
                     data={normalizeBird(bird)}
                     />
-                ))}
-            </ListLayout>
+                ))*/}
+                {birds
+                    .filter(bird => !bird.comName?.toLowerCase().includes('(híbrido)'))
+                    .map(bird => (
+                        <li key={bird.speciesCode}>
+                            <BirdCard
+                                data={normalizeBird(bird)}
+                            />
+                        </li>
+                    ))
+                }
+            </GridLayout>
             <Pagination
                 total={total}
                 current={current}

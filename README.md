@@ -70,7 +70,7 @@ npm run dev
 ## Components
 |Componente|Descripción|
 |------|-----------|
-|**BirdListElement**|Componente para listar especies|
+|**BirdCard**|Componente para listar especies|
 |**Button**|Componente botón (con texto y fondo o solo icono sin fondo)|
 |**FiltersPannel**|Componente con el formulario para filtrar avistamientos|
 |**Header**|Componente con icono de usuario y barra de búsqueda que se ubica arriba|
@@ -87,7 +87,7 @@ npm run dev
 |Layout|Descripción|
 |------|-----------|
 |**FormLayout**|Formulario centrado (login y registro)|
-|**ListLayout**|Lista elementos horizontalmente|
+|**GridLayout**|Lista elementos horizontalmente|
 |**MainLayout**|Sidebar + contenido principal horizontalmente|
 
 # Descripción de API
