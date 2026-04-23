@@ -15,7 +15,10 @@ import { FaVideoSlash } from "react-icons/fa";
 import { FaTimes } from "react-icons/fa";
 import Spinner from '../Spinner/Spinner';
 import Dialog from '../Dialog/Dialog';
-
+import ButtonStatistics from '../ButtonStatistics/ButtonStatistics';
+import ButtonFavourite from '../ButtonFavourite/ButtonFavourite';
+import { Link } from "react-router-dom";
+import { useBirds } from '../../contexts/BirdsProvider';
 
 
 function MarkerInfoCard({birds, source='eBird', lat, long, popup}) {  //tipo: eBird, RPA, RPI
@@ -37,6 +40,8 @@ function MarkerInfoCard({birds, source='eBird', lat, long, popup}) {  //tipo: eB
             lng: -0.7327
         },
     ]*/
+
+    const {parkData} = useBirds();
 
     const [current, setCurrent] = useState(1);
     const [total, setTotal] = useState(1);
@@ -120,15 +125,23 @@ function MarkerInfoCard({birds, source='eBird', lat, long, popup}) {  //tipo: eB
                     <p className={'source '+source}>{source}</p>
                     {/* <Button type='icon' classAdditional='save-button'><FaRegBookmark /></Button> */}
                     <Button type='icon' classAdditional='close-button' tooltip='Cerrar' func={closePopup}><FaTimes /></Button>
-                    <a href={wikidata && wikidata['wikipediaURL']}>
+                    <Link 
+                        to={wikidata && wikidata['wikipediaURL']} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                    >
                         <h1>{birds && birds[current-1]['comName']}</h1>
-                    </a>
+                    </Link>
                     <p className='lat-name'>({birds[current-1]['sciName']})</p>
                     <div  className='image-wrapper'>
                         {imgLoading && (
                             <Spinner></Spinner>
                         )}
-                        <a href={wikidata && wikidata['wikipediaURL']}>
+                        <Link 
+                            to={wikidata && wikidata['wikipediaURL']} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                        >
                             <img
                                 className='info-img'
                                 key={wikidata?.images?.length-1}
@@ -141,14 +154,16 @@ function MarkerInfoCard({birds, source='eBird', lat, long, popup}) {  //tipo: eB
                                     transition: 'opacity 0.15s ease'
                                 }}
                             />
-                        </a>
+                        </Link>
                     </div>
                     <p className='info'>Avistado: <span>{formatDateTime(birds[current-1]['obsDt'])}</span></p>
-                    <p className='info'>Cantidad: <span>{birds[current-1]['howMany']}</span></p>
+                    <p className='info'>Cantidad: <span>{birds[current-1]['howMany'] ? birds[current-1]['howMany'] : 'desconocida'}</span></p>
                     <p className='info'>Coordenadas: <span>({birds[current-1]['lat'].toFixed(3)}, {birds[current-1]['lng'].toFixed(3)})</span></p>
                     <div className='actions'>
-                        <Button classAdditional='chart-button'><FaChartBar />Ver dinámica</Button>
-                        <Button type='icon' classAdditional='save-button' tooltip='Guardar especie'><FaRegBookmark /></Button>
+                        {/* <Button classAdditional='chart-button'><FaChartBar />Ver dinámica</Button>
+                        <Button type='icon' classAdditional='save-button' tooltip='Guardar especie'><FaRegBookmark /></Button> */}
+                        <ButtonStatistics bird={wikidata?.id} park={parkData.parkId}></ButtonStatistics>
+                        <ButtonFavourite></ButtonFavourite>
                     </div>
 
                     {total>1 && (

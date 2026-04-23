@@ -43,7 +43,8 @@ function Catalog(){
             scientific: item.sciName,
             link: item.wikidata?.wikipediaURL || null,
             imagelink: item.wikidata?.images?.[item.wikidata?.images?.length-1] || null,
-            observation: '-'
+            id: item._id,
+            code: item.speciesCode
         };
     }
 

@@ -31,11 +31,11 @@ const Raspberry_Image_Birds = require('../models/raspberryImageBirdsModel');
 
 const getRaspberries = async (req, res) => {
   try {
-    const { park, type, date, period, names } = req.query;
+    const { parkId, type, date, period, names } = req.query;
 
     const query = {};
 
-    if (park) query.park = park;
+    if (parkId) query.parkId = parkId;
     if (type) query.type = type;
 
     const raspberries = await Raspberry.find(query);

@@ -145,6 +145,18 @@
     }
 }
 
+.without-data{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    svg{
+        font-size: 45pt;
+    }
+}
+
 @media all and (max-width: 1050px){
     .horizontal{
         flex-direction: column !important;

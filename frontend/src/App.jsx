@@ -22,6 +22,8 @@ function App() {
             <Route path='/catalog' element={<Catalog/>}/>
             <Route path='/favourites' element={<Favourites/>}/>
             <Route path='/statistics' element={<Statistics/>}/>
+            <Route path='/statistics/bird' element={<Statistics/>}/>
+            <Route path='/statistics/bird/:bird' element={<Statistics/>}/>
             <Route path='/login' element={<Login/>}/>
             <Route path='/register' element={<Register/>}/>
           </Routes>

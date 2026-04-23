@@ -7,14 +7,16 @@ const getBirds = async (req, res) => {
 
     const skip = (page - 1) * limit;
 
+    const filter = {
+      comName: { $not: /(híbrido)/i }
+    };
+
     const [birds, total] = await Promise.all([
-      Bird.find({
-        comName: { $not: /(híbrido)/i }
-      })
+      Bird.find(filter)
         .sort({ taxonOrder: 1 })
         .skip(skip)
         .limit(limit),
-      Bird.countDocuments()
+      Bird.countDocuments(filter)
     ]);
 
     const totalPages = Math.ceil(total / limit);
@@ -51,7 +53,7 @@ const getBirdById = async (req, res) => {
 };
 
 // Obtener foto de Wikidata
-const getWikidata = async (req, res) => {
+const getDirectWikidata = async (req, res) => {
   const { sciName } = req.query;
 
   try {
@@ -117,6 +119,32 @@ const getWikidata = async (req, res) => {
     result.images = [...new Set(result.images)];
 
     res.status(200).json(result);
+  } catch (error){
+    res.status(500).json({
+      message: 'Server error',
+      error: error.message
+    });
+  }
+}
+
+// Obtener foto de Wikidata
+const getWikidata = async (req, res) => {
+  const { sciName } = req.query;
+
+  try {
+    const result = await Bird.findOne({sciName: sciName});
+    if(!result) res.status(404).json({'message': 'Bird not found'});
+
+    console.log(result)
+
+    const filteredResult = {
+      sciName: sciName,
+      id: result._id,
+      wikipediaURL: result.wikidata.wikipediaURL,
+      images: result.wikidata.images
+    };
+
+    res.status(200).json(filteredResult);
   } catch (error){
     res.status(500).json({
       message: 'Server error',

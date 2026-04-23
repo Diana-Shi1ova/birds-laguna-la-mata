@@ -19,7 +19,7 @@ function Pagination({total = 1, current = 1, onCurrentChange }) {
 
     const onPageChange = (event) => {
         // onCurrentChange(Number(event.target.value));
-        onCurrentChange(event.target.value);
+        onCurrentChange(Number(event.target.value));
     }
 
     const onEnter = (event) => {

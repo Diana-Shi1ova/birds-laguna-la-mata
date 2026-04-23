@@ -22,7 +22,13 @@ export function BirdsProvider({ children }) {
         rpa: true,                   // mostrar aves de raspberries audio
         rpi: true,                   // mostrar aves de raspberries imagen
     });
-    const [area, setArea] = useState("69e16d8d48ce5b0d0d8f9b23");              // parque (LLMT)
+    const [area, setArea] = useState("69e16d8d48ce5b0d0d8f9b23");       // parque (LLMT)
+    const [parkData, setParkData] = useState({                          // parque (LLMT)
+        parkId: "69e16d8d48ce5b0d0d8f9b23",
+        lat: 38.01041,
+        long: -0.70461,
+        zoom: 12
+    });
     // const [back, setBack] = useState(1);
     const [simpleSearch, setSimpleSearch] = useState([]);                     // búsqueda simple por nombre
 
@@ -54,7 +60,7 @@ export function BirdsProvider({ children }) {
 
             api.get('/eBird', {
                 params: {
-                    parkId: area,
+                    parkId: parkData.parkId,
                     // back: searchQuery.back
                     // back: back
                     back: period,
@@ -74,7 +80,7 @@ export function BirdsProvider({ children }) {
             // eBird
             api.get('/eBird/history', {
                 params: {
-                    parkId: area,
+                    parkId: parkData.parkId,
                     date: formatDateAPI(searchQuery.date)
                 }
             })
@@ -88,7 +94,7 @@ export function BirdsProvider({ children }) {
                 console.error('Error:', error);
             });
         }
-    }, [area, searchQuery]);
+    }, [parkData, searchQuery]);
 
 
     // Tipo temporal de búsqueda
@@ -147,72 +153,6 @@ export function BirdsProvider({ children }) {
             return data;
         }*/
     }
-
-
-    // Petición de aves de Raspberries
-    /*useEffect(() => {
-        let date = formatDateRaspberries(searchQuery.date);
-        let period = 1; 
-
-        if(searchQuery.period){
-            date='';
-
-            switch(searchQuery.selectedPeriod){
-                case 'today':
-                    period = 1;
-                    break;
-                case 'week':
-                    period = 7;
-                    break;
-                case 'month':
-                    period = 30;
-                    break;
-                case 'custom':
-                    period = searchQuery.days;
-                    break;
-            }
-        }
-        else{
-            period='';
-        }
-
-        // Aves de raspberry vídeo
-        api.get('/raspBird/audio', {
-            params: {
-                // hotspot: area,
-                // back: searchQuery.back
-                // back: back
-                period: period,
-                date: date
-            }
-        })
-        .then(response => {
-            console.log(response.data);
-            setRaspberryAudioBirds(response.data);
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-
-        // Aves de raspberry imagen
-        api.get('/raspBird/image', {
-            params: {
-                // hotspot: area,
-                // back: searchQuery.back
-                // back: back
-                // period: period
-                period: period,
-                date: date
-            }
-        })
-        .then(response => {
-            console.log(response.data);
-            setRaspberryImageBirds(response.data);
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-    }, [area, searchQuery]);*/
     
 
     // Filtrar por nombres
@@ -276,7 +216,9 @@ export function BirdsProvider({ children }) {
             getRaspberryDetections,
             dateOrPeriod,
             simpleSearch,
-            setSimpleSearch
+            setSimpleSearch,
+            parkData,
+            setParkData
             // back,
             // setBack
         }}>

@@ -18,7 +18,16 @@ const raspberriesSchema = new mongoose.Schema(
       type: String,
       required: [true, 'Please add code'],
       unique: true
-    }
+    },
+    parkcode: {
+      type: String,
+      required: [true, 'Please add park code']
+    },
+    parkId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Park',
+      required: [true, 'Please add park id']
+    },
   }
 );
 
