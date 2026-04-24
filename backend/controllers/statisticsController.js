@@ -157,7 +157,7 @@ const getParkStatistics = async (req, res) => {
       _id: { $in: topSpeciesIds },
     }).lean();
 
-    const top10 = ranked.map(stat => {
+    /*const top10 = ranked.map(stat => {
       const bird = birds.find(
         b => b._id.toString() === stat.specieId.toString()
       );
@@ -166,6 +166,14 @@ const getParkStatistics = async (req, res) => {
         // ...stat,
         bird,
       };
+    });*/
+    
+    const top10 = ranked.map(stat => {
+      const bird = birds.find(
+        b => b._id.toString() === stat.specieId.toString()
+      );
+
+      return bird;
     });
 
     // Trend

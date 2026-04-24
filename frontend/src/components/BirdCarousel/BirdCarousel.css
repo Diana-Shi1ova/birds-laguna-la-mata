@@ -1,0 +1,64 @@
+.carousel-container{
+    /* padding: 0 3.2em 1em 3.2em; */
+    padding: 0 1em 0 1em;
+    margin-bottom: 1em;
+    position: relative;
+}
+
+.bird-carousel{
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    list-style: none;
+    align-items: stretch;
+    
+    height: max-content;
+    /* overflow-x: hidden; */
+
+    .bird-card{
+        height: 100%;
+        width: 300px;
+    }
+
+    /*li{
+        height: 100%;
+    }*/
+}
+
+.left, .right{
+    position: absolute;
+    top: 45%;
+    display: flex;
+
+    svg{
+        display: flex;
+        width: fit-content;
+    }
+}
+
+.left{
+    left: .3em;
+}
+
+.right{
+    right: .3em;
+}
+
+.carousel-container {
+  display: flex;
+  align-items: center;
+}
+
+.carousel-viewport {
+  overflow: hidden;
+  width: 100%;
+}
+
+.bird-carousel {
+  display: flex;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}

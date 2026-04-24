@@ -36,18 +36,6 @@ function Catalog(){
         });
     }, [current]);
 
-    // Normalizar datos
-    function normalizeBird(item) {
-        return {
-            name: item.comName,
-            scientific: item.sciName,
-            link: item.wikidata?.wikipediaURL || null,
-            imagelink: item.wikidata?.images?.[item.wikidata?.images?.length-1] || null,
-            id: item._id,
-            code: item.speciesCode
-        };
-    }
-
 
     return(
         <MainLayout>
@@ -69,7 +57,7 @@ function Catalog(){
                     .map(bird => (
                         <li key={bird.speciesCode}>
                             <BirdCard
-                                data={normalizeBird(bird)}
+                                data={bird}
                             />
                         </li>
                     ))

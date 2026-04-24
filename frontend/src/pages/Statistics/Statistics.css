@@ -157,6 +157,11 @@
     }
 }
 
+.top-species{
+    padding: 0;
+    border: 5px solid var(--green);
+}
+
 @media all and (max-width: 1050px){
     .horizontal{
         flex-direction: column !important;

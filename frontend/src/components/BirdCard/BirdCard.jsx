@@ -4,7 +4,7 @@ import ButtonFavourite from '../ButtonFavourite/ButtonFavourite';
 import ButtonStatistics from '../ButtonStatistics/ButtonStatistics';
 import { Link } from 'react-router-dom';
 import Spinner from '../Spinner/Spinner';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 // Icons
 import { FaChartBar } from "react-icons/fa";
@@ -47,25 +47,35 @@ function BirdCard ({ type='normal', data }) {
             </div>
         </li>*/}
         <div className='bird-card'>
-            <Link to={data.link} className='common'>
-                {data.name}
+            <Link 
+                to={data?.wikidata?.wikipediaURL}
+                className='common'
+                target="_blank" 
+                rel="noopener noreferrer"
+            >
+                {data?.comName}
             </Link>
-            <p className='scientific'>({data.scientific})</p>
+            <p className='scientific'>({data?.sciName})</p>
             {/* <div  className='image-wrapper'> */}
             {imgLoading && (
                 <Spinner></Spinner>
             )}
-                <Link to={data.link} className='bird-image-link'>
+                <Link
+                    to={data?.wikidata?.wikipediaURL}
+                    className='bird-image-link'
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                >
                     <img className='bird-image'
-                        src={data.imagelink}
-                        key={data.imagelink}
+                        src={data?.wikidata?.images?.[data?.wikidata?.images?.length-1]}
+                        key={data?.wikidata?.images?.[data?.wikidata?.images?.length-1]}
                         onLoad={() => setImgLoading(false)}
                         onError={() => setImgLoading(false)}
                         style={{
                             opacity: imgLoading ? 0 : 1,
                             transition: 'opacity 0.15s ease'
                         }}
-                        alt={data.name} />
+                        alt={data?.comName} />
                 </Link>
             {/* </div> */}
             <div className='buttons'>
@@ -78,7 +88,7 @@ function BirdCard ({ type='normal', data }) {
                 {/* <Button  type='icon'>
                     {type==="normal" ? (<FaRegBookmark />) : (<FaTrashAlt />)}
                 </Button> */}
-                <ButtonStatistics bird={data.id}></ButtonStatistics>
+                <ButtonStatistics bird={data._id}></ButtonStatistics>
                 <ButtonFavourite></ButtonFavourite>
             </div>
         </div>
