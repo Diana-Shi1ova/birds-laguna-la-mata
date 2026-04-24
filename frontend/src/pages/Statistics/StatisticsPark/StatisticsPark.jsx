@@ -36,6 +36,7 @@ function StatisticsPark({park, createOption = () => ({})}){
         
     }, [park]);
 
+
     // Tendencia
     function getTrend(t) {
         switch (t) {
@@ -53,6 +54,7 @@ function StatisticsPark({park, createOption = () => ({})}){
         }
     }
 
+    
     return(
         <>
             <h1 className="birdName">{parkData?.name}<ButtonInfo message={message}></ButtonInfo></h1>

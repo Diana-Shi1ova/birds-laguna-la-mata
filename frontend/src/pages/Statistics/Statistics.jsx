@@ -19,36 +19,25 @@ import StatisticsPark from "./StatisticsPark/StatisticsPark";
 
 function Statistics(){
     const location = useLocation();
+    const navigate = useNavigate();
+
     const { park: initialPark } = location.state || {};
     const [park, setPark] = useState(initialPark || '69e16d8d48ce5b0d0d8f9b23');
-    const [data, setData] = useState([]);
-    
     const [parkList, setParkList] = useState([]);
-    // const [bird, setBird] = useState(location.state || '6987948a2e98ed23fd2c37c0');
-    const [birdData, setBirdData] = useState();
-    const [today, setToday] = useState();
-    const [week, setWeek] = useState();
-    const [month, setMonth] = useState();
-    
-    const navigate = useNavigate();
     const { bird } = useParams();
     const [activeTab, setActiveTab] = useState(bird ? "species" : "general");
     const [birdId, setBirdId] = useState(bird ? bird : "");
-    
-    // const activeTab = bird ? "species" : "general";
 
-    const message = "Los datos utilizados para el análisis provienen de la ciencia ciudadana (fuente: eBird). Reflejan únicamente lo que los observadores incluyendo no profesionales han logrado registrar y pueden diferir en cierto grado de la realidad.";
 
-    
-
+    // Cambio de pestaña
     useEffect(() => {
-        
         setActiveTab (bird ? "species" : "general");
         setBirdId(bird ? bird : "");
     }, [bird]);
 
+    
+    // Obetner parques
     useEffect(() => {
-        // Obetner parques
         api.get(`/park`)
             .then(response => {
                 console.log(response.data);
@@ -64,6 +53,7 @@ function Statistics(){
     }, []);
 
 
+    // Datos y estilos de gráficas
     const createOption = (arr, xKey, xLabel, yKey, yLabel) => ({
         tooltip: { trigger: "axis" },
 
@@ -103,12 +93,11 @@ function Statistics(){
         ],
     });
 
+    // Cambio de parque
     const onSelectChange = (e) => {
         console.log(e.target.value);
         setPark(e.target.value);
     }
-
-
 
 
     return(
@@ -148,14 +137,8 @@ function Statistics(){
                         </div>
                     </>
                 )}
-                
-                
                 </>
             )}
-            
-            
-            
-
         </MainLayout>
     );
 }

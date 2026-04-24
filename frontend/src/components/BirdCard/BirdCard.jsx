@@ -89,7 +89,7 @@ function BirdCard ({ type='normal', data }) {
                     {type==="normal" ? (<FaRegBookmark />) : (<FaTrashAlt />)}
                 </Button> */}
                 <ButtonStatistics bird={data._id}></ButtonStatistics>
-                <ButtonFavourite></ButtonFavourite>
+                <ButtonFavourite bird={data._id}></ButtonFavourite>
             </div>
         </div>
         </>

@@ -6,7 +6,7 @@ export function AuthProvider({ children }) {
   const [isAuth, setIsAuth] = useState(false);
   const [user, setUser] = useState(null);
 
-  // Проверка при загрузке (например, из localStorage)
+  // Cargar de localStorage
   useEffect(() => {
     const savedUser = localStorage.getItem("user");
     if (savedUser) {

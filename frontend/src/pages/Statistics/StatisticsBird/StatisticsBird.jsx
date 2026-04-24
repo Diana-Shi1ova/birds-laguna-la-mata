@@ -45,77 +45,73 @@ function StatisticsBird({park, createOption = () => ({})}){
 
     // Obtener datos
     useEffect(() => {
-        // Obetner parques
-        // console.log(activeTab);
-        console.log(bird);
-        // if(activeTab==='species' && bird){
-            // Estadística de especie
-            api.get(`/statistics/specie/${bird}`, {
-                params: {
-                    parkId: park
-                }
-            })
-            .then(response => {
-                console.log(response.data);
-                setData(response.data);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-
-            // Datos de especie
-            api.get(`/bird/${bird}`)
-            .then(response => {
-                console.log(response.data);
-                setBirdData(response.data);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-
-
-            // Observaciones recientes
-            const fetchData = async () => {
-                try {
-                    const [todayRes, weekRes, monthRes] = await Promise.all([
-                        api.get(`/eBird/${bird}`, {
-                            params: { parkId: park, back: 1 }
-                        }),
-                        api.get(`/eBird/${bird}`, {
-                            params: { parkId: park, back: 7 }
-                        }),
-                        api.get(`/eBird/${bird}`, {
-                            params: { parkId: park, back: 30 }
-                        })
-                    ]);
-
-                    const todayTotal = sumHowMany(todayRes.data);
-                    const weekTotal = sumHowMany(weekRes.data);
-                    const monthTotal = sumHowMany(monthRes.data);
-
-                    setToday(todayTotal);
-                    setWeek(weekTotal);
-                    setMonth(monthTotal);
-                    console.log(todayTotal)
-
-                } catch (error) {
-                    console.error('Error:', error);
-                }
-            };
-            
-            console.log(bird);
-            console.log(park);
-            if (bird && park) {
-                fetchData();
+        api.get(`/statistics/specie/${bird}`, {
+            params: {
+                parkId: park
             }
-        // }
+        })
+        .then(response => {
+            console.log(response.data);
+            setData(response.data);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+
+        // Datos de especie
+        api.get(`/bird/${bird}`)
+        .then(response => {
+            console.log(response.data);
+            setBirdData(response.data);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+
+
+        // Observaciones recientes
+        const fetchData = async () => {
+            try {
+                const [todayRes, weekRes, monthRes] = await Promise.all([
+                    api.get(`/eBird/${bird}`, {
+                        params: { parkId: park, back: 1 }
+                    }),
+                    api.get(`/eBird/${bird}`, {
+                        params: { parkId: park, back: 7 }
+                    }),
+                    api.get(`/eBird/${bird}`, {
+                        params: { parkId: park, back: 30 }
+                    })
+                ]);
+
+                const todayTotal = sumHowMany(todayRes.data);
+                const weekTotal = sumHowMany(weekRes.data);
+                const monthTotal = sumHowMany(monthRes.data);
+
+                setToday(todayTotal);
+                setWeek(weekTotal);
+                setMonth(monthTotal);
+                console.log(todayTotal)
+
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        };
+        
+        console.log(bird);
+        console.log(park);
+        if (bird && park) {
+            fetchData();
+        }
     }, [park, bird]);
+
 
     // Sumar avistamientos
     const sumHowMany = (arr) => (arr ?? []).reduce((sum, item) => {
         return sum + (Number(item?.howMany) || 0);
     }, 0);
 
+    
     // Fiabilidad
     function getConfidence(f) {
         switch(f){
@@ -137,6 +133,7 @@ function StatisticsBird({park, createOption = () => ({})}){
         }
     }
 
+
     // Tendencia
     function getTrend(t) {
         switch (t) {
@@ -154,6 +151,7 @@ function StatisticsBird({park, createOption = () => ({})}){
         }
     }
 
+
     // Estacionalidad
     function interpretSeasonality(seasonality) {
         if (!seasonality || seasonality.peakWeek === null) {
@@ -170,6 +168,7 @@ function StatisticsBird({park, createOption = () => ({})}){
 
         return `Pico en la semana ${peakWeek}. Estacionalidad ${intensity}.`;
     }
+
 
     // Actividad diaria
     function interpretHourly(hourly) {
@@ -191,6 +190,9 @@ function StatisticsBird({park, createOption = () => ({})}){
 
         return `Mayor actividad alrededor de las ${peakHour}:00.${period}`;
     }
+
+
+
     return(
         <>
             <h1 className="birdName">{birdData?.comName ?? ''}<span>({birdData?.sciName ?? ''})</span><ButtonInfo message={message}></ButtonInfo></h1>
@@ -202,9 +204,6 @@ function StatisticsBird({park, createOption = () => ({})}){
                         }
                         <p>Probabilidad de avistar: <span>{(data?.[0]?.overall?.probability * 100).toFixed(2) ?? ''}%</span></p>
                     </div>
-                    {/* <div className="prob-container"> */}
-                        
-                    {/* </div> */}
                         <section className="today-statistics">
                             <h2>Cantidad registrada</h2>
                             <div className="circles">
@@ -226,9 +225,6 @@ function StatisticsBird({park, createOption = () => ({})}){
                             </ul>
                         </section>
                 </div>
-                {/* <section className="trends">
-                    <h2>Tendencias</h2>
-                </section> */}
                 {chartsConfig.map((chart) => (
                     <Chart
                         key={chart.key}

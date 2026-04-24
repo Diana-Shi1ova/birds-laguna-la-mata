@@ -3,7 +3,7 @@ const {
         getFavourites,
         createFavourite,
         deleteFavourite
-    } = require('../controllers/favoriteController');
+    } = require('../controllers/favouriteController');
 const router = express.Router();
 
 

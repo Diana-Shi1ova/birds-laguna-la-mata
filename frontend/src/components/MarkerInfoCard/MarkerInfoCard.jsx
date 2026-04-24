@@ -163,7 +163,7 @@ function MarkerInfoCard({birds, source='eBird', lat, long, popup}) {  //tipo: eB
                         {/* <Button classAdditional='chart-button'><FaChartBar />Ver dinámica</Button>
                         <Button type='icon' classAdditional='save-button' tooltip='Guardar especie'><FaRegBookmark /></Button> */}
                         <ButtonStatistics bird={wikidata?.id} park={parkData.parkId}></ButtonStatistics>
-                        <ButtonFavourite></ButtonFavourite>
+                        <ButtonFavourite bird={wikidata?.id}></ButtonFavourite>
                     </div>
 
                     {total>1 && (

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const favoriteSchema = new mongoose.Schema(
+const favouriteSchema = new mongoose.Schema(
   {
     userId: {
         type: mongoose.Schema.Types.ObjectId,
@@ -14,6 +14,6 @@ const favoriteSchema = new mongoose.Schema(
 );
 
 // Para evitar duplicados
-favoriteSchema.index({ userId: 1, specieId: 1 }, { unique: true });
+favouriteSchema.index({ userId: 1, specieId: 1 }, { unique: true });
 
-module.exports = mongoose.model('Favorite', favoriteSchema);
+module.exports = mongoose.model('Favourite', favouriteSchema);

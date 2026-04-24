@@ -1,11 +1,13 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { api } from '../api/api';
+import { UseAuth } from '../auth/useAuth';
 
 // Creamos el contexto
 const BirdsContext = createContext(null);
 
 // Proveedor que va a guardar los datos sobre las aves
 export function BirdsProvider({ children }) {
+    const {user} = UseAuth();
     const [birds, setBirds] = useState([]);                                     // todas las aves de eBird
     const [raspberryAudioBirds, setRaspberryAudioBirds] = useState([]);         // aves de Raspberry audio
     const [raspberryImageBirds, setRaspberryImageBirds] = useState([]);         // aves de Raspberry imagen
@@ -23,14 +25,16 @@ export function BirdsProvider({ children }) {
         rpi: true,                   // mostrar aves de raspberries imagen
     });
     const [area, setArea] = useState("69e16d8d48ce5b0d0d8f9b23");       // parque (LLMT)
-    const [parkData, setParkData] = useState({                          // parque (LLMT)
+    const [parkData, setParkData] = useState({
         parkId: "69e16d8d48ce5b0d0d8f9b23",
         lat: 38.01041,
         long: -0.70461,
         zoom: 12
     });
     // const [back, setBack] = useState(1);
-    const [simpleSearch, setSimpleSearch] = useState([]);                     // búsqueda simple por nombre
+    const [simpleSearch, setSimpleSearch] = useState([]);        // búsqueda simple por nombre
+    const [favourites, setFavourites] = useState(new Map());            // favoritos
+
 
     // Hacer petición inicial de pájaros
     useEffect(() => {
@@ -96,6 +100,53 @@ export function BirdsProvider({ children }) {
         }
     }, [parkData, searchQuery]);
 
+    // Favoritos
+    /*useEffect(() => {
+        if(!user) return;
+
+        api.get(`/favourite/${user._id}`)
+        .then(response => {
+            console.log(response.data);
+            setFavourites(new Set(response.data.map(f => f.specieId)));
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }, [user]);*/
+    /*useEffect(() => {
+        if (!user) return;
+
+        api.get(`/favourite/${user._id}`)
+            .then(response => {
+                console.log(response.data);
+
+                const favMap = new Map(
+                    response.data.map(f => [f.specieId, f._id])
+                );
+
+                setFavourites(favMap);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }, [user]);*/
+    useEffect(() => {
+        if (!user) return;
+
+        api.get(`/favourite/${user._id}`)
+            .then(response => {
+                console.log(response.data);
+
+                const favMap = new Map(
+                    (response.data.data || []).map(f => [f.specieId, f._id])
+                );
+
+                setFavourites(favMap);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }, [user]);
 
     // Tipo temporal de búsqueda
     function dateOrPeriod(){
@@ -218,9 +269,9 @@ export function BirdsProvider({ children }) {
             simpleSearch,
             setSimpleSearch,
             parkData,
-            setParkData
-            // back,
-            // setBack
+            setParkData,
+            favourites,
+            setFavourites
         }}>
         {children}
         </BirdsContext.Provider>
