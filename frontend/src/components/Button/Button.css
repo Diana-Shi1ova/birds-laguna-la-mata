@@ -8,6 +8,14 @@
     width: fit-content;
 }
 
+.normal-button:hover{
+    background-color: var(--green-hover);
+}
+
+.normal-button:active{
+    background-color: var(--green-active-dark);
+}
+
 .icon-button{
     font-size: var(--text-size);
     padding: 0;

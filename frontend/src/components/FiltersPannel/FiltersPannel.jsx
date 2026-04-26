@@ -31,7 +31,8 @@ function FiltersPannel () {
             rpi: true,
         });
 
-    const { area, setSearchQuery } = useBirds();
+    const { area, setSearchQuery, filteredBirds, raspResults } = useBirds();
+    const { user } = UseAuth();
     const { isAuth } = UseAuth();
 
     const [numResults, setNumResults] = useState(0);
@@ -187,6 +188,39 @@ function FiltersPannel () {
         }));
     }
 
+    const onFavouritesChange = (e) => {
+        onCheckboxesChange(e);
+
+        const { checked } = e.target;
+
+        if (!user) return;
+
+        // Si desmarcado
+        if (!checked) {
+            setFormData(prev => ({
+                ...prev,
+                species: []
+            }));
+            return;
+        }
+
+        // Si marcado
+        api.get(`/favourite/${user._id}`)
+            .then(response => {
+                const data = response.data.data;
+
+                const sciNames = data.map(item => item.bird.sciName);
+
+                setFormData(prev => ({
+                    ...prev,
+                    species: sciNames
+                }));
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+
     const onDaysChange = (e) => {
         const val = e.target.value;
         console.log(val)
@@ -229,6 +263,7 @@ function FiltersPannel () {
             rpa: true,
             rpi: true,
         });
+        setShowPeriodInput(false);
     }
 
 
@@ -244,15 +279,15 @@ function FiltersPannel () {
             </Button>
             <section className="filter-section-general">
                 <h1>Filtros</h1>
-                {showNumResults && (
-                    <p className="results">Resultados encontrados: <span>{numResults}</span></p>
-                )}
+                {/* {showNumResults && ( */}
+                    <p className="results">Resultados encontrados: <span>{filteredBirds.length + raspResults}</span></p>
+                {/* )} */}
                 <section className="filter-section species-section">
                     <h2>Especies</h2>
                     <Input label={'Empieza a introducir las especies:'} name={'birdNames'} auto='off' placeholder={'Nombre común o científico'} enter={onEnter}></Input>
-                    <Chips values={formData.species} remove={deleteSpecieFromList}></Chips>
+                    <Chips values={formData.favourites ? [] : formData.species} remove={deleteSpecieFromList}></Chips>
                     {isAuth === true && (
-                        <InputCheckbox name='favourites' label='Solo favoritos' classAdditional="favourite" change={onCheckboxesChange} checked={formData.favourites}></InputCheckbox>
+                        <InputCheckbox name='favourites' label='Solo favoritos' classAdditional="favourite" change={onFavouritesChange} checked={formData.favourites}></InputCheckbox>
                     )}
                 </section>
                 <section className="filter-section">

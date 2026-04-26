@@ -9,6 +9,9 @@ import { useBirds } from "../../contexts/BirdsProvider";
 import InputSelect from "../InputSelect/InputSelect";
 import { createPortal } from "react-dom";
 import MapPopupPortal from "./MapPopupPortal";
+import Button from "../Button/Button";
+import { FaCog } from "react-icons/fa";
+import Dialog from "../Dialog/Dialog";
 
 
 // Componente mapa
@@ -53,6 +56,18 @@ function Map () {
     const rootsRefRasp = useRef([]);
     const [popups, setPopups] = useState([]);
     const [popupsRasp, setPopupsRasp] = useState([]);
+
+    // Estilos del mapa
+    const mapStyles = [
+        {
+            value: `https://api.maptiler.com/maps/019a6b22-5021-75fc-9452-2530f937c6dc/style.json?key=${import.meta.env.VITE_MAPTILER_KEY}`,
+            label: 'Satélite'
+        },
+        {
+            value: `https://api.maptiler.com/maps/openstreetmap/style.json?key=${import.meta.env.VITE_MAPTILER_KEY}`,
+            label: 'Calles'
+        }
+    ]
 
     // Obtener raspberries
     useEffect(() => {
@@ -434,21 +449,18 @@ function Map () {
 
     return (
         <>
-            {/* <MarkerInfoCard></MarkerInfoCard> */}
-            <div className="map-controls-container">
-                <button onClick={toggle3D}>{is3D ? "Vista 2D" : "Vista 3D"}</button>
-                <select onChange={(e) => setStyle(e.target.value)} value={style}>
-                    <option value={`https://api.maptiler.com/maps/019a6b22-5021-75fc-9452-2530f937c6dc/style.json?key=${import.meta.env.VITE_MAPTILER_KEY}`}>Satélite</option>
-                    <option value={`https://api.maptiler.com/maps/openstreetmap/style.json?key=${import.meta.env.VITE_MAPTILER_KEY}`}>Calles</option>
-                </select>
-                {/*<select onChange={(e) => showPark(e)} value={area}>
-                    <option value="L3906629">Lagunas de La Mata y Torrevieja</option>
-                    <option value="L3905205">Hondo de Elche</option>
-                    <option value="L3919198">Salinas de Santa Pola</option>
-                    <option value="L1121988">Albufera de Valencia</option>
-                </select>*/}
-                <InputSelect name="park" options={parkOptions} change={(e) => showPark(e)} selected={parkData.parkId}></InputSelect>
-            </div>
+            <InputSelect name="park" classAdditional="park-select" options={parkOptions} change={(e) => showPark(e)} selected={parkData.parkId}></InputSelect>
+            {/* <div className="map-controls-container"> */}
+                {/* <InputSelect name="park" options={parkOptions} change={(e) => showPark(e)} selected={parkData.parkId}></InputSelect> */}
+                {/* <Button classAdditional="map-settings"><FaCog /></Button> */}
+                
+                
+            {/* </div> */}
+            <Dialog buttonTitle={<FaCog />} buttonTooltip='Opciones del mapa' buttonClass='but-map-options' dialogClass="map-options">
+                <h1>Opciones del mapa</h1>
+                <InputSelect label={'Estilo del mapa:'} name="mapStyles" options={mapStyles} change={(e) => setStyle(e.target.value)}></InputSelect>
+                <Button func={toggle3D}>Vista {is3D ? "2D" : "3D"}</Button>
+            </Dialog>
             <div ref={mapContainer} style={{ width: "100%", height: "100vh" }}/>
             {popups.map((p, index) => (
                 <MapPopupPortal key={index} container={p.container}>

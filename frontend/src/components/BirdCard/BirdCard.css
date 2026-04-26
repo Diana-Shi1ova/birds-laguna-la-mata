@@ -165,4 +165,12 @@
         left: 44%;
         /* transform: translate(-50%, -50%); */
     }
+
+    .spinner-wrapper{
+        z-index: 0;
+    }
+
+    .common, .scientific, .buttons{
+        z-index: 2;
+    }
 }

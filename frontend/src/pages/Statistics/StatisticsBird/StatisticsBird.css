@@ -1,0 +1,23 @@
+.birdName{
+    white-space: normal;
+    word-break: break-word;
+    padding-right: 1em !important;
+    
+    .favorite-button{
+        display: inline-flex;
+        font-size: 24pt;
+        margin-left: .5em;
+        /* height: 100%; */
+        vertical-align: middle;
+    }
+
+    .info-container{
+        vertical-align: middle;
+        box-sizing: border-box;
+    }
+
+    span{
+        box-sizing: border-box;
+        max-width: 100%;
+    }
+}

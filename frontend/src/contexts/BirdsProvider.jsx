@@ -33,17 +33,52 @@ export function BirdsProvider({ children }) {
     });
     // const [back, setBack] = useState(1);
     const [simpleSearch, setSimpleSearch] = useState([]);        // búsqueda simple por nombre
-    const [favourites, setFavourites] = useState(new Map());            // favoritos
+    const [favourites, setFavourites] = useState(new Map());     // favoritos
+    const [raspResults, setRaspResults] = useState(0)      // número de resultados de raspberries
 
 
     // Hacer petición inicial de pájaros
     useEffect(() => {
+        // Calcular resultados raspberries
+        if(!searchQuery.rpa && !searchQuery.rpi) {
+            setRaspResults(0);
+            return;
+        }
+
+        const [date, period] = dateOrPeriod();
+
+        let type = "";
+        if(searchQuery.rpa && !searchQuery.rpi) type = "audio";
+        else if(!searchQuery.rpa && searchQuery.rpi) type = "image";
+
+        console.log(type);
+
+        api.get(`/raspBird/total/${parkData.parkId}`, {
+                params: {
+                    period: period,
+                    date: date,
+                    // names: searchQuery.species.join(',')
+                    names: searchQuery.species.length>0 ? searchQuery.species.join(',') : simpleSearch,
+                    type: type
+                }
+            })
+            .then(response => {
+                console.log(response.data);
+                setRaspResults(response.data.total);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+
+        // No hacer peticiones a eBird si no está marcado
         if(!searchQuery.ebird) {
             setFilteredBirds([]);
             return;
         }
-            
-        if(searchQuery.period){ // Petición de aves del período
+        
+        // Petición de aves del período
+        //const [date, period] = dateOrPeriod();
+        if(searchQuery.period){ 
             // Definir período
             let period = 1;
 
@@ -80,8 +115,9 @@ export function BirdsProvider({ children }) {
                 console.error('Error:', error);
             });
         }
+        // Petición del histórico en una fecha
         else{
-            // eBird
+            console.log(formatDateAPI(searchQuery.date))
             api.get('/eBird/history', {
                 params: {
                     parkId: parkData.parkId,
@@ -101,35 +137,6 @@ export function BirdsProvider({ children }) {
     }, [parkData, searchQuery]);
 
     // Favoritos
-    /*useEffect(() => {
-        if(!user) return;
-
-        api.get(`/favourite/${user._id}`)
-        .then(response => {
-            console.log(response.data);
-            setFavourites(new Set(response.data.map(f => f.specieId)));
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-    }, [user]);*/
-    /*useEffect(() => {
-        if (!user) return;
-
-        api.get(`/favourite/${user._id}`)
-            .then(response => {
-                console.log(response.data);
-
-                const favMap = new Map(
-                    response.data.map(f => [f.specieId, f._id])
-                );
-
-                setFavourites(favMap);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-    }, [user]);*/
     useEffect(() => {
         if (!user) return;
 
@@ -218,6 +225,7 @@ export function BirdsProvider({ children }) {
                 )
         );
 
+        console.log('Filtered:', filtered)
         setFilteredBirds(filtered);
     }
 
@@ -271,7 +279,8 @@ export function BirdsProvider({ children }) {
             parkData,
             setParkData,
             favourites,
-            setFavourites
+            setFavourites,
+            raspResults
         }}>
         {children}
         </BirdsContext.Provider>

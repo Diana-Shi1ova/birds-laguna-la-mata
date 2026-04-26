@@ -4,7 +4,7 @@ import Button from '../Button/Button';
 import { FaTimes } from "react-icons/fa";
 
 
-function MyDialog({buttonTitle, buttonClass, children}) {
+function Dialog({buttonTitle, buttonClass='', dialogClass='', buttonTooltip='', children}) {
     const dialogRef = useRef(null);
     const [isClosing, setIsClosing] = useState(false);
 
@@ -26,11 +26,11 @@ function MyDialog({buttonTitle, buttonClass, children}) {
 
     return (
         <>
-            <Button func={openDialog} classAdditional={buttonClass}>{buttonTitle}</Button>
+            <Button func={openDialog} classAdditional={buttonClass} tooltip={buttonTooltip}>{buttonTitle}</Button>
             {/* <button onClick={openDialog}>{buttonTitle}</button> */}
 
-            <dialog ref={dialogRef} className={`dialog ${isClosing ? "closing" : "opening"}`}>
-                <Button classAdditional='close-button' type='icon' func={closeDialog}><FaTimes /></Button>
+            <dialog ref={dialogRef} className={dialogClass+` dialog ${isClosing ? "closing" : "opening"}`}>
+                <Button classAdditional='close-button' type='icon' func={closeDialog} tooltip='Cerrar'><FaTimes /></Button>
                 <div className="dialog-content">
                     {children}
                 </div>
@@ -39,4 +39,4 @@ function MyDialog({buttonTitle, buttonClass, children}) {
     );
 }
 
-export default MyDialog;
+export default Dialog;

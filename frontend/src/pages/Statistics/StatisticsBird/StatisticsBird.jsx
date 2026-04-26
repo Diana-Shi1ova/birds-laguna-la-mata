@@ -5,6 +5,8 @@ import ButtonInfo from "../../../components/ButtonInfo/ButtonInfo";
 import StatisticsCircle from "../../../components/StatisticsCircle/StatisticsCircle";
 import Chart from "../../../components/Chart/Chart";
 import { api } from "../../../api/api";
+import ButtonFavourite from "../../../components/ButtonFavourite/ButtonFavourite";
+
 
 function StatisticsBird({park, createOption = () => ({})}){
     const { bird } = useParams();
@@ -195,7 +197,11 @@ function StatisticsBird({park, createOption = () => ({})}){
 
     return(
         <>
-            <h1 className="birdName">{birdData?.comName ?? ''}<span>({birdData?.sciName ?? ''})</span><ButtonInfo message={message}></ButtonInfo></h1>
+            <h1 className="birdName">{birdData?.comName ?? ''}
+                <span>({birdData?.sciName ?? ''})</span>
+                <ButtonFavourite bird={birdData?._id}></ButtonFavourite>
+                <ButtonInfo message={message}></ButtonInfo>
+            </h1>
             <div className="statistics-container">
                 <div className="horizontal">
                     <div className="image-container">

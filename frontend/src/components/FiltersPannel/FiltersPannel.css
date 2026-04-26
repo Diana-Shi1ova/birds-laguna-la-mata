@@ -68,6 +68,8 @@
     .results{
         margin: 0;
         margin-bottom: .5em;
+        font-style: italic;
+        color: #4A4A4A;
     }
 
     /* .chip-list{
@@ -76,5 +78,17 @@
 
     .input-date-container, .select-container, .input-number-container, .favourite{
         margin-top: .8em;
+    }
+
+    .normal-button{
+        background-color: var(--green-active-light);
+    }
+
+    .normal-button:hover{
+        background-color: #abe8cd;
+    }
+
+    .normal-button:active{
+        background-color: var(--green-hover);
     }
 }

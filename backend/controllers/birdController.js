@@ -135,8 +135,6 @@ const getWikidata = async (req, res) => {
     const result = await Bird.findOne({sciName: sciName});
     if(!result) res.status(404).json({'message': 'Bird not found'});
 
-    console.log(result)
-
     const filteredResult = {
       sciName: sciName,
       id: result._id,

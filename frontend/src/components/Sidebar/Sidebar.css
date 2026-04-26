@@ -78,7 +78,8 @@
 
     .sidebar-container{
         /* left: -13.7em; */
-        left: -291px;
+        /* left: -291px; */
+        left: -247px;
         transition: left 0.3s ease;
         position: absolute;
     }
