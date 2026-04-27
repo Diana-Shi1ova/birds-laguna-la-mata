@@ -7,6 +7,7 @@ export function SearchUIProvider({ children }) {
   const [filters, setFilters] = useState(true);               // mostrar/ocultar filtros
   const [searchType, setSearchType] = useState('map');        // tipo de búsquda a realizar ("map", "catalog", "statistics")
   const [value, setValue] = useState('');                     // valor introducido
+  const [filtersPannel, setFiltersPannel] = useState('');     // mostrar/ocultar panel con filtros
 
   return (
     <SearchUIContext.Provider
@@ -20,7 +21,9 @@ export function SearchUIProvider({ children }) {
         searchType,
         setSearchType,
         value,
-        setValue
+        setValue,
+        filtersPannel,
+        setFiltersPannel
       }}
     >
       {children}

@@ -60,6 +60,8 @@
         width: 100% !important;
         justify-content: right !important;
         height: 43px;
+        align-items: end;
+        justify-content: end;
     }
     .searchbar-input{
        position: absolute;
@@ -74,6 +76,7 @@
     .search-button{
         position: relative !important;
         height: fit-content;
+        width: fit-content;
     }
 
     .hidden{

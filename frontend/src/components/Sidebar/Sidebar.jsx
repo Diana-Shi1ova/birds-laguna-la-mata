@@ -17,23 +17,16 @@ import { FaSignOutAlt } from "react-icons/fa";
 
 
 function Sidebar () {
-    const { isAuth } = UseAuth();
-    const { logout } = UseAuth();
+    const { isAuth, logout } = UseAuth();
     const [open, setOpen] = useState(false);
 
     // Mostrar menú (móvil)
     function showMenu(){
-        if(open){ // Mostrar
-            document.querySelector('.sidebar-container').classList.remove('sidebar-container-opened');
-        }
-        else{ // Ocultar
-            document.querySelector('.sidebar-container').classList.add('sidebar-container-opened');
-        }
         setOpen(!open);
     }
 
     return (
-        <div className="sidebar-container">
+        <div className={open ? "sidebar-container sidebar-container-opened" : "sidebar-container"}>
             {/* <input type="checkbox" id="menu-toggle" /> */}
             <ul className="sidebar">
                 <li className="logo">
@@ -83,6 +76,7 @@ function Sidebar () {
                 type="icon"
                 classAdditional="menu-button"
                 func={() => showMenu()}
+                tooltip={open ? "Cerrar menú" : "Abrir menú"}
             >
                 {open ? <FaTimes /> : <FaBars />}
             </Button>

@@ -13,6 +13,7 @@ import InputSelect from "../InputSelect/InputSelect";
 import InputDate from "../InputDate/InputDate";
 import InputNumber from "../InputNumber/InputNumber";
 import { UseAuth } from "../../auth/useAuth";
+import { useSearchUI } from "../../contexts/SearchUIProvider";
 // import { set } from "mongoose";
 // import { BsEraser } from "react-icons/bs";
 
@@ -32,8 +33,8 @@ function FiltersPannel () {
         });
 
     const { area, setSearchQuery, searchQuery, filteredBirds, raspResults } = useBirds();
-    const { user } = UseAuth();
-    const { isAuth } = UseAuth();
+    const { filtersPannel, setFiltersPannel } = useSearchUI();
+    const { user, isAuth } = UseAuth();
 
     const [numResults, setNumResults] = useState(0);
     const [showNumResults, setshowNumResults] = useState(false);
@@ -48,7 +49,7 @@ function FiltersPannel () {
 
     const close = (e) => {
         e.preventDefault();
-        document.querySelector(".filters-pannel").classList.add('closed');
+        setFiltersPannel(true);
     }
 
     const onChange = (e) => {
@@ -268,7 +269,7 @@ function FiltersPannel () {
 
 
     return (
-        <form className="filters-pannel closed">
+        <form className={filtersPannel ? "filters-pannel closed" : "filters-pannel"}>
             <Button
                 type="icon"
                 classAdditional="close-button"

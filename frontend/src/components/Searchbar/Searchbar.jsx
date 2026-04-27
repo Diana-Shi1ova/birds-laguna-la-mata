@@ -19,7 +19,7 @@ function Searchbar () {
     const [focus, setFocus] = useState(false);
     const [mobile, setMobile] = useState(false);
 
-    const { isSearchOpen, openSearch, closeSearch, searchType, filters, value, setValue } = useSearchUI();
+    const { isSearchOpen, openSearch, closeSearch, searchType, filters, value, setValue, filtersPannel, setFiltersPannel } = useSearchUI();
     const { filteredBirds, setFilteredBirds, birds, setSimpleSearch, searchQuery, setSearchQuery } = useBirds();
     // const {searchQuery, setSearchQuery} = useBirds();
 
@@ -29,16 +29,29 @@ function Searchbar () {
 
     const navigate = useNavigate();
 
+    const [width, setWidth] = useState(window.innerWidth);
+
+    // Actualizar anchura
+    useEffect(() => {
+        const handleResize = () => {
+            setWidth(window.innerWidth);
+        };
+
+        window.addEventListener("resize", handleResize);
+
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
+
     const open = () => {
-        document.querySelector('.filters-pannel').classList.remove('closed');
+        setFiltersPannel(!filtersPannel);
     }
 
     const showSearchbar = () => { // Añadir que si el tamaño es menor que 465px, se esconden los otros elementos
-        /*console.log(document.querySelector(".searchbar-input"));*/
-        // document.querySelector(".searchbar-input").classList.add('mobile');
-        setMobile(true);
-        setFocus(true);
-        openSearch(); // uso del contexto para esconder otros elementos
+        if (width <= 600){
+            setMobile(true);
+            setFocus(true);
+            openSearch(); // uso del contexto para esconder otros elementos
+        }
     }
 
     const hideSearchBar = () => {
