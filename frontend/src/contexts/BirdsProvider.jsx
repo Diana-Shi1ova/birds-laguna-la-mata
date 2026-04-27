@@ -51,8 +51,6 @@ export function BirdsProvider({ children }) {
         if(searchQuery.rpa && !searchQuery.rpi) type = "audio";
         else if(!searchQuery.rpa && searchQuery.rpi) type = "image";
 
-        console.log(type);
-
         api.get(`/raspBird/total/${parkData.parkId}`, {
                 params: {
                     period: period,

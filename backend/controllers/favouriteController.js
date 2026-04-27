@@ -1,5 +1,6 @@
 const Favourite = require('../models/favouriteModel');
 const mongoose = require('mongoose');
+const { createFlexibleRegex } = require('../utils/charUtil');
 
 
 // Obtener todos los favoritos del usuario
@@ -52,7 +53,7 @@ const mongoose = require('mongoose');
         res.status(500).json({ message: 'Server error', error: error.message });
     }
 }*/
-const getFavourites = async (req, res) => {
+/*const getFavourites = async (req, res) => {
     try {
         const { userId } = req.params;
 
@@ -96,6 +97,102 @@ const getFavourites = async (req, res) => {
             page,
             limit,
             totalItems: total,
+            totalPages,
+            data: results
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            message: 'Server error',
+            error: error.message
+        });
+    }
+};*/
+
+const getFavourites = async (req, res) => {
+    try {
+        const { userId } = req.params;
+
+        const page = Math.max(parseInt(req.query.page) || 1, 1);
+        const limit = Math.min(parseInt(req.query.limit) || 10, 100);
+        const skip = (page - 1) * limit;
+        const name = req.query.name?.trim();
+
+        const matchStage = {
+            userId: new mongoose.Types.ObjectId(userId)
+        };
+
+        const pipeline = [
+            { $match: matchStage },
+
+            {
+                $lookup: {
+                    from: 'birds',
+                    localField: 'specieId',
+                    foreignField: '_id',
+                    as: 'bird'
+                }
+            },
+
+            {
+                $unwind: {
+                    path: '$bird',
+                    preserveNullAndEmptyArrays: true
+                }
+            }
+        ];
+
+        if (name) {
+            const pattern = createFlexibleRegex(name);
+
+            pipeline.push({
+                $match: {
+                    $or: [
+                        { "bird.comName": { $regex: pattern, $options: "i" } },
+                        { "bird.sciName": { $regex: pattern, $options: "i" } }
+                    ]
+                }
+            });
+        }
+
+        pipeline.push(
+            { $skip: skip },
+            { $limit: limit }
+        );
+
+        const [results, total] = await Promise.all([
+            Favourite.aggregate(pipeline),
+
+            Favourite.aggregate([
+                { $match: matchStage },
+                {
+                    $lookup: {
+                        from: 'birds',
+                        localField: 'specieId',
+                        foreignField: '_id',
+                        as: 'bird'
+                    }
+                },
+                { $unwind: { path: '$bird', preserveNullAndEmptyArrays: true } },
+                ...(name ? [{
+                    $match: {
+                        $or: [
+                            { "bird.comName": { $regex: createFlexibleRegex(name), $options: "i" } },
+                            { "bird.sciName": { $regex: createFlexibleRegex(name), $options: "i" } }
+                        ]
+                    }
+                }] : []),
+                { $count: "total" }
+            ])
+        ]);
+
+        const totalCount = total[0]?.total || 0;
+        const totalPages = Math.ceil(totalCount / limit);
+
+        res.status(200).json({
+            page,
+            limit,
+            totalItems: totalCount,
             totalPages,
             data: results
         });

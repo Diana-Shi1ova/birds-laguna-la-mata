@@ -212,6 +212,16 @@ function Map () {
                 }
 
                 setPopupsRasp([newPopup]);
+
+                // Acercamiento
+                map.current.flyTo({
+                    center: [rasp.long, rasp.lat],
+                    offset: [0, 170],
+                    zoom: 12,
+                    speed: 0.8,
+                    curve: 1,
+                    essential: true
+                });
             });
 
             markersRefRasp.current.push(marker);
@@ -350,7 +360,7 @@ function Map () {
             marker.getElement().addEventListener('click', () => {
                 map.current.flyTo({
                     center: [group.lng, group.lat],
-                    offset: [0, 200],
+                    offset: [0, 250],
                     zoom: 12,
                     speed: 0.8,
                     curve: 1,

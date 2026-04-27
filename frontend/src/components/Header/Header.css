@@ -7,7 +7,7 @@ header{
     top: 0;
     /* right: .3em; */
     right: 0;
-    z-index: 1;
+    z-index: 3;
     padding: .3em !important;
     /* width: fit-content; */
     width: 100%;
@@ -20,6 +20,9 @@ header{
 
 @media (max-width: 600px) {
     header {
+        background-color: #d2ffeb;
+        border: solid #6a6a6a 1px;
+        
         .sidebar-container{
             display: flex;
             flex-direction: row;

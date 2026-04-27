@@ -4,11 +4,11 @@ import MainLayoutContent from "./MainLayoutContent";
 
 function MainLayout ({ children }) {
     return (
-        <SearchUIProvider>
+        // <SearchUIProvider>
             <MainLayoutContent>
                 {children}
             </MainLayoutContent>
-        </SearchUIProvider>
+        // </SearchUIProvider>
     );
 };
 

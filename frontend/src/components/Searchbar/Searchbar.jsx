@@ -2,11 +2,15 @@ import "./Searchbar.css";
 import { FaSearch } from "react-icons/fa";
 import { FaFilter } from "react-icons/fa";
 import Button from "../Button/Button";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, use } from "react";
 import { useSearchUI } from "../../contexts/SearchUIProvider";
 import { useBirds } from "../../contexts/BirdsProvider";
+import { api } from "../../api/api";
 
 import { FaArrowLeft } from "react-icons/fa";
+import ResultsList from "../ResultsList/ResultsList";
+import { useNavigate } from "react-router-dom";
+
 
 
 function Searchbar () {
@@ -15,8 +19,15 @@ function Searchbar () {
     const [focus, setFocus] = useState(false);
     const [mobile, setMobile] = useState(false);
 
-    const { isSearchOpen, openSearch, closeSearch } = useSearchUI();
-    const { filteredBirds, setFilteredBirds, birds, setSimpleSearch } = useBirds();
+    const { isSearchOpen, openSearch, closeSearch, searchType, filters, value, setValue } = useSearchUI();
+    const { filteredBirds, setFilteredBirds, birds, setSimpleSearch, searchQuery, setSearchQuery } = useBirds();
+    // const {searchQuery, setSearchQuery} = useBirds();
+
+    const [results, setResults] = useState([]);
+    // const [value, setValue] = useState('');
+    const [suggestions, setSuggentions] = useState(false);
+
+    const navigate = useNavigate();
 
     const open = () => {
         document.querySelector('.filters-pannel').classList.remove('closed');
@@ -40,6 +51,7 @@ function Searchbar () {
         /*setFocus(false);
         setMobile(false);
         closeSearch(); // uso del contexto para volver a mostrar otros elementos*/
+        setSuggentions(false);
     }
 
     useEffect(() => {
@@ -57,7 +69,7 @@ function Searchbar () {
     };
 
     const dynamicSearch = (e) => {
-        const value = e.target.value.toLowerCase();
+        /*const value = e.target.value.toLowerCase();
 
         const result = birds.filter(bird => 
             normalizeText(bird.comName).includes(value) ||
@@ -66,9 +78,76 @@ function Searchbar () {
         
         console.log(result);
         setFilteredBirds(result);
-        setSimpleSearch(value);
+        setSimpleSearch(value);*/
+        if (searchType==='catalog'){
+            setSuggentions(false);
+            setValue(e.target.value);
+        }
+        else{
+            if(e.target.value) setSuggentions(true);
+            else setSuggentions(false);
+            
+            setValue(e.target.value);
+
+            // Hacer petición de especies
+            api.get('/bird', {
+                params: { page: 1, limit: 10, name: e.target.value.toLowerCase()}
+            })
+            .then(response => {
+                console.log(response.data.data);
+                setResults(response.data.data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+        /*switch(searchType){
+            case 'map':
+                if(e.target.value) setSuggentions(true);
+                else setSuggentions(false);
+                
+                setValue(e.target.value);
+
+                // Hacer petición de especies
+                api.get('/bird', {
+                    params: { page: 1, limit: 10, name: e.target.value.toLowerCase()}
+                })
+                .then(response => {
+                    console.log(response.data.data);
+                    setResults(response.data.data);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+                break;
+            case 'catalog':
+                setSuggentions(false);
+                setValue(e.target.value);
+                break;
+        }*/
     }
 
+    // Aplicar al pulsar sobre sugerencia
+    function updateSearch(sciName, birdId){
+        let names = [];
+        names.push(sciName);
+
+        switch(searchType){
+            case 'map':
+                setSearchQuery(prevFormData => ({
+                    ...prevFormData,
+                    species: names
+                }));
+                setValue(sciName);
+                break;
+            case 'statistics':
+                setValue('');
+                navigate(`/statistics/bird/${birdId}`);
+            break;
+        }
+
+        setSuggentions(false);
+    }
 
 
     return (
@@ -88,6 +167,7 @@ function Searchbar () {
                     placeholder="Nombre común o científico"
                     autoComplete="off"
                     name="searchbar"
+                    value={value}
                 />
                 <Button
                     type="icon"
@@ -96,16 +176,22 @@ function Searchbar () {
                 >
                     <FaSearch />
                 </Button>
+                {suggestions && (
+                    <ResultsList results={results} func={updateSearch}></ResultsList>
+                )}
             </div>
-            <Button
-                // ref={filtersRef}
-                // classAdditional={`filters${mobile ? '-show' : ''}`}
-                classAdditional='filters'
-                func={open}
-                tooltip="Abrir panel con filtros"
-            >
-                <FaFilter />
-            </Button>
+            {filters && (
+                <Button
+                    // ref={filtersRef}
+                    // classAdditional={`filters${mobile ? '-show' : ''}`}
+                    classAdditional='filters'
+                    func={open}
+                    tooltip="Abrir panel con filtros"
+                >
+                    <FaFilter />
+                </Button>
+            )}
+            
         </div>
     );
 };

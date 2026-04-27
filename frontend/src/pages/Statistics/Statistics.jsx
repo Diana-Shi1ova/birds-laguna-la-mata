@@ -15,6 +15,7 @@ import { FaDove } from "react-icons/fa";
 import BirdCarousel from "../../components/BirdCarousel/BirdCarousel";
 import StatisticsBird from "./StatisticsBird/StatisticsBird";
 import StatisticsPark from "./StatisticsPark/StatisticsPark";
+import { useSearchUI } from "../../contexts/SearchUIProvider";
 
 
 function Statistics(){
@@ -27,6 +28,13 @@ function Statistics(){
     const { bird } = useParams();
     const [activeTab, setActiveTab] = useState(bird ? "species" : "general");
     const [birdId, setBirdId] = useState(bird ? bird : "");
+    const { setFilters, setValue, setSearchType } = useSearchUI();
+    
+    useEffect(() => {
+        setFilters(false);
+        setSearchType('statistics');
+        setValue('');
+    }, []);
 
 
     // Cambio de pestaña

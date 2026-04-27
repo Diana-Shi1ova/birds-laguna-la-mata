@@ -1,15 +1,29 @@
 const Bird = require('../models/birdModel');
+const { createFlexibleRegex } = require('../utils/charUtil');
 
 const getBirds = async (req, res) => {
   try {
     const page = Math.max(parseInt(req.query.page) || 1, 1);
     const limit = Math.min(parseInt(req.query.limit) || 10, 100);
+    const name = normalize(req.query.name?.trim());
 
     const skip = (page - 1) * limit;
 
-    const filter = {
+    let filter = {
       comName: { $not: /(híbrido)/i }
     };
+
+    if (name) {
+      filter.$and = [
+        { comName: { $not: /(híbrido)/i } },
+        {
+          $or: [
+            { comName: { $regex: createFlexibleRegex(name), $options: "i" } },
+            { sciName: { $regex: createFlexibleRegex(name), $options: "i" } }
+          ]
+        }
+      ];
+    }
 
     const [birds, total] = await Promise.all([
       Bird.find(filter)
@@ -36,6 +50,14 @@ const getBirds = async (req, res) => {
     });
   }
 };
+
+// Normalizar (eliminar é,ó,á,ú,í,ü ect.)
+function normalize(text) {
+  return text
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+}
 
 const getBirdById = async (req, res) => {
   try {

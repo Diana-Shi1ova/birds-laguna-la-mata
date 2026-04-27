@@ -6,9 +6,16 @@ import "./Index.css" ;
 import Map from '../../components/Map/Map';
 import MainLayout from "../../layouts/MainLayout/MainLayout";
 import FiltersPannel from "../../components/FiltersPannel/FiltersPannel";
-// import { BirdsProvider } from "../../contexts/BirdsProvider";
+import { useSearchUI } from "../../contexts/SearchUIProvider";
 
 function Index(){
+    const { setFilters, value, setValue, setSearchType } = useSearchUI();
+    
+    useEffect(() => {
+        setFilters(true);
+        setSearchType('map');
+        setValue('');
+    }, []);
     //const [birds, setBirds] = useState([]); // Birds list
 
     // Obtein data from server

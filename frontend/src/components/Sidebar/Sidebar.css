@@ -74,6 +74,7 @@
         display: flex;
         font-size: var(--big-icon) !important;
         padding: .2em !important;
+        margin-top: .15em;
     }
 
     .sidebar-container{

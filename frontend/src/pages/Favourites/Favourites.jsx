@@ -8,6 +8,7 @@ import BirdCard from "../../components/BirdCard/BirdCard";
 import { useState, useEffect } from "react";
 import { api } from "../../api/api";
 import { useBirds } from "../../contexts/BirdsProvider";
+import { useSearchUI } from "../../contexts/SearchUIProvider";
 
 
 function Favourites(){
@@ -16,6 +17,13 @@ function Favourites(){
     const [data, setData] = useState([]);
     const [current, setCurrent] = useState(1);
     const [total, setTotal] = useState(1);
+    const { setFilters, value, setValue, setSearchType } = useSearchUI();
+    
+    useEffect(() => {
+        setFilters(false);
+        setSearchType('catalog');
+        setValue('');
+    }, []);
 
     // Si no autorizado, se redirige a login
     if (!isAuth) {
@@ -26,7 +34,7 @@ function Favourites(){
         if(current==="") return;
         // Petición al servidor
         api.get(`/favourite/${user._id}`, {
-            params: { page: Number(current), limit:10 }
+            params: { page: Number(current), limit:10, name: value }
         })
         .then(response => {
             console.log(response.data.data);
@@ -36,7 +44,7 @@ function Favourites(){
         .catch(error => {
             console.error('Error:', error);
         });
-    }, [current, favourites]);
+    }, [current, favourites, value]);
 
 
     return(
@@ -45,7 +53,7 @@ function Favourites(){
             <GridLayout>
                 {data
                     .map(d => (
-                        <li key={d.bird.specieId}>
+                        <li key={d._id}>
                             <BirdCard
                                 data={d.bird}
                             />

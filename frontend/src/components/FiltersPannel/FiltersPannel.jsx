@@ -31,7 +31,7 @@ function FiltersPannel () {
             rpi: true,
         });
 
-    const { area, setSearchQuery, filteredBirds, raspResults } = useBirds();
+    const { area, setSearchQuery, searchQuery, filteredBirds, raspResults } = useBirds();
     const { user } = UseAuth();
     const { isAuth } = UseAuth();
 
@@ -285,7 +285,7 @@ function FiltersPannel () {
                 <section className="filter-section species-section">
                     <h2>Especies</h2>
                     <Input label={'Empieza a introducir las especies:'} name={'birdNames'} auto='off' placeholder={'Nombre común o científico'} enter={onEnter}></Input>
-                    <Chips values={formData.favourites ? [] : formData.species} remove={deleteSpecieFromList}></Chips>
+                    <Chips values={formData.favourites ? [] : searchQuery.species} remove={deleteSpecieFromList}></Chips>
                     {isAuth === true && (
                         <InputCheckbox name='favourites' label='Solo favoritos' classAdditional="favourite" change={onFavouritesChange} checked={formData.favourites}></InputCheckbox>
                     )}
