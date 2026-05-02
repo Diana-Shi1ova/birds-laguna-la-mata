@@ -9,9 +9,17 @@ import Favourites from './pages/Favourites/Favourites';
 import Statistics from './pages/Statistics/Statistics';
 import Login from './pages/Login/Login';
 import Register from './pages/Register/Register';
+import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 
 function App() {
+  const { i18n } = useTranslation();
+
+  useEffect(() => {
+    document.documentElement.lang = i18n.language;
+  }, [i18n.language]);
+  
   return (
     <>
       <Router>
