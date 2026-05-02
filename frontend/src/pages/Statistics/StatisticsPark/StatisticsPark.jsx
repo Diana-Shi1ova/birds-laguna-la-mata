@@ -63,7 +63,7 @@ function StatisticsPark({park, createOption = () => ({})}){
     
     return(
         <>
-            <h1 className="birdName">{parkData?.name}<ButtonInfo message={message}></ButtonInfo></h1>
+            <h1 className="birdName">{parkData?.name}<ButtonInfo message={message} title={t('button.info')}></ButtonInfo></h1>
             <div className="statistics-container">
                 <div className="horizontal horizontal-2">
                     <img src={import.meta.env.VITE_PARKS_PATH+parkData?.image} alt={parkData?.name} />

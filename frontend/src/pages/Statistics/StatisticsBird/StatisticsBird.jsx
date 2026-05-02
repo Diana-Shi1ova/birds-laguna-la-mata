@@ -202,7 +202,7 @@ function StatisticsBird({park, createOption = () => ({})}){
             <h1 className="birdName">{birdData?.comName ?? ''}
                 <span>({birdData?.sciName ?? ''})</span>
                 <ButtonFavourite bird={birdData?._id}></ButtonFavourite>
-                <ButtonInfo message={message}></ButtonInfo>
+                <ButtonInfo message={message} title={t('button.info')}></ButtonInfo>
             </h1>
             <div className="statistics-container">
                 <div className="horizontal">

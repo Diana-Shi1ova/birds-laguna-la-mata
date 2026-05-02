@@ -1,6 +1,7 @@
 {
   "button": {
     "close": "Cerrar",
+    "info": "Información",
     "open_filters": "Abrir panel de filtrado",
     "save": "Guardar especie",
     "statistics": "Ver dinámica",
@@ -19,7 +20,7 @@
   },
   "filters": {
     "button": {
-      "close": "Cerrar",
+      "close": "Cerrar filtros",
       "reset": "Reestablecer"
     },
     "period": {
@@ -103,7 +104,7 @@
     },
     "observation": {
       "button": {
-        "close": "Cerrar",
+        "close": "Cerrar avistamiento",
         "next": "Siguiente",
         "previous": "Anterior"
       },
@@ -127,7 +128,7 @@
       "button": {
         "2D": "Vista 2D",
         "3D": "Vista 3D",
-        "close": "Cerrar"
+        "close": "Cerrar opciones del mapa"
       },
       "select": {
         "style": {
@@ -345,5 +346,9 @@
       "general": "Estadística general",
       "specie": "Estadística por especie"
     }
+  },
+  "usericon": {
+    "login": "Ir al login",
+    "profile": "Perfil"
   }
 }

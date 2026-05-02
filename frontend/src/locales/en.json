@@ -1,6 +1,7 @@
 {
   "button": {
     "close": "Close",
+    "info": "Information",
     "open_filters": "Open filtering panel",
     "save": "Save specie",
     "statistics": "View dynamics",
@@ -19,7 +20,7 @@
   },
   "filters": {
     "button": {
-      "close": "Close",
+      "close": "Close filters",
       "reset": "Reset"
     },
     "period": {
@@ -103,7 +104,7 @@
     },
     "observation": {
       "button": {
-        "close": "Close",
+        "close": "Close obsevation",
         "next": "Next",
         "previous": "Previous"
       },
@@ -127,7 +128,7 @@
       "button": {
         "2D": "2D view",
         "3D": "3D view",
-        "close": "Close"
+        "close": "Close map options"
       },
       "select": {
         "style": {
@@ -345,5 +346,9 @@
       "general": "General statistics",
       "specie": "Statistics by species"
     }
+  },
+  "usericon": {
+    "login": "Sign In",
+    "profile": "Profile"
   }
 }

@@ -15,7 +15,7 @@ import {
 
 
 
-function ButtonInfo({message='default message', question=false}) {  // type: 'info' | 'question'
+function ButtonInfo({message='default message', question=false, title=''}) {  // type: 'info' | 'question'
     const [open, setOpen] = useState(false);
     const ref = useRef(null);
 
@@ -30,6 +30,7 @@ function ButtonInfo({message='default message', question=false}) {  // type: 'in
         document.addEventListener('mousedown', handleClickOutside);
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
+
     const { refs, floatingStyles } = useFloating({
         placement: 'bottom',
         middleware: [
@@ -41,7 +42,7 @@ function ButtonInfo({message='default message', question=false}) {  // type: 'in
 
     return(
         <div className='info-container' ref={ref}>
-            <Button classAdditional='but-info' type='icon' func={() => setOpen(prev => !prev)}  ref={refs.setReference}>
+            <Button classAdditional='but-info' type='icon' func={() => setOpen(prev => !prev)} ref={refs.setReference} tooltip={title}>
                 {question ? <FaQuestion /> : <FaInfo />}
             </Button>
 
