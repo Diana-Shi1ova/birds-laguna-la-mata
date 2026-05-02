@@ -4,7 +4,7 @@ import Button from "../Button/Button";
 import { FaTimes } from "react-icons/fa";
 import { useState } from "react";
 import Chips from "../Chips/Chips";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useBirds } from "../../contexts/BirdsProvider";
 import { api } from "../../api/api";
 import InputCheckbox from "../InputCheckbox/InputCheckbox";
@@ -15,12 +15,13 @@ import InputNumber from "../InputNumber/InputNumber";
 import { UseAuth } from "../../auth/useAuth";
 import { useSearchUI } from "../../contexts/SearchUIProvider";
 import { useTranslation } from "react-i18next";
+import ResultsList from "../ResultsList/ResultsList";
 // import { set } from "mongoose";
 // import { BsEraser } from "react-icons/bs";
 
 
 function FiltersPannel () {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const [formData, setFormData] = useState({
             species: [],
             name: "",
@@ -41,6 +42,9 @@ function FiltersPannel () {
     const [numResults, setNumResults] = useState(0);
     const [showNumResults, setshowNumResults] = useState(false);
     const [showPeriodInput, setShowPeriodInput] = useState(false);
+    const [specieValue, setSpecieValue] = useState('');
+    const [results, setResults] = useState([]);
+    const inputSpecieRef = useRef();
 
     const PERIOD_OPTIONS = [
         { value: "today", label: t('filters.period.select.option.today') },
@@ -59,7 +63,7 @@ function FiltersPannel () {
         console.log(formData);
     }
 
-    const onEnter = (e) => {
+    /*const onEnter = (e) => {
         e.preventDefault();
         if(e.target.name === 'birdNames'){ // Añadir elementos sin repetir
             const value = e.target.value.trim();
@@ -76,6 +80,32 @@ function FiltersPannel () {
         }
         else e.target.blur();
             // setFormData({ ...formData, [e.target.name]: e.target.value });
+    }*/
+   const onEnter = (e) => {
+        e.preventDefault();
+        console.log('enter')
+
+        if (e.target.name === "birdNames") {
+            const value = e.target.value.trim();
+
+            if (value === "") return;
+
+            addBirdToList(specieValue);
+        } else {
+            e.target.blur();
+        }
+    };
+
+    function addBirdToList(value){
+        setFormData(prev => ({
+            ...prev,
+            species: prev.species.includes(value)
+                ? prev.species
+                : [...prev.species, value]
+        }));
+
+        setSpecieValue("");
+        setResults([]);
     }
 
     const deleteSpecieFromList = (value) => {
@@ -90,6 +120,30 @@ function FiltersPannel () {
             ...prevFormData,
             species: []
         }));
+    }
+
+    // Lista de sujerencias
+    useEffect(() => {
+        if(specieValue==="") {
+            setResults([]);
+            return
+        }
+        // Hacer petición de especies
+        api.get('/bird', {
+            params: { page: 1, limit: 10, name: specieValue.toLowerCase(), locale: i18n.resolvedLanguage}
+        })
+        .then(response => {
+            console.log(response.data.data);
+            setResults(response.data.data);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }, [specieValue, i18n.resolvedLanguage]);
+
+    // Al pulsar sobre el resultado
+    function addSpecie(sciName, id) {
+        addBirdToList(sciName);
     }
 
     // Hacer petición del historial en una fecha
@@ -271,7 +325,7 @@ function FiltersPannel () {
 
 
     return (
-        <form className={filtersPannel ? "filters-pannel" : "filters-pannel closed"}>
+        <form className={filtersPannel ? "filters-pannel" : "filters-pannel closed"} onSubmit={(e)=>{e.preventDefault()}}>
             <Button
                 type="icon"
                 classAdditional="close-button"
@@ -287,8 +341,24 @@ function FiltersPannel () {
                 {/* )} */}
                 <section className="filter-section species-section">
                     <h2>{t('filters.species.title')}</h2>
-                    <Input label={t('filters.species.input.label')} name={'birdNames'} auto='off' placeholder={t('filters.species.input.placeholder')} enter={onEnter}></Input>
-                    <Chips values={formData.favourites ? [] : searchQuery.species} remove={deleteSpecieFromList}></Chips>
+                    {/* <div className="specie-input-container"> */}
+                        <Input
+                            label={t('filters.species.input.label')}
+                            name={'birdNames'}
+                            auto='off'
+                            placeholder={t('filters.species.input.placeholder')}
+                            enter={onEnter}
+                            change={(e) => setSpecieValue(e.target.value)}
+                            value={specieValue}
+                            resultsList={results}
+                            resultsListFunc={addSpecie}
+                        >
+                        </Input>
+                        {/* {suggestions && ( */}
+                            {/* <ResultsList results={results}></ResultsList> */}
+                        {/* )} */}
+                        <Chips values={formData.favourites ? [] : searchQuery.species} remove={deleteSpecieFromList}></Chips>
+                    {/* </div> */}
                     {isAuth === true && (
                         <InputCheckbox name='favourites' label={t('filters.species.checkbox.label')} classAdditional="favourite" change={onFavouritesChange} checked={formData.favourites}></InputCheckbox>
                     )}

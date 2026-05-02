@@ -1,7 +1,8 @@
 import "./Input.css";
+import ResultsList from "../ResultsList/ResultsList";
 
 
-function Input ({name, id, classAdditional="", label, type, req=false, auto=null, change=()=>{}, enter=()=>{}, value, defaultValue, placeholder=""}) {
+function Input ({name, id, classAdditional="", label, type, req=false, auto=null, change=()=>{}, enter=()=>{}, value, defaultValue, placeholder="", resultsList=[], resultsListFunc=()=>{}, ref}) {
     const isControlled = value !== undefined; // controlar value solo si ha llegado
     
     const handleKeyDown = (event) => {
@@ -12,22 +13,28 @@ function Input ({name, id, classAdditional="", label, type, req=false, auto=null
 
     return (
         <label className={"input-container "+classAdditional}>{label} {req && ("*")}
-            <input
-                type={type}
-                required={req}
-                name={name}
-                id={id}
-                // className={classAdditional}
-                // autoComplete={auto}
-                {...(auto ? { autoComplete: auto } : {})} 
-                onChange={change}
-                onKeyDown={handleKeyDown}
-                placeholder={placeholder}
-                // {...(isControlled
-                //     ? { value }
-                //     : { defaultValue: "" })}
-                defaultValue={defaultValue}
-            />
+            <div className="input-results-container">
+                <input
+                    ref={ref}
+                    type={type}
+                    required={req}
+                    name={name}
+                    id={id}
+                    // className={classAdditional}
+                    // autoComplete={auto}
+                    {...(auto ? { autoComplete: auto } : {})} 
+                    onChange={change}
+                    onKeyDown={handleKeyDown}
+                    placeholder={placeholder}
+                    // {...(isControlled
+                    //     ? { value }
+                    //     : { defaultValue: "" })}
+                    value={value}
+                    defaultValue={defaultValue}
+                />
+                    {resultsList.length>0 && <ResultsList results={resultsList} func={resultsListFunc}></ResultsList>}
+            </div>
+            
         </label>
     );
 };

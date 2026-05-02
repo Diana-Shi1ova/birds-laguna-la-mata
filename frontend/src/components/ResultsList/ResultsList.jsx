@@ -19,12 +19,16 @@ function ResultsList ({results, func=() => {}, display}) {
         }));
     }*/
 
+    function onEnter(e, sci, id){
+        if (e.key === "Enter") func(sci, id);
+    }
+
     return (
         // <ul className={display ? "results-list" : "results-list results-hidden"}>
         <ul className="results-list">
             {results.map((item) => (
                 <li key={item._id}>
-                    <button onMouseDown={() => func(item.sciName, item._id)} title={t('searchbar.results.button.tooltip') + " " + item.sciName}>
+                    <button onMouseDown={() => func(item.sciName, item._id)} onKeyDown={(e) => onEnter(e, item.sciName, item._id)} title={t('searchbar.results.button.tooltip') + " " + item.sciName}>
                         <span className="common-name">{item.comName}</span> <span className="scientific-name">({item.sciName})</span>
                     </button>
                 </li>

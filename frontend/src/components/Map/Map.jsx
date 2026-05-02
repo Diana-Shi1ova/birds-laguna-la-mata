@@ -174,6 +174,10 @@ function Map () {
                 ? audioClass
                 : imageClass;
 
+            el.tabIndex = 0;
+            el.setAttribute("role", "button");
+            el.setAttribute("aria-label", "Bird location");
+
             const marker = new maplibregl.Marker({ element: el })
                 .setLngLat([rasp.long, rasp.lat])
                 // .setPopup(popup)
@@ -181,53 +185,66 @@ function Map () {
 
             // Click
             el.addEventListener("click", async () => {
-                console.log(rasp._id)
+                await raspImage(rasp);
+            });
 
-                let data = [];
-                data = await getRaspberryDetections(rasp);
-
-                const container = document.createElement("div");
-
-                const popup = new maplibregl.Popup({ offset: 25, anchor: 'bottom' })
-                    .setLngLat([rasp.long, rasp.lat])
-                    .setDOMContent(container)
-                    .addTo(map.current);
-
-                /*const root = createRoot(container);
-                root.render(
-                    <MarkerInfoCard
-                        birds={data}
-                        source={rasp.type}
-                        long={rasp.long}
-                        lat={rasp.lat}
-                        popup={popup}
-                    />
-                );
-
-                    rootsRefRasp.current.push(root);*/
-                const newPopup = {
-                    container,
-                    birds: data,
-                    popup,
-                    source: rasp.type,
-                    long: rasp.long,
-                    lat: rasp.lat
+            // Enter o Space
+            el.addEventListener("keydown", async (e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    await raspPopup(rasp);
                 }
-
-                setPopupsRasp([newPopup]);
-
-                // Acercamiento
-                map.current.flyTo({
-                    center: [rasp.long, rasp.lat],
-                    offset: [0, 170],
-                    zoom: 12,
-                    speed: 0.8,
-                    curve: 1,
-                    essential: true
-                });
             });
 
             markersRefRasp.current.push(marker);
+        });
+    }
+
+    // Abrir popup de raspberry
+    async function raspPopup(rasp){
+        console.log(rasp._id)
+
+        let data = [];
+        data = await getRaspberryDetections(rasp);
+
+        const container = document.createElement("div");
+
+        const popup = new maplibregl.Popup({ offset: 25, anchor: 'bottom' })
+            .setLngLat([rasp.long, rasp.lat])
+            .setDOMContent(container)
+            .addTo(map.current);
+
+        /*const root = createRoot(container);
+        root.render(
+            <MarkerInfoCard
+                birds={data}
+                source={rasp.type}
+                long={rasp.long}
+                lat={rasp.lat}
+                popup={popup}
+            />
+        );
+
+            rootsRefRasp.current.push(root);*/
+        const newPopup = {
+            container,
+            birds: data,
+            popup,
+            source: rasp.type,
+            long: rasp.long,
+            lat: rasp.lat
+        }
+
+        setPopupsRasp([newPopup]);
+
+        // Acercamiento
+        map.current.flyTo({
+            center: [rasp.long, rasp.lat],
+            offset: [0, 170],
+            zoom: 12,
+            speed: 0.8,
+            curve: 1,
+            essential: true
         });
     }
 
@@ -347,6 +364,9 @@ function Map () {
                 .setDOMContent(container);*/
 
             const container = document.createElement("div");
+            container.tabIndex = 0;
+            container.setAttribute("role", "button");
+            container.setAttribute("aria-label", "Bird location");
 
             const popup = new maplibregl.Popup({ offset: 25, anchor: 'bottom' })
                 .setDOMContent(container);
@@ -360,6 +380,7 @@ function Map () {
                 .setPopup(popup)
                 .addTo(map.current);
 
+            // Click
             marker.getElement().addEventListener('click', () => {
                 map.current.flyTo({
                     center: [group.lng, group.lat],
@@ -369,6 +390,21 @@ function Map () {
                     curve: 1,
                     essential: true
                 });
+            });
+
+            // Enter o Space
+            marker.getElement().addEventListener("keydown", (e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                    // e.preventDefault();
+                    map.current.flyTo({
+                        center: [group.lng, group.lat],
+                        offset: [0, 250],
+                        zoom: 12,
+                        speed: 0.8,
+                        curve: 1,
+                        essential: true
+                    });
+                }
             });
 
             markersRef.current.push(marker);

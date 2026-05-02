@@ -20,4 +20,14 @@
     .error{
         border-color: #dd0000;
     }
+
+    .input-results-container{
+        position: relative;
+
+        .results-list{
+            position: absolute;
+            top: 2.3em;
+            left: 0;
+        }
+    }
 }
