@@ -206,6 +206,7 @@ const getDirectWikidata = async (req, res) => {
 // Obtener foto de Wikidata
 const getWikidata = async (req, res) => {
   const { sciName } = req.query;
+  const locale = req.query.locale ? req.query.locale : 'en';
 
   try {
     const result = await Bird.findOne({sciName: sciName});
@@ -214,7 +215,7 @@ const getWikidata = async (req, res) => {
     const filteredResult = {
       sciName: sciName,
       id: result._id,
-      wikipediaURL: result.wikidata.wikipediaURL,
+      wikipediaURL: result.wikidata.wikipediaURL?.[locale],
       images: result.wikidata.images
     };
 

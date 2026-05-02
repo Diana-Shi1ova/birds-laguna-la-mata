@@ -136,7 +136,8 @@ function Map () {
             center: [parkData.long, parkData.lat],
             zoom: parkData.zoom,
             pitch: 0,
-            bearing: 0
+            bearing: 0,
+            keyboard: true
         });
 
         map.current.addControl(new maplibregl.NavigationControl());

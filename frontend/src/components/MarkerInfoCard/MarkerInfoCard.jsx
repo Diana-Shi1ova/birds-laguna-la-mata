@@ -23,7 +23,7 @@ import { useTranslation } from "react-i18next";
 
 
 function MarkerInfoCard({birds, source='eBird', lat, long, popup}) {  //tipo: eBird, RPA, RPI
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const {parkData} = useBirds();
     const [current, setCurrent] = useState(1);
     const [total, setTotal] = useState(1);
@@ -86,7 +86,7 @@ function MarkerInfoCard({birds, source='eBird', lat, long, popup}) {  //tipo: eB
         if(source==='eBird'){
             // Petición al servidor
             api.get('/bird/wikidata', {
-                params: { sciName: birds[current-1]['sciName'] }
+                params: { sciName: birds[current-1]['sciName'], locale: i18n.resolvedLanguage }
             })
             .then(response => {
                 // console.log(response.data);
@@ -96,7 +96,7 @@ function MarkerInfoCard({birds, source='eBird', lat, long, popup}) {  //tipo: eB
                 console.error('Error:', error);
             });
         }
-    }, [current]);
+    }, [current, i18n.resolvedLanguage]);
 
 
     if(source==='eBird'){
