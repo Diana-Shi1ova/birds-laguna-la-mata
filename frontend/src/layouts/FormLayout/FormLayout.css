@@ -12,6 +12,11 @@
     margin-top: auto;
     margin-bottom: auto;
 
+    h1{
+        width: 100%;
+        overflow-wrap: break-word;
+    }
+
     p{
         margin: 0;
     }
@@ -19,6 +24,13 @@
     .normal-button{
         margin: 1em 0 1em 0;
     }
+
+    .explain{
+        font-size: 12pt;
+        font-style: italic;
+        color: #6e6e6e;
+    }
+    
 }
 
 .form-container{
@@ -33,11 +45,42 @@
     h1{
         margin: 0;
     }
+    
+    .back{
+        position: absolute;
+        top: .5em;
+        left: .5em;
+        display: flex;
+        align-items: center;
+        gap: .5em;
+    }
+
+    .back-icon{
+        display: none;
+        font-size: 24pt;
+        align-self: start;
+        margin-top: .5em;
+        margin-left: .5em;
+    }
 }
 
 @media (max-width: 530px){
+    .form-container{
+        background-color: #fff;
+    }
+
     .auth-form{
         box-sizing: border-box;
         width: 100%;
+    }
+}
+
+@media (max-width: 825px){
+    .back{
+        display: none !important;
+    }
+    .back-icon{
+        display: flex !important;
+        
     }
 }

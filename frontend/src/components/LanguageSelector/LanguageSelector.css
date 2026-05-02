@@ -1,0 +1,44 @@
+.language-selector-container{
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    
+    align-items: center;
+    justify-content: center;
+    /* border: #fff solid 2px; */
+
+    .drop-down{
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+        background-color: #fff;
+        width: fit-content;
+        display: flex;
+    }
+}
+
+.language-selector{
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: var(--text-sise);
+    border: none;
+    background-color: transparent;
+    width: 100%;
+    height: 30px;
+    color: transparent;
+    box-sizing: border-box;
+    cursor: pointer;
+    /* border: #000 solid 2px; */
+
+    option{
+        color: #000;
+    }
+}
+
+@media all and (max-width: 600px){
+    .language-selector-container{
+        display: flex;
+        flex-direction: row;
+        background-color: transparent;
+    }
+}

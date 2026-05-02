@@ -6,13 +6,15 @@ import StatisticsCircle from "../../../components/StatisticsCircle/StatisticsCir
 import Chart from "../../../components/Chart/Chart";
 import { api } from "../../../api/api";
 import ButtonFavourite from "../../../components/ButtonFavourite/ButtonFavourite";
+import { useTranslation } from "react-i18next";
 
 
 function StatisticsBird({park, createOption = () => ({})}){
+    const { t, i18n } = useTranslation();
     const { bird } = useParams();
     const [birdData, setBirdData] = useState();
     const [data, setData] = useState([]);
-    const message = "Los datos utilizados para el análisis provienen de la ciencia ciudadana (fuente: eBird). Reflejan únicamente lo que los observadores incluyendo no profesionales han logrado registrar y pueden diferir en cierto grado de la realidad.";
+    const message = t('statistics.specie.warning');
     const [today, setToday] = useState();
     const [week, setWeek] = useState();
     const [month, setMonth] = useState();
@@ -20,27 +22,27 @@ function StatisticsBird({park, createOption = () => ({})}){
 
     const chartsConfig = [
         {
-            title: "Actividad diaria",
+            title: t('statistics.specie.hourly.title'),
             key: "hourly",
-            xLabel: "Hora del día",
+            xLabel: t('statistics.specie.hourly.hour'),
             xKey: "hour",
-            yLabel: "Probabilidad",
+            yLabel: t('statistics.specie.hourly.probability'),
             yKey: "freq",
         },
         {
-            title: "Estacionalidad",
+            title: t('statistics.specie.seasonality.title'),
             key: "seasonality",
-            xLabel: "Semana del año",
+            xLabel: t('statistics.specie.seasonality.week'),
             xKey: "week",
-            yLabel: "Probabilidad",
+            yLabel: t('statistics.specie.seasonality.probability'),
             yKey: "freq",
         },
         {
-            title: "Tendencia (últimos 5 años)",
+            title: t('statistics.specie.trend.title'),
             key: "trend",
-            xLabel: "Año",
+            xLabel: t('statistics.specie.trend.year'),
             xKey: "year",
-            yLabel: "Probabilidad",
+            yLabel: t('statistics.specie.trend.probability'),
             yKey: "freq",
         },
     ];
@@ -61,7 +63,7 @@ function StatisticsBird({park, createOption = () => ({})}){
         });
 
         // Datos de especie
-        api.get(`/bird/${bird}`)
+        api.get(`/bird/${bird}`, {params: { locale: i18n.resolvedLanguage }})
         .then(response => {
             console.log(response.data);
             setBirdData(response.data);
@@ -105,7 +107,7 @@ function StatisticsBird({park, createOption = () => ({})}){
         if (bird && park) {
             fetchData();
         }
-    }, [park, bird]);
+    }, [park, bird, i18n.resolvedLanguage]);
 
 
     // Sumar avistamientos
@@ -118,38 +120,38 @@ function StatisticsBird({park, createOption = () => ({})}){
     function getConfidence(f) {
         switch(f){
             case "none":
-                return 'ninguna'
+                return t('statistics.specie.quantity.summary.confidence.options.none');
                 break;
             case "low":
-                return 'baja'
+                return t('statistics.specie.quantity.summary.confidence.options.low');
                 break;
             case "medium":
-                return 'media'
+                return t('statistics.specie.quantity.summary.confidence.options.medium');
                 break;
             case "high":
-                return 'alta'
+                return t('statistics.specie.quantity.summary.confidence.options.high');
                 break;
             case "very_high":
-                return 'muy alta'
+                return t('statistics.specie.quantity.summary.confidence.options.vey_high');
                 break;
         }
     }
 
 
     // Tendencia
-    function getTrend(t) {
-        switch (t) {
+    function getTrend(trend) {
+        switch (trend) {
             case "stable":
-            return "estable";
+            return t('statistics.specie.quantity.summary.trend.options.stable');
 
             case "increasing":
-            return "en aumento";
+            return t('statistics.specie.quantity.summary.trend.options.increasing');
 
             case "decreasing":
-            return "en descenso";
+            return t('statistics.specie.quantity.summary.trend.options.decreasing');
 
             default:
-            return "desconocida";
+            return t('statistics.specie.quantity.summary.trend.options.unknown');
         }
     }
 
@@ -157,25 +159,25 @@ function StatisticsBird({park, createOption = () => ({})}){
     // Estacionalidad
     function interpretSeasonality(seasonality) {
         if (!seasonality || seasonality.peakWeek === null) {
-            return "No se observa una estacionalidad clara.";
+            return t('statistics.specie.quantity.summary.seasonality.option.without');
         }
 
         const { peakWeek, strength } = seasonality;
 
         let intensity = "";
 
-        if (strength < 1.5) intensity = "débil";
-        else if (strength < 2.5) intensity = "moderada";
-        else intensity = "marcada";
+        if (strength < 1.5) intensity = t('statistics.specie.quantity.summary.seasonality.option.weak');
+        else if (strength < 2.5) intensity = t('statistics.specie.quantity.summary.seasonality.option.moderate');
+        else intensity = t('statistics.specie.quantity.summary.seasonality.option.strong');
 
-        return `Pico en la semana ${peakWeek}. Estacionalidad ${intensity}.`;
+        return t('statistics.specie.quantity.summary.seasonality.peak')+` ${peakWeek}. `+t('statistics.specie.quantity.summary.seasonality.seasonality') + ` ${intensity}.`;
     }
 
 
     // Actividad diaria
     function interpretHourly(hourly) {
         if (!hourly || hourly.peakHour === null) {
-            return "No hay un patrón horario definido.";
+            return t('statistics.specie.quantity.summary.hourly.without');
         }
 
         const { peakHour, morningBias } = hourly;
@@ -185,12 +187,12 @@ function StatisticsBird({park, createOption = () => ({})}){
         if (morningBias === null) {
             period = "";
         } else if (morningBias) {
-            period = " Mayor actividad por la mañana.";
+            period = ' '+t('statistics.specie.quantity.summary.hourly.activity.morning');
         } else {
-            period = " Mayor actividad por la tarde.";
+            period = ' '+t('statistics.specie.quantity.summary.hourly.activity.evening');
         }
 
-        return `Mayor actividad alrededor de las ${peakHour}:00.${period}`;
+        return t('statistics.specie.quantity.summary.hourly.activity.hour')+` ${peakHour}:00.${period}`;
     }
 
 
@@ -208,24 +210,24 @@ function StatisticsBird({park, createOption = () => ({})}){
                         {birdData &&
                         <img src={birdData?.wikidata?.images[birdData?.wikidata?.images.length-1]} alt={birdData.comName} />
                         }
-                        <p>Probabilidad de avistar: <span>{(data?.[0]?.overall?.probability * 100).toFixed(2) ?? ''}%</span></p>
+                        <p>{t('statistics.specie.probability')} <span>{(data?.[0]?.overall?.probability * 100).toFixed(2) ?? ''}%</span></p>
                     </div>
                         <section className="today-statistics">
-                            <h2>Cantidad registrada</h2>
+                            <h2>{t('statistics.specie.quantity.title')}</h2>
                             <div className="circles">
-                                <StatisticsCircle label='Hoy' value={today}></StatisticsCircle>
-                                <StatisticsCircle label='Semana' value={week}></StatisticsCircle>
-                                <StatisticsCircle label='Mes' value={month}></StatisticsCircle>
+                                <StatisticsCircle label={t('statistics.specie.quantity.today')} value={today}></StatisticsCircle>
+                                <StatisticsCircle label={t('statistics.specie.quantity.week')} value={week}></StatisticsCircle>
+                                <StatisticsCircle label={t('statistics.specie.quantity.month')} value={month}></StatisticsCircle>
                             </div>
-                            <h3>Resumen:</h3>
+                            <h3>{t('statistics.specie.quantity.summary.title')}</h3>
                             <ul>
-                                <li><span>{data?.[0]?.overall?.detections}</span> observaciones en <span>{data?.[0]?.overall?.totalChecklists}</span> checklists</li>
-                                <li>Fiabilidad del análisis: <span>{getConfidence(data?.[0]?.overall?.confidence)}</span> <span>({(data?.[0]?.overall?.confidenceScore * 100)}%)</span></li>
+                                <li><span>{data?.[0]?.overall?.detections}</span> {t('statistics.specie.quantity.summary.observed')} <span>{data?.[0]?.overall?.totalChecklists}</span> {t('statistics.specie.quantity.summary.checklists')}</li>
+                                <li>{t('statistics.specie.quantity.summary.confidence.title')} <span>{getConfidence(data?.[0]?.overall?.confidence)}</span> <span>({(data?.[0]?.overall?.confidenceScore * 100)}%)</span></li>
                                 {data?.[0]?.insights?.hasData && (
                                     <>
-                                    <li>Tendencia: <span>{getTrend(data?.[0]?.insights?.trend?.direction)}</span></li>
-                                    <li>Actividad diaria: <span>{interpretHourly(data?.[0]?.insights?.hourly)}</span></li>
-                                    <li>Estacionalidad: <span>{interpretSeasonality(data?.[0]?.insights?.seasonality)}</span></li>
+                                    <li>{t('statistics.specie.quantity.summary.trend.options.title')} <span>{getTrend(data?.[0]?.insights?.trend?.direction)}</span></li>
+                                    <li>{t('statistics.specie.quantity.summary.hourly.options.title')} <span>{interpretHourly(data?.[0]?.insights?.hourly)}</span></li>
+                                    <li>{t('statistics.specie.quantity.summary.seasonality.options.title')} <span>{interpretSeasonality(data?.[0]?.insights?.seasonality)}</span></li>
                                     </>
                                 )}
                             </ul>

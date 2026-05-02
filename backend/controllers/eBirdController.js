@@ -3,6 +3,8 @@ const Park = require('../models/parkModel');
 const Bird = require('../models/birdModel');
 
 
+const languages = ['es', 'en', 'ru'];
+
 // Calcular distancia para ajustes dentro del radio
 function getDistanceKm(lat1, lon1, lat2, lon2) {
     const x = (lon2 - lon1) * Math.cos((lat1 + lat2) * Math.PI / 360);
@@ -144,6 +146,7 @@ const getHistory = async (req, res) => {
     }
 };*/
 
+// SOLO PRUEBA
 // Obtener avistamientos para un rango de fechas (optimizado para hacer peticiones paralelas)
 const getHistoryRange = async (req, res) => {
     const { start, end } = req.query;
@@ -272,6 +275,7 @@ const chunkArray = (arr, size) => {
     return chunks;
 };
 
+// Adicional
 // Species codes list of the region (Comunidad Valenciana)
 const getSpecies = async (req, res) => {
     const region = "ES-VC";
@@ -296,11 +300,11 @@ const getSpecies = async (req, res) => {
         const chunks = chunkArray(speciesCodes, CHUNK_SIZE);
 
         // 3. Varias peticiones
-        const requests = chunks.map(chunk => {
+        /*const requests = chunks.map(chunk => {
             const speciesParam = chunk.join(",");
             const urlNames =
                 `https://api.ebird.org/v2/ref/taxonomy/ebird` +
-                `?species=${speciesParam}&fmt=json&locale=es`;
+                `?species=${speciesParam}&fmt=json&locale=es,en,ru`;
 
             return fetch(urlNames, {
                 headers: { "X-eBirdApiToken": process.env.EBIRD_TOKEN }
@@ -310,6 +314,50 @@ const getSpecies = async (req, res) => {
                 }
                 return r.json();
             });
+        });*/
+        const requests = chunks.map(async chunk => {
+            const speciesParam = chunk.join(",");
+
+            const localeResponses = await Promise.all(
+                languages.map(async locale => {
+                    const url =
+                        `https://api.ebird.org/v2/ref/taxonomy/ebird` +
+                        `?species=${speciesParam}&fmt=json&locale=${locale}`;
+
+                    const r = await fetch(url, {
+                        headers: {
+                            "X-eBirdApiToken": process.env.EBIRD_TOKEN
+                        }
+                    });
+
+                    if (!r.ok) {
+                        throw new Error(`taxonomy ${locale}: ${r.status}`);
+                    }
+
+                    const data = await r.json();
+
+                    return { locale, data };
+                })
+            );
+
+            // Juntamos idiomas
+            const map = {};
+
+            for (const { locale, data } of localeResponses) {
+                data.forEach(item => {
+                    if (!map[item.speciesCode]) {
+                        map[item.speciesCode] = {
+                            speciesCode: item.speciesCode,
+                            sciName: item.sciName,
+                            comName: {}
+                        };
+                    }
+
+                    map[item.speciesCode].comName[locale] = item.comName;
+                });
+            }
+
+            return Object.values(map);
         });
 
         // 4. Esperamos todas las respuestas
@@ -349,6 +397,19 @@ const getSpecies = async (req, res) => {
 
         //await Bird.deleteMany({});
         //await Bird.insertMany(results);
+
+        // Actualizar y añadir datos sin borrar todo
+        await Bird.bulkWrite(
+            enrichedResults.map(bird => ({
+                replaceOne: {
+                    filter: { sciName: bird.sciName },
+                    replacement: {
+                        ...bird
+                    },
+                    upsert: true
+                }
+            }))
+        );
 
         res.status(200).json(enrichedResults);
 
@@ -685,8 +746,31 @@ async function fetchWikidataData(scientificNames) {
     const values = scientificNames
         .map(name => `"${name}"`)
         .join("\n");
+
+    // Recolectamos OPTIONALS para diferentes idiomas
+    // SELECT
+    const selectWikiVars = languages
+        .map(lang => `?wikipediaURL_${lang}`)
+        .join(" ");
+
+    // OPTIONALS
+    const wikiOptionalBlocks = languages
+        .map(lang => {
+            const urlVar = `?wikipediaURL_${lang}`;
+            // const domain = languageDomains[lang];
+            const domain = `https://${lang}.wikipedia.org/`
+
+            return `
+            OPTIONAL {
+                ${urlVar} schema:about ?item;
+                        schema:isPartOf <${domain}>.
+            }
+            `;
+        })
+        .join("\n");
+
     const sparql = `
-        SELECT ?item ?image ?wikipediaURL ?scientificName
+        SELECT ?item ?image ?scientificName ${selectWikiVars}
         WHERE {
             VALUES ?scientificName {
                 ${values}
@@ -699,12 +783,9 @@ async function fetchWikidataData(scientificNames) {
 
             OPTIONAL { ?item wdt:P18 ?image. }
             
-            OPTIONAL {
-                ?wikipediaURL schema:about ?item;
-                        schema:isPartOf <https://es.wikipedia.org/>.
-            }
+            ${wikiOptionalBlocks}
 
-            SERVICE wikibase:label { bd:serviceParam wikibase:language "es". }
+            SERVICE wikibase:label { bd:serviceParam wikibase:language "${languages.join(",")}". }
         }
     `;
 
@@ -739,7 +820,7 @@ async function fetchWikidataData(scientificNames) {
             map[name] = {
                 wikidataId: row.item.value,
                 images: [],
-                wikipediaURL: null
+                wikipediaURL: {}
             };
         }
 
@@ -755,11 +836,26 @@ async function fetchWikidataData(scientificNames) {
             }
         }
 
-        if (!map[name].wikipediaURL && row.wikipediaURL) {
+        /*if (!map[name].wikipediaURL && row.wikipediaURL) {
             map[name].wikipediaURL = row.wikipediaURL.value;
+        }*/
+        for (const lang of languages) {
+            const key = `wikipediaURL_${lang}`;
+
+            const url = row[key]?.value;
+
+            if (url) {
+                const langMatch = url.match(/https:\/\/([a-z]+)\.wikipedia\.org/);
+
+                if (langMatch) {
+                    const lang = langMatch[1];
+                    map[name].wikipediaURL[lang] = url;
+                }
+            }
         }
     }
 
+    console.log(map)
     return map;
 }
 

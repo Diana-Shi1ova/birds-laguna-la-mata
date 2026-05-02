@@ -1,7 +1,7 @@
 header{
     display: flex;
     flex-direction: row;
-    gap: 1em;
+    gap: .5em;
     align-items: center;
     position: absolute;
     top: 0;
@@ -15,6 +15,15 @@ header{
     box-sizing: border-box !important;
     .sidebar-container{
         display: none;
+    }
+
+    .language{
+        width: fit-content;
+    }
+
+    .open-sidebar{
+        display: none;
+        font-size: 24pt;
     }
 }
 
@@ -31,6 +40,11 @@ header{
             .sidebar{
                 width: 100%;
             }
+        }
+
+        .open-sidebar{
+            display: flex;
+            font-size: 24pt;
         }
     }
 }

@@ -5,6 +5,7 @@ import { BirdsProvider } from './contexts/BirdsProvider.jsx'
 import { SearchUIProvider } from './contexts/SearchUIProvider.jsx'
 import './index.css'
 import App from './App.jsx'
+import './i18n';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

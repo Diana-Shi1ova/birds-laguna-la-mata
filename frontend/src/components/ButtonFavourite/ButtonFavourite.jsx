@@ -14,9 +14,11 @@ import { FaTrashAlt } from "react-icons/fa";
 import { FaRegBell } from "react-icons/fa";
 import { useBirds } from '../../contexts/BirdsProvider';
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 
 function ButtonFavourite ({ bird }) {
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const {user} = UseAuth();
     const {favourites, setFavourites} = useBirds();
@@ -91,7 +93,7 @@ function ButtonFavourite ({ bird }) {
 
     return (
         <>
-            <Button type='icon' classAdditional={saved ? 'favorite-button saved' : 'favorite-button'} func={save}>
+            <Button type='icon' classAdditional={saved ? 'favorite-button saved' : 'favorite-button'} func={save} tooltip={saved ? t('button.unsave') : t('button.save')}>
                 {saved ? <FaBookmark /> : <FaRegBookmark />}
             </Button>
         </>

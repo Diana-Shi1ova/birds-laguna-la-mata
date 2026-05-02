@@ -5,9 +5,11 @@ import StatisticsCircle from "../../../components/StatisticsCircle/StatisticsCir
 import Chart from "../../../components/Chart/Chart";
 import { api } from "../../../api/api";
 import BirdCarousel from "../../../components/BirdCarousel/BirdCarousel";
+import { useTranslation } from "react-i18next";
 
 function StatisticsPark({park, createOption = () => ({})}){
-    const message = "Los datos utilizados para el análisis provienen de la ciencia ciudadana (fuente: eBird). Reflejan únicamente lo que los observadores incluyendo no profesionales han logrado registrar y pueden diferir en cierto grado de la realidad.";
+    const { t, i18n } = useTranslation();
+    const message = t('statistics.park.warning');
     const [parkData, setParkData] = useState();
     const [data, setData] = useState([]);
 
@@ -25,7 +27,11 @@ function StatisticsPark({park, createOption = () => ({})}){
         });
 
         // Estadística del parque
-        api.get(`/statistics/park/${park}`)
+        api.get(`/statistics/park/${park}`,
+            {
+                params: { locale: i18n.resolvedLanguage }
+            }
+        )
         .then(response => {
             console.log(response.data);
             setData(response.data);
@@ -34,23 +40,23 @@ function StatisticsPark({park, createOption = () => ({})}){
             console.error('Error:', error);
         });
         
-    }, [park]);
+    }, [park, i18n.resolvedLanguage]);
 
 
     // Tendencia
-    function getTrend(t) {
-        switch (t) {
+    function getTrend(trend) {
+        switch (trend) {
             case "stable":
-            return "estable";
+            return t('statistics.park.summary.trend.option.stable');
 
             case "increasing":
-            return "en aumento";
+            return t('statistics.park.summary.trend.option.increasing');
 
             case "decreasing":
-            return "en descenso";
+            return t('statistics.park.summary.trend.option.decreasing');
 
             default:
-            return "desconocida";
+            return t('statistics.park.summary.trend.option.unknown');
         }
     }
 
@@ -62,27 +68,27 @@ function StatisticsPark({park, createOption = () => ({})}){
                 <div className="horizontal horizontal-2">
                     <img src={import.meta.env.VITE_PARKS_PATH+parkData?.image} alt={parkData?.name} />
                     <section className="park-summary">
-                            <h2>Resumen (últimos 5 años)</h2>
+                            <h2>{t('statistics.park.summary.title')}</h2>
                             <div className="circles">
-                                <StatisticsCircle label='Especies' value={data?.totalSpecies}></StatisticsCircle>
-                                <StatisticsCircle label='Checklists' value={data?.totalChecklists}></StatisticsCircle>
+                                <StatisticsCircle label={t('statistics.park.summary.circle.species')} value={data?.totalSpecies}></StatisticsCircle>
+                                <StatisticsCircle label={t('statistics.park.summary.circle.checklists')} value={data?.totalChecklists}></StatisticsCircle>
                             </div>
-                            <p className="explaining">Tendencia de especies: <span>{getTrend(data?.trend?.direction)}</span> (fiabilidad <span>{(data?.trend?.confidence*100).toFixed(2)}%</span>)</p>
+                            <p className="explaining">{t('statistics.park.summary.trend.title')} <span>{getTrend(data?.trend?.direction)}</span> ({t('statistics.park.summary.trend.confidence')} <span>{(data?.trend?.confidence*100).toFixed(2)}%</span>)</p>
                     </section>
                 </div>
                 <div className="top-species">
-                    <h2>Top 10 especies más frecuentes</h2>
+                    <h2>{t('statistics.park.top.title')}</h2>
                     <BirdCarousel birds={data?.top10}></BirdCarousel>
                 </div>
                 <div>
                     <Chart
-                        title={'Biodiversidad (últimos 5 años)'}
+                        title={t('statistics.park.biodiversity.title')}
                         options={createOption(
                             data?.yearlySpecies,
                             'year',
-                            'Año',
+                            t('statistics.park.biodiversity.year'),
                             'speciesCount',
-                            'Cantidad'
+                            t('statistics.park.biodiversity.species')
                         )}
                     />
                 </div>

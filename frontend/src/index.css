@@ -77,7 +77,9 @@ button:focus-visible {
   --green: #87ffc9;
   /* --green-hover: #3cd590; */
   --green-hover: #5fe1a7;
+  --green-hover-secondary: #abe8cd;
   --green-active-light: #d2ffeb;
   --green-active-dark: #3cd590;
+  --black-disabled: #8a8a8a;
   --font-family: Verdana, Geneva, Tahoma, sans-serif;
 }

@@ -4,8 +4,11 @@ import Button from '../Button/Button';
 
 import { useRef, useState, useEffect } from "react";
 import { FaCaretLeft, FaCaretRight } from "react-icons/fa";
+import { useTranslation } from 'react-i18next';
+
 
 function BirdCarousel({ birds }) {
+    const { t } = useTranslation();
     const [index, setIndex] = useState(0);
     const listRef = useRef(null);
     const [itemWidth, setItemWidth] = useState(0);
@@ -18,7 +21,7 @@ function BirdCarousel({ birds }) {
         if (!viewportRef.current) return;
 
         viewportRef.current.scrollBy({
-            left: 300, // можно подогнать
+            left: 300,
             behavior: "smooth"
         });
     };
@@ -32,20 +35,6 @@ function BirdCarousel({ birds }) {
         });
     };
 
-    /*const visibleItems = 3; // сколько карточек видно
-    const maxIndex = Math.max(0, birds?.length - visibleItems);
-
-    const next = () => {
-        setIndex(prev => Math.min(prev + 1, maxIndex));
-    };
-
-    const prev = () => {
-        setIndex(prev => Math.max(prev - 1, 0));
-    };*/
-    
-
-    
-
     useEffect(() => {
         const update = () => {
             if (!listRef.current) return;
@@ -55,10 +44,8 @@ function BirdCarousel({ birds }) {
             if (firstItem) {
                 const width = firstItem.offsetWidth;
                 const style = window.getComputedStyle(firstItem);
-                // const marginRight = parseInt(style.marginRight) || 0;
                 const styles = window.getComputedStyle(listRef.current);
                 const gap = parseInt(styles.gap);
-                console.log(gap)
                 setMargin(gap);
                 setItemWidth(width + gap);
 
@@ -94,11 +81,11 @@ function BirdCarousel({ birds }) {
                 </ul>
             </div>
 
-            <Button classAdditional='left' func={prev}>
+            <Button classAdditional='left' func={prev} tooltip={t('carousel.button.previous')} disabled={(index==0) ? true : false}>
                 <FaCaretLeft />
             </Button>
 
-            <Button classAdditional='right' func={next}>
+            <Button classAdditional='right' func={next} tooltip={t('carousel.button.next')} disabled={(index===maxIndex) ? true : false}>
                 <FaCaretRight />
             </Button>
         </div>
@@ -106,27 +93,3 @@ function BirdCarousel({ birds }) {
 }
 
 export default BirdCarousel;
-
-/*import { FaCaretLeft } from "react-icons/fa";
-import { FaCaretRight } from "react-icons/fa";
-
-
-function BirdCarousel ({ birds }) {
-
-    return (
-        <div className='carousel-container'>
-            <Button classAdditional='left'><FaCaretLeft/></Button>
-            <ul className='bird-carousel'>
-                {birds?.map((bird, index) => 
-                    <li key={index}>
-                        <BirdCard data={bird}></BirdCard>
-                    </li>
-                )}
-            </ul>
-            <Button classAdditional='right'><FaCaretRight/></Button>
-        </div>
-        
-    );
-};
-
-export default BirdCarousel;*/

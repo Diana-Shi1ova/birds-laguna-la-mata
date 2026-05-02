@@ -12,10 +12,12 @@ import MapPopupPortal from "./MapPopupPortal";
 import Button from "../Button/Button";
 import { FaCog } from "react-icons/fa";
 import Dialog from "../Dialog/Dialog";
+import { useTranslation } from "react-i18next";
 
 
 // Componente mapa
 function Map () {
+    const { t } = useTranslation();
     const mapContainer = useRef(null); // container de mapa
     const map = useRef(null); // mapa
     const markersRef = useRef([]); // markers
@@ -61,11 +63,11 @@ function Map () {
     const mapStyles = [
         {
             value: `https://api.maptiler.com/maps/019a6b22-5021-75fc-9452-2530f937c6dc/style.json?key=${import.meta.env.VITE_MAPTILER_KEY}`,
-            label: 'Satélite'
+            label: t('map.options.select.style.option.satelite')
         },
         {
             value: `https://api.maptiler.com/maps/openstreetmap/style.json?key=${import.meta.env.VITE_MAPTILER_KEY}`,
-            label: 'Calles'
+            label: t('map.options.select.style.option.streets')
         }
     ]
 
@@ -459,17 +461,17 @@ function Map () {
 
     return (
         <>
-            <InputSelect name="park" classAdditional="park-select" options={parkOptions} change={(e) => showPark(e)} selected={parkData.parkId}></InputSelect>
+            <InputSelect name="park" classAdditional="park-select" options={parkOptions} change={(e) => showPark(e)} selected={parkData.parkId} title={t('select.park')}></InputSelect>
             {/* <div className="map-controls-container"> */}
                 {/* <InputSelect name="park" options={parkOptions} change={(e) => showPark(e)} selected={parkData.parkId}></InputSelect> */}
                 {/* <Button classAdditional="map-settings"><FaCog /></Button> */}
                 
                 
             {/* </div> */}
-            <Dialog buttonTitle={<FaCog />} buttonTooltip='Opciones del mapa' buttonClass='but-map-options' dialogClass="map-options">
-                <h1>Opciones del mapa</h1>
-                <InputSelect label={'Estilo del mapa:'} name="mapStyles" options={mapStyles} change={(e) => setStyle(e.target.value)}></InputSelect>
-                <Button func={toggle3D}>Vista {is3D ? "2D" : "3D"}</Button>
+            <Dialog buttonTitle={<FaCog />} buttonTooltip={t('map.button.options')} buttonClass='but-map-options' dialogClass="map-options">
+                <h1 className="dialog-title">{t('map.options.title')}</h1>
+                <InputSelect label={t('map.options.select.style.label')} name="mapStyles" options={mapStyles} change={(e) => setStyle(e.target.value)}></InputSelect>
+                <Button func={toggle3D}>{is3D ? t('map.options.button.2D') : t('map.options.button.3D')}</Button>
             </Dialog>
             <div ref={mapContainer} style={{ width: "100%", height: "100vh" }}/>
             {popups.map((p, index) => (

@@ -72,9 +72,13 @@
 @media (max-width:600px){
     .menu-button{
         display: flex;
-        font-size: var(--big-icon) !important;
+        font-size: 15pt !important;
+        /* background-color: var(--green); */
         padding: .2em !important;
-        margin-top: .15em;
+        /* border: 2px solid #000; */
+        position: absolute;
+        top: 0;
+        right: 0;
     }
 
     .sidebar-container{
@@ -93,6 +97,9 @@
             align-items: center;
             gap: .5em;
             /* padding: .5em; */
+            padding-left: 1em;
+            padding-right: 1em;
+
             .p-mobile{
                 display: flex;
                 margin: 0;
@@ -114,6 +121,6 @@
 
     .sidebar-container-opened{
         left: 0;
-        
+        z-index: 1000;
     }
 }

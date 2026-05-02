@@ -112,6 +112,7 @@ function getSpeciesRichnessTrend(data) {
 const getParkStatistics = async (req, res) => {
   try {
     const { parkId } = req.params;
+    const locale = req.query.locale ? req.query.locale : 'en';
 
     // Filtrado
     const filteredStats = await Statistics.find({
@@ -176,6 +177,24 @@ const getParkStatistics = async (req, res) => {
       return bird;
     });
 
+    // Idioma
+    const localizedTop10 = top10.map(bird => ({
+      ...bird,
+
+      comName:
+        bird.comName?.[locale] ||
+        bird.comName?.en ||
+        null,
+
+      wikidata: {
+        ...(bird.wikidata || {}),
+        wikipediaURL:
+          bird.wikidata?.wikipediaURL?.[locale] ||
+          bird.wikidata?.wikipediaURL?.en ||
+          null
+      }
+    }));
+
     // Trend
     const allSpecies = await Statistics.find({ parkId }).lean();
 
@@ -207,7 +226,7 @@ const getParkStatistics = async (req, res) => {
     res.status(200).json({
       totalChecklists,
       totalSpecies: filteredStats.length,
-      top10,
+      top10: localizedTop10,
       // allSpecies: filteredStats,
       yearlySpecies,
       trend: trend

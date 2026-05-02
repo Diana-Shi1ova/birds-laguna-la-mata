@@ -79,16 +79,4 @@
     .input-date-container, .select-container, .input-number-container, .favourite{
         margin-top: .8em;
     }
-
-    .normal-button{
-        background-color: var(--green-active-light);
-    }
-
-    .normal-button:hover{
-        background-color: #abe8cd;
-    }
-
-    .normal-button:active{
-        background-color: var(--green-hover);
-    }
 }

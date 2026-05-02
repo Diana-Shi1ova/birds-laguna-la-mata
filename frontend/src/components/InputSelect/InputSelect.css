@@ -8,5 +8,6 @@
         font-size: var(--text-size);
         padding: .5em;
         border-radius: 10px;
+        cursor: pointer;
     }
 }

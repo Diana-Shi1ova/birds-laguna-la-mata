@@ -1,24 +1,33 @@
 const Bird = require('../models/birdModel');
 const { createFlexibleRegex } = require('../utils/charUtil');
 
+const hybrid = {
+  'es': '(híbrido)',
+  'en': '(hybrid)',
+  'ru': '(гибрид)'
+}
+const excluded = ["(híbrido)", "(hybrid)", "(гибрид)"];
+
+
 const getBirds = async (req, res) => {
   try {
     const page = Math.max(parseInt(req.query.page) || 1, 1);
     const limit = Math.min(parseInt(req.query.limit) || 10, 100);
-    const name = normalize(req.query.name?.trim());
+    const name = req.query.name?.trim();
+    const locale = req.query.locale ? req.query.locale : 'en';
 
     const skip = (page - 1) * limit;
 
     let filter = {
-      comName: { $not: /(híbrido)/i }
+      [`comName.${locale}`]: { $not: new RegExp(excluded.join("|"), "i") }
     };
 
     if (name) {
       filter.$and = [
-        { comName: { $not: /(híbrido)/i } },
+        { [`comName.${locale}`]: { $not: new RegExp(excluded.join("|"), "i") } },
         {
           $or: [
-            { comName: { $regex: createFlexibleRegex(name), $options: "i" } },
+            { [`comName.${locale}`]: { $regex: createFlexibleRegex(name), $options: "i" } },
             { sciName: { $regex: createFlexibleRegex(name), $options: "i" } }
           ]
         }
@@ -29,18 +38,43 @@ const getBirds = async (req, res) => {
       Bird.find(filter)
         .sort({ taxonOrder: 1 })
         .skip(skip)
-        .limit(limit),
+        .limit(limit)
+        .lean(),
       Bird.countDocuments(filter)
     ]);
 
     const totalPages = Math.ceil(total / limit);
+
+    // idiomas
+    /*const updatedBirds = birds.map(bird => ({
+      ...bird,
+      comName: bird.comName[locale],
+      'wikidata.wikipediaURL': wikidata.wikipediaURL[locale]
+    }));*/
+
+    const updatedBirds = birds.map(bird => ({
+      ...bird,
+
+      comName:
+        bird.comName?.[locale] ||
+        bird.comName?.en ||
+        null,
+
+      wikidata: {
+        ...(bird.wikidata || {}),
+        wikipediaURL:
+          bird.wikidata?.wikipediaURL?.[locale] ||
+          bird.wikidata?.wikipediaURL?.en ||
+          null
+      }
+    }));
 
     res.status(200).json({
       page,
       limit,
       totalItems: total,
       totalPages,
-      data: birds,
+      data: updatedBirds,
     });
 
   } catch (error) {
@@ -62,10 +96,30 @@ function normalize(text) {
 const getBirdById = async (req, res) => {
   try {
     const { id } = req.params;
+    const locale = req.query.locale ? req.query.locale : 'en';
         
-    const result = await Bird.findById(id);
+    const result = await Bird.findById(id).lean();
     if(!result) res.status(404).json({'message': 'Bird not found'});
-    res.status(200).json(result);
+
+    // Idioma
+    const localized = {
+      ...result,
+
+      comName:
+        result.comName?.[locale] ||
+        result.comName?.en ||
+        null,
+
+      wikidata: {
+        ...(result.wikidata || {}),
+        wikipediaURL:
+          result.wikidata?.wikipediaURL?.[locale] ||
+          result.wikidata?.wikipediaURL?.en ||
+          null
+      }
+    };
+
+    res.status(200).json(localized);
   } catch (error) {
     res.status(500).json({
       message: 'Server error',

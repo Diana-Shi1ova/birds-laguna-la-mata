@@ -2,8 +2,11 @@ import FormLayout from "../../layouts/FormLayout/FormLayout";
 import Input from "../../components/Input/Input";
 import { useState } from "react";
 import { api } from "../../api/api";
+import { useTranslation } from "react-i18next";
+
 
 function Register () {
+    const { t } = useTranslation();
     const [formData, setFormData] = useState({
         name: "",
         email: "",
@@ -24,31 +27,31 @@ function Register () {
         // 1. Email
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!formData.email) {
-            newErrors.email = 'Campo "Email" es obligatorio';
+            newErrors.email = t('register.error.required.email');
         } else if (!emailRegex.test(formData.email)) {
-            newErrors.email = "Formato incorrecto";
+            newErrors.email = t('register.error.format');
         }
 
         // 2. Name
         if (!formData.name) {
-            newErrors.name = 'Campo "Nombre" es obligatorio';
+            newErrors.name = t('register.error.required.name');
         }
 
         // 3. Password
         if (!formData.password) {
-            newErrors.password = 'Campo "Contraseña" es obligatorio';
+            newErrors.password = t('register.error.required.password');
         } else if (formData.password.length < 8) {
-            newErrors.password = "La contraseña debe tener como mínimo 8 caracteres";
+            newErrors.password = t('register.error.password.length');
         } else {
             const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).+$/;
             if (!passwordRegex.test(formData.password)) {
-                newErrors.password = "La contraseña debe contener mayúscula, minúscula, número y símbolo";
+                newErrors.password = t('register.error.password.content');
             }
         }
 
         // 4. Confirm Password
         if (formData.password !== formData.password2) {
-            newErrors.password2 = "Las contraseñas no coinciden";
+            newErrors.password2 = t('register.error.password.repeat');
         }
 
         setErrors(newErrors);
@@ -70,29 +73,6 @@ function Register () {
         setLoading(true);
         setError("");
 
-        /*try {
-            const response = await fetch("https://your-api.com/register", {
-                method: "POST",
-                headers: {
-                "Content-Type": "application/json",
-                },
-                body: JSON.stringify(formData),
-            });
-
-            if (!response.ok) {
-                const data = await response.json();
-                throw new Error(data.message || "Ошибка регистрации");
-            }
-
-            const data = await response.json();
-            console.log("Пользователь зарегистрирован:", data);
-            // Например, можно сразу залогинить пользователя:
-            // login(data.user); 
-        } catch (err) {
-            setError(err.message);
-        } finally {
-            setLoading(false);
-        }*/
        // Petición al servidor
         if (validate()) {
             api.post('/user', formData)
@@ -103,21 +83,23 @@ function Register () {
             .catch(error => {
                 console.error('Error:', error);
                 setError(error.response.data.message);
+                if(error.status === 409) setError(t('register.error.exist'));
+                else setError(t('sever_error'));
             });
         }
     };
 
     return (
         <>
-            <FormLayout title={'Registrarse'} url="register" submit="Registrarse" submitFunction={handleSubmit} close={true}>
+            <FormLayout title={t('page.title.register')} url="register" submit={t('regiter.button.register')} submitFunction={handleSubmit} close={true}>
                 <p className={error ? ('error-message-general opened') : ('error-message-general')}>{error}</p>
-                <Input type={'text'} label={'Email'} name={'email'} change={handleChange} req={true} auto="email" classAdditional={errors.email ? "error" : ""}></Input>
+                <Input type={'text'} label={t('regiter.email.label')} name={'email'} change={handleChange} req={true} auto="email" classAdditional={errors.email ? "error" : ""}></Input>
                 {errors.email && <p className={errors.email ? ('error-message-general opened') : ('error-message-general')}>{errors.email}</p>}
-                <Input type={'text'} label={'Nombre'} name={'name'} change={handleChange} req={true} auto="name" classAdditional={errors.email ? "error" : ""}></Input>
+                <Input type={'text'} label={t('regiter.name.label')} name={'name'} change={handleChange} req={true} auto="name" classAdditional={errors.email ? "error" : ""}></Input>
                 {errors.name && <p className={errors.name ? ('error-message-general opened') : ('error-message-general')}>{errors.name}</p>}
-                <Input type={'password'} label={'Contraseña'} name={'password'} change={handleChange} req={true} classAdditional={errors.email ? "error" : ""}></Input>
+                <Input type={'password'} label={t('regiter.password.label')} name={'password'} change={handleChange} req={true} classAdditional={errors.email ? "error" : ""}></Input>
                 {errors.password && <p className={errors.password ? ('error-message-general opened') : ('error-message-general')}>{errors.password}</p>}
-                <Input type={'password'} label={'Repetir contraseña'} change={handleChange} name={'password2'} req={true} classAdditional={errors.email ? "error" : ""}></Input>
+                <Input type={'password'} label={t('regiter.repeat_password.label')} change={handleChange} name={'password2'} req={true} classAdditional={errors.email ? "error" : ""}></Input>
                 {errors.password2 && <p className={errors.password2 ? ('error-message-general opened') : ('error-message-general')}>{errors.password2}</p>}
             </FormLayout>
         </>

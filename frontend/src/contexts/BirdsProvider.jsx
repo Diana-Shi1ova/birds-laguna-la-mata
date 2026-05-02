@@ -1,12 +1,14 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { api } from '../api/api';
 import { UseAuth } from '../auth/useAuth';
+import { useTranslation } from 'react-i18next';
 
 // Creamos el contexto
 const BirdsContext = createContext(null);
 
 // Proveedor que va a guardar los datos sobre las aves
 export function BirdsProvider({ children }) {
+    const { i18n } = useTranslation();
     const {user} = UseAuth();
     const [birds, setBirds] = useState([]);                                     // todas las aves de eBird
     const [raspberryAudioBirds, setRaspberryAudioBirds] = useState([]);         // aves de Raspberry audio
@@ -101,6 +103,7 @@ export function BirdsProvider({ children }) {
                     // back: searchQuery.back
                     // back: back
                     back: period,
+                    locale: i18n.resolvedLanguage
                 }
             })
             .then(response => {
@@ -119,7 +122,8 @@ export function BirdsProvider({ children }) {
             api.get('/eBird/history', {
                 params: {
                     parkId: parkData.parkId,
-                    date: formatDateAPI(searchQuery.date)
+                    date: formatDateAPI(searchQuery.date),
+                    locale: i18n.resolvedLanguage
                 }
             })
             .then(response => {
@@ -132,7 +136,7 @@ export function BirdsProvider({ children }) {
                 console.error('Error:', error);
             });
         }
-    }, [parkData, searchQuery]);
+    }, [parkData, searchQuery, i18n.resolvedLanguage]);
 
     // Favoritos
     useEffect(() => {

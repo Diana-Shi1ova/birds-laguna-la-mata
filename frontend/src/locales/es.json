@@ -1,0 +1,349 @@
+{
+  "button": {
+    "close": "Cerrar",
+    "open_filters": "Abrir panel de filtrado",
+    "save": "Guardar especie",
+    "statistics": "Ver dinámica",
+    "unsave": "Eliminar de guardados"
+  },
+  "carousel": {
+    "button": {
+      "next": "Siguiente",
+      "previous": "Anterior"
+    }
+  },
+  "catalog": {
+    "link": {
+      "placeholder": "Conocer más en Wikipedia"
+    }
+  },
+  "filters": {
+    "button": {
+      "close": "Cerrar",
+      "reset": "Reestablecer"
+    },
+    "period": {
+      "date": {
+        "label": "Fecha:"
+      },
+      "days": {
+        "label": "Días (max. 30):"
+      },
+      "radiobutton": {
+        "date": {
+          "label": "Fecha concreta"
+        },
+        "period": {
+          "label": "Período"
+        }
+      },
+      "select": {
+        "label": "Selecciona el período:",
+        "option": {
+          "custom": "Período personalizado",
+          "month": "Último mes",
+          "today": "Hoy",
+          "week": "Última semana"
+        }
+      },
+      "title": "Período"
+    },
+    "results": "Resultados encontrados:",
+    "source": {
+      "checkbox": {
+        "ebird": {
+          "label": "eBird"
+        },
+        "rasp_audio": {
+          "label": "Raspberry Pi (audio)"
+        },
+        "rasp_image": {
+          "label": "Raspberry Pi (imagen)"
+        }
+      },
+      "title": "Fuente"
+    },
+    "species": {
+      "checkbox": {
+        "label": "Solo guardadas"
+      },
+      "input": {
+        "label": "Empieza a introducir las especies:",
+        "placeholder": "Nombre común o científico"
+      },
+      "title": "Especies"
+    },
+    "title": "Filtros"
+  },
+  "form": {
+    "button": {
+      "back": "Volver a la principal"
+    },
+    "explain": "Los campos marcados con * son obligatorios"
+  },
+  "login": {
+    "button": {
+      "login": "Iniciar sesión"
+    },
+    "email": {
+      "label": "Email"
+    },
+    "invalid": "Credenciales incorrectos",
+    "link": {
+      "register": "Registrarse"
+    },
+    "password": {
+      "label": "Contraseña"
+    },
+    "without_account": "¿No tienes cuenta?"
+  },
+  "map": {
+    "button": {
+      "options": "Opciones del mapa"
+    },
+    "observation": {
+      "button": {
+        "close": "Cerrar",
+        "next": "Siguiente",
+        "previous": "Anterior"
+      },
+      "coords": "Coordenadas:",
+      "link": {
+        "placeholder": "Conocer más en Wikipedia"
+      },
+      "observed": "Avistado:",
+      "quantity": "Cantidad:",
+      "raspberry": {
+        "message": "No hay especies detectadas",
+        "open_image": "Abrir imagen",
+        "title": {
+          "audio": "Raspberry Pi (audio)",
+          "image": "Raspberry Pi (imagen)"
+        },
+        "unknown": "Especie desconocida"
+      }
+    },
+    "options": {
+      "button": {
+        "2D": "Vista 2D",
+        "3D": "Vista 3D",
+        "close": "Cerrar"
+      },
+      "select": {
+        "style": {
+          "label": "Estilo del mapa:",
+          "option": {
+            "satelite": "Satélite",
+            "streets": "Calles"
+          }
+        }
+      },
+      "title": "Opciones del mapa"
+    }
+  },
+  "page": {
+    "title": {
+      "catalog": "Catálogo de especies",
+      "login": "Login",
+      "register": "Registro",
+      "saved": "Especies guardadas",
+      "statistics": "Estadística",
+      "statistics_specie": "Estadísticas de especie"
+    }
+  },
+  "pagination": {
+    "button": {
+      "next": "Siguiente",
+      "previous": "Anterior"
+    }
+  },
+  "register": {
+    "error": {
+      "exist": "Usuario ya existe",
+      "format": "Formato incorrecto",
+      "password": {
+        "content": "La contraseña debe contener mayúscula, minúscula, número y símbolo",
+        "length": "La contraseña debe tener como mínimo 8 caracteres",
+        "repeat": "Las contraseñas no coinciden"
+      },
+      "required": {
+        "email": "Campo \"Email\" es obligatorio",
+        "name": "Campo \"Nombre\" es obligatorio",
+        "password": "Campo \"Contraseña\" es obligatorio"
+      }
+    },
+    "link": {
+      "login": "Ir al login"
+    }
+  },
+  "regiter": {
+    "button": {
+      "register": "Registrarse"
+    },
+    "email": {
+      "label": "Email"
+    },
+    "name": {
+      "label": "Nombre"
+    },
+    "password": {
+      "label": "Contraseña"
+    },
+    "repeat_password": {
+      "label": "Repetir contraseña"
+    },
+    "with_account": "¿Ya tienes cuenta?"
+  },
+  "searchbar": {
+    "button": {
+      "hide": "Ocultar la barra de búsqueda",
+      "show": "Mostrar la barra de búsqueda"
+    },
+    "placeholder": "Nombre común o científico",
+    "results": {
+      "button": {
+        "tooltip": "Buscar"
+      }
+    }
+  },
+  "select": {
+    "language": {
+      "option": {
+        "english": "Inglés",
+        "russian": "Ruso",
+        "spanish": "Español"
+      },
+      "title": "Idioma"
+    },
+    "park": "Seleccionar el parque"
+  },
+  "sever_error": "Error del servidor",
+  "sidebar": {
+    "catalog": "Catálogo de especies",
+    "logout": "Cerrar sesión",
+    "map": "Mapa",
+    "menu": {
+      "close": "Cerrar menú",
+      "open": "Abrir menú"
+    },
+    "saved": "Especies guardadas",
+    "statistics": "Estadística"
+  },
+  "site": {
+    "title": "Avistory"
+  },
+  "statistics": {
+    "park": {
+      "biodiversity": {
+        "species": "Especies",
+        "title": "Biodiversidad (últimos 5 años)",
+        "year": "Año"
+      },
+      "summary": {
+        "circle": {
+          "checklists": "Checklists",
+          "species": "Especies"
+        },
+        "title": "Resumen (últimos 5 años)",
+        "trend": {
+          "confidence": "fiabilidad",
+          "option": {
+            "decreasing": "en descenso",
+            "increasing": "en aumento",
+            "stable": "estable",
+            "unknown": "desconocida"
+          },
+          "title": "Tendencia de especies:"
+        }
+      },
+      "top": {
+        "title": "Top 10 especies más frecuentes"
+      },
+      "warning": "Los datos utilizados para el análisis provienen de la ciencia ciudadana (fuente: eBird). Reflejan únicamente lo que los observadores incluyendo no profesionales han logrado registrar y pueden diferir en cierto grado de la realidad."
+    },
+    "specie": {
+      "activity": {
+        "title": "Actividad diaria"
+      },
+      "hourly": {
+        "hour": "Hora",
+        "probability": "Probabilidad",
+        "title": "Actividad diaria"
+      },
+      "no_selected": {
+        "message": "Utiliza el buscador para buscar la especie",
+        "title": "Especie no seleccionada"
+      },
+      "probability": "Probabilidad de avistar:",
+      "quantity": {
+        "month": "Mes",
+        "summary": {
+          "checklists": "checklists",
+          "confidence": {
+            "options": {
+              "high": "alta",
+              "low": "baja",
+              "medium": "media",
+              "none": "ninguna",
+              "vey_high": "muy alta"
+            },
+            "title": "Fiabilidad del análisis:"
+          },
+          "hourly": {
+            "activity": {
+              "evening": "Mayor actividad por la tarde.",
+              "hour": "Mayor actividad alrededor de las",
+              "morning": "Mayor actividad por la mañana."
+            },
+            "options": {
+              "title": "Actividad diaria:"
+            },
+            "without": "No hay un patrón horario definido."
+          },
+          "observed": "observaciones en",
+          "seasonality": {
+            "option": {
+              "moderate": "moderada",
+              "strong": "marcada",
+              "weak": "débil",
+              "without": "No se observa una estacionalidad clara."
+            },
+            "options": {
+              "title": "Estacionalidad:"
+            },
+            "peak": "Pico en la semana",
+            "seasonality": "Estacionalidad"
+          },
+          "title": "Resumen:",
+          "trend": {
+            "options": {
+              "decreasing": "en descenso",
+              "increasing": "en aumento",
+              "stable": "estable",
+              "title": "Tendencia:",
+              "unknown": "desconocida"
+            }
+          }
+        },
+        "title": "Cantidad registrada",
+        "today": "Hoy",
+        "week": "Semana"
+      },
+      "seasonality": {
+        "probability": "Probabilidad",
+        "title": "Estacionalidad",
+        "week": "Semana"
+      },
+      "trend": {
+        "probability": "Probabilidad",
+        "title": "Tendencia (últimos 5 años)",
+        "year": "Año"
+      },
+      "warning": "Los datos utilizados para el análisis provienen de la ciencia ciudadana (fuente: eBird). Reflejan únicamente lo que los observadores incluyendo no profesionales han logrado registrar y pueden diferir en cierto grado de la realidad."
+    },
+    "tabs": {
+      "general": "Estadística general",
+      "specie": "Estadística por especie"
+    }
+  }
+}

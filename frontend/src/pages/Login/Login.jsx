@@ -5,8 +5,11 @@ import { Navigate } from "react-router-dom";
 import { useState } from "react";
 import { api } from "../../api/api";
 import { UseAuth } from "../../auth/useAuth";
+import { useTranslation } from "react-i18next";
+
 
 function Login () {
+    const { t } = useTranslation();
     const { login, isAuth } = UseAuth();
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
@@ -35,8 +38,8 @@ function Login () {
             navigate('/');
         })
         .catch(error => {
-            console.error('Error:', error.response.data.message);
-            setError(error.response.data.message);
+            if(error.status === 400) setError(t('login.invalid'));
+            else setError(t('sever_error'));
         });
     };
 
@@ -48,10 +51,10 @@ function Login () {
     return (
         <>
             {/* <h1>Login</h1> */}
-            <FormLayout title={"Login"} url="login" submit="Iniciar sesión" submitFunction={handleSubmit} close={true}>
+            <FormLayout title={t('page.title.login')} url="login" submit={t('login.button.login')} submitFunction={handleSubmit} close={true}>
                 <p className={error ? ('error-message-general opened') : ('error-message-general')}>{error}</p>
-                <Input label="Email" req={true} name="email" auto="email" change={handleChange} type="email"></Input>
-                <Input label="Contraseña" req={true} name="password" change={handleChange} type="password"></Input>
+                <Input label={t('login.email.label')} req={true} name="email" auto="email" change={handleChange} type="email"></Input>
+                <Input label={t('login.password.label')} req={true} name="password" change={handleChange} type="password"></Input>
             </FormLayout>
         </>
     );

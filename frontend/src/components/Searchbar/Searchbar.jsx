@@ -10,10 +10,11 @@ import { api } from "../../api/api";
 import { FaArrowLeft } from "react-icons/fa";
 import ResultsList from "../ResultsList/ResultsList";
 import { useNavigate } from "react-router-dom";
-
+import { useTranslation } from "react-i18next";
 
 
 function Searchbar () {
+    const { t, i18n } = useTranslation();
     const inputRef = useRef(null);
     const filtersRef = useRef(null);
     const [focus, setFocus] = useState(false);
@@ -31,10 +32,15 @@ function Searchbar () {
 
     const [width, setWidth] = useState(window.innerWidth);
 
+    const [searchButtonTooltip, setSearchButtonTooltip] = useState('');
+
     // Actualizar anchura
     useEffect(() => {
         const handleResize = () => {
             setWidth(window.innerWidth);
+
+            if(window.innerWidth<=600) setSearchButtonTooltip(t('searchbar.button.open'));
+            else setSearchButtonTooltip('');
         };
 
         window.addEventListener("resize", handleResize);
@@ -104,7 +110,7 @@ function Searchbar () {
 
             // Hacer petición de especies
             api.get('/bird', {
-                params: { page: 1, limit: 10, name: e.target.value.toLowerCase()}
+                params: { page: 1, limit: 10, name: e.target.value.toLowerCase(), locale: i18n.resolvedLanguage}
             })
             .then(response => {
                 console.log(response.data.data);
@@ -166,7 +172,7 @@ function Searchbar () {
     return (
         <div className="searchbar-container">
             {isSearchOpen && 
-                <Button type="icon" classAdditional="arrow-button" func={hideSearchBar}>
+                <Button type="icon" classAdditional="arrow-button" func={hideSearchBar} tooltip={t('searchbar.button.hide')}>
                     <FaArrowLeft />
                 </Button>
             }
@@ -177,7 +183,7 @@ function Searchbar () {
                     className={`searchbar-input ${mobile ? 'mobile' : ''}`}
                     onBlur={handleBlur}
                     onChange={dynamicSearch}
-                    placeholder="Nombre común o científico"
+                    placeholder={t('searchbar.placeholder')}
                     autoComplete="off"
                     name="searchbar"
                     value={value}
@@ -186,6 +192,7 @@ function Searchbar () {
                     type="icon"
                     classAdditional="search-button"
                     func={showSearchbar}
+                    tooltip={searchButtonTooltip}
                 >
                     <FaSearch />
                 </Button>
@@ -199,7 +206,7 @@ function Searchbar () {
                     // classAdditional={`filters${mobile ? '-show' : ''}`}
                     classAdditional='filters'
                     func={open}
-                    tooltip="Abrir panel con filtros"
+                    tooltip={t('button.open_filters')}
                 >
                     <FaFilter />
                 </Button>

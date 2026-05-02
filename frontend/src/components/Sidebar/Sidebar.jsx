@@ -14,48 +14,52 @@ import { FaChartBar } from "react-icons/fa";
 import { FaBars } from "react-icons/fa";
 import { FaTimes } from "react-icons/fa";
 import { FaSignOutAlt } from "react-icons/fa";
+import { useTranslation } from "react-i18next";
+import { useSearchUI } from "../../contexts/SearchUIProvider";
 
 
 function Sidebar () {
+    const { sidebarOpen, setSidebarOpen } = useSearchUI();
     const { isAuth, logout } = UseAuth();
     const [open, setOpen] = useState(false);
+    const { t } = useTranslation();
 
     // Mostrar menú (móvil)
     function showMenu(){
-        setOpen(!open);
+        setSidebarOpen(!sidebarOpen);
     }
 
     return (
-        <div className={open ? "sidebar-container sidebar-container-opened" : "sidebar-container"}>
+        <div className={sidebarOpen ? "sidebar-container sidebar-container-opened" : "sidebar-container"}>
             {/* <input type="checkbox" id="menu-toggle" /> */}
             <ul className="sidebar">
                 <li className="logo">
                     <Logo></Logo>
                 </li>
                 <li>
-                    <NavLink to="/" end className={({ isActive }) => isActive ? "active" : ""} title="Mapa">
+                    <NavLink to="/" end className={({ isActive }) => isActive ? "active" : ""} title={t('sidebar.map')}>
                         <FaMapMarkerAlt />
-                        <p className="p-mobile">Mapa</p>
+                        <p className="p-mobile">{t('sidebar.map')}</p>
                     </NavLink>
                 </li>
                 <li>
-                    <NavLink to="/catalog" end className={({ isActive }) => isActive ? "active" : ""} title="Catálogo de especies">
+                    <NavLink to="/catalog" end className={({ isActive }) => isActive ? "active" : ""} title={t('sidebar.catalog')}>
                         <FaBook />
-                        <p className="p-mobile">Catálogo de especies</p>
+                        <p className="p-mobile">{t('sidebar.catalog')}</p>
                     </NavLink>
                 </li>
                 {isAuth && (
                     <li>
-                        <NavLink to="/favourites" end className={({ isActive }) => isActive ? "active" : ""} title="Especies guardadas">
+                        <NavLink to="/favourites" end className={({ isActive }) => isActive ? "active" : ""} title={t('sidebar.saved')}>
                             <BsBookmarkStarFill />
-                            <p className="p-mobile">Especies guardadas</p>
+                            <p className="p-mobile">{t('sidebar.saved')}</p>
                         </NavLink>
                     </li>
                 )}
                 <li>
-                    <NavLink to="/statistics" className={({ isActive }) => isActive ? "active" : ""} title="Estadística">
+                    <NavLink to="/statistics" className={({ isActive }) => isActive ? "active" : ""} title={t('sidebar.statistics')}>
                         <FaChartBar />
-                        <p className="p-mobile">Estadística</p>
+                        <p className="p-mobile">{t('sidebar.statistics')}</p>
                     </NavLink>
                 </li>
                 {isAuth && (
@@ -64,22 +68,24 @@ function Sidebar () {
                             type="icon"
                             classAdditional="exit"
                             func={logout}
-                            tooltip="Cerrar sesión"
+                            tooltip={t('sidebar.logout')}
                         >
                             <FaSignOutAlt />
-                            <p className="p-mobile">Cerrar sesión</p>
+                            <p className="p-mobile">{t('sidebar.logout')}</p>
                         </Button>
                     </li>
                 )}
             </ul>
+            {sidebarOpen &&
             <Button
                 type="icon"
                 classAdditional="menu-button"
                 func={() => showMenu()}
-                tooltip={open ? "Cerrar menú" : "Abrir menú"}
+                tooltip={sidebarOpen ? t('sidebar.menu.close') : t('sidebar.menu.open')}
             >
-                {open ? <FaTimes /> : <FaBars />}
+                {sidebarOpen ? <FaTimes /> : <FaBars />}
             </Button>
+            }
         </div>
     );
 };

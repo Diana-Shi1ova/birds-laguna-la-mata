@@ -13,9 +13,11 @@ import { FaRegBookmark } from "react-icons/fa";
 import { FaBookmark } from "react-icons/fa"; // filled
 import { FaTrashAlt } from "react-icons/fa";
 import { FaRegBell } from "react-icons/fa";
+import { useTranslation } from 'react-i18next';
 
 
 function BirdCard ({ type='normal', data }) {
+    const { t } = useTranslation();
     const [imgLoading, setImgLoading] = useState(true);
 
     return (
@@ -52,6 +54,7 @@ function BirdCard ({ type='normal', data }) {
                 className='common'
                 target="_blank" 
                 rel="noopener noreferrer"
+                title={t('catalog.link.placeholder')}
             >
                 {data?.comName}
             </Link>
@@ -65,6 +68,7 @@ function BirdCard ({ type='normal', data }) {
                     className='bird-image-link'
                     target="_blank" 
                     rel="noopener noreferrer"
+                    title={t('catalog.link.placeholder')}
                 >
                     <img className='bird-image'
                         src={data?.wikidata?.images?.[data?.wikidata?.images?.length-1]}

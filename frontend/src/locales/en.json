@@ -1,0 +1,349 @@
+{
+  "button": {
+    "close": "Close",
+    "open_filters": "Open filtering panel",
+    "save": "Save specie",
+    "statistics": "View dynamics",
+    "unsave": "Unsave"
+  },
+  "carousel": {
+    "button": {
+      "next": "Next",
+      "previous": "Previous"
+    }
+  },
+  "catalog": {
+    "link": {
+      "placeholder": "Learn more on Wikipedia"
+    }
+  },
+  "filters": {
+    "button": {
+      "close": "Close",
+      "reset": "Reset"
+    },
+    "period": {
+      "date": {
+        "label": "Date:"
+      },
+      "days": {
+        "label": "Days (max. 30):"
+      },
+      "radiobutton": {
+        "date": {
+          "label": "Specific date"
+        },
+        "period": {
+          "label": "Period"
+        }
+      },
+      "select": {
+        "label": "Select the period:",
+        "option": {
+          "custom": "Custom period",
+          "month": "Last month",
+          "today": "Today",
+          "week": " Last week"
+        }
+      },
+      "title": "Period"
+    },
+    "results": "Results found:",
+    "source": {
+      "checkbox": {
+        "ebird": {
+          "label": "eBird"
+        },
+        "rasp_audio": {
+          "label": "Raspberry Pi (audio)"
+        },
+        "rasp_image": {
+          "label": "Raspberry Pi (image)"
+        }
+      },
+      "title": "Source"
+    },
+    "species": {
+      "checkbox": {
+        "label": "Only saved"
+      },
+      "input": {
+        "label": "Start introducing the species:",
+        "placeholder": "Common or scientific name"
+      },
+      "title": "Species"
+    },
+    "title": "Filters"
+  },
+  "form": {
+    "button": {
+      "back": "Back to homepage"
+    },
+    "explain": "Fields marked with * are required"
+  },
+  "login": {
+    "button": {
+      "login": "Sign In"
+    },
+    "email": {
+      "label": "Email"
+    },
+    "invalid": "Invalid credencials",
+    "link": {
+      "register": "Sign Up"
+    },
+    "password": {
+      "label": "Password"
+    },
+    "without_account": "Don't have an account?"
+  },
+  "map": {
+    "button": {
+      "options": "Map options"
+    },
+    "observation": {
+      "button": {
+        "close": "Close",
+        "next": "Next",
+        "previous": "Previous"
+      },
+      "coords": "Coordinates:",
+      "link": {
+        "placeholder": "Learn more on Wikipedia"
+      },
+      "observed": "Observed:",
+      "quantity": "Quantity:",
+      "raspberry": {
+        "message": "No species detected",
+        "open_image": "Open image",
+        "title": {
+          "audio": "Raspberry Pi (audio)",
+          "image": "Raspberry Pi (image)"
+        },
+        "unknown": "Unknown specie"
+      }
+    },
+    "options": {
+      "button": {
+        "2D": "2D view",
+        "3D": "3D view",
+        "close": "Close"
+      },
+      "select": {
+        "style": {
+          "label": "Map style:",
+          "option": {
+            "satelite": "Satellite",
+            "streets": "Streets"
+          }
+        }
+      },
+      "title": "Map options"
+    }
+  },
+  "page": {
+    "title": {
+      "catalog": " Species catalog",
+      "login": "Sign In",
+      "register": "Sign Up",
+      "saved": "Saved species",
+      "statistics": "Statistics",
+      "statistics_specie": "Specie statistics"
+    }
+  },
+  "pagination": {
+    "button": {
+      "next": "Next",
+      "previous": "Previous"
+    }
+  },
+  "register": {
+    "error": {
+      "exist": "User already exists",
+      "format": "Incorrect format",
+      "password": {
+        "content": "The password must contain uppercase letters, lowercase letters, numbers, and symbols",
+        "length": "The password must be at least 8 characters long",
+        "repeat": "The passwords do not match"
+      },
+      "required": {
+        "email": "The \"Email\" field is required",
+        "name": "The \"Name\" field is required",
+        "password": "The \"Password\" field is required"
+      }
+    },
+    "link": {
+      "login": "Sign In"
+    }
+  },
+  "regiter": {
+    "button": {
+      "register": "Sign Up"
+    },
+    "email": {
+      "label": "Email"
+    },
+    "name": {
+      "label": "Name"
+    },
+    "password": {
+      "label": "Password"
+    },
+    "repeat_password": {
+      "label": "Repeat password"
+    },
+    "with_account": "Already have an account?"
+  },
+  "searchbar": {
+    "button": {
+      "hide": "Hide the search bar",
+      "show": "Show the search bar"
+    },
+    "placeholder": "Common or scientific name",
+    "results": {
+      "button": {
+        "tooltip": "Search"
+      }
+    }
+  },
+  "select": {
+    "language": {
+      "option": {
+        "english": "English",
+        "russian": "Russian",
+        "spanish": "Spanish"
+      },
+      "title": "Language"
+    },
+    "park": "Select the park"
+  },
+  "sever_error": "Server error",
+  "sidebar": {
+    "catalog": "Species catalog",
+    "logout": "Log out",
+    "map": "Map",
+    "menu": {
+      "close": "Close menu",
+      "open": "Open menu"
+    },
+    "saved": "Saved species",
+    "statistics": "Statistics"
+  },
+  "site": {
+    "title": "Avistory"
+  },
+  "statistics": {
+    "park": {
+      "biodiversity": {
+        "species": "Species",
+        "title": "Biodiversity (last 5 years)",
+        "year": "Year"
+      },
+      "summary": {
+        "circle": {
+          "checklists": "Checklists",
+          "species": "Species"
+        },
+        "title": "Summary (last 5 years)",
+        "trend": {
+          "confidence": "confidence",
+          "option": {
+            "decreasing": "decreasing",
+            "increasing": "increasing",
+            "stable": "stable",
+            "unknown": "unknown"
+          },
+          "title": "Species trend:"
+        }
+      },
+      "top": {
+        "title": "Top 10 most frequent species"
+      },
+      "warning": "The data used for the analysis comes from citizen science (source: eBird). They reflect only what observers, including non-professionals, have managed to record and may differ to some extent from reality."
+    },
+    "specie": {
+      "activity": {
+        "title": "Daily activity"
+      },
+      "hourly": {
+        "hour": "Hour",
+        "probability": "Probability",
+        "title": "Daily activity"
+      },
+      "no_selected": {
+        "message": "Use the search bar to find the species",
+        "title": "Specie not selected"
+      },
+      "probability": "Probability of sighting:",
+      "quantity": {
+        "month": "Month",
+        "summary": {
+          "checklists": "checklists",
+          "confidence": {
+            "options": {
+              "high": "high",
+              "low": "low",
+              "medium": "medium",
+              "none": "none",
+              "vey_high": "very high"
+            },
+            "title": "Reliability of the analysis:"
+          },
+          "hourly": {
+            "activity": {
+              "evening": "More activity in the afternoon.",
+              "hour": "Peak activity around",
+              "morning": "More activity in the morning."
+            },
+            "options": {
+              "title": "Daily activity:"
+            },
+            "without": "There is no defined hourly pattern."
+          },
+          "observed": "observations in",
+          "seasonality": {
+            "option": {
+              "moderate": "moderate",
+              "strong": "strong",
+              "weak": "week",
+              "without": "No clear seasonality is observed."
+            },
+            "options": {
+              "title": "Seasonality:"
+            },
+            "peak": "Peak during the week",
+            "seasonality": "Seasonality"
+          },
+          "title": "Summary:",
+          "trend": {
+            "options": {
+              "decreasing": "decreasing",
+              "increasing": "increasing",
+              "stable": "stable",
+              "title": "Trend:",
+              "unknown": "unknown"
+            }
+          }
+        },
+        "title": "Registered quantity",
+        "today": "Today",
+        "week": "Week"
+      },
+      "seasonality": {
+        "probability": "Probability",
+        "title": "Seasonality",
+        "week": "Week"
+      },
+      "trend": {
+        "probability": "Probability",
+        "title": "Trend (last 5 years)",
+        "year": "Year"
+      },
+      "warning": "The data used for the analysis comes from citizen science (source: eBird). They reflect only what observers, including non-professionals, have managed to record and may differ to some extent from reality."
+    },
+    "tabs": {
+      "general": "General statistics",
+      "specie": "Statistics by species"
+    }
+  }
+}

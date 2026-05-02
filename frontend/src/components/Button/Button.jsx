@@ -8,11 +8,11 @@ import {
 } from '@floating-ui/react';
 
 
-function Button ({name="", type="text", func = () => {}, classAdditional="", children, submit=false, tooltip='', ref }) {
+function Button ({name="", type="text", colorType="primary", func = () => {}, classAdditional="", children, submit=false, tooltip='', ref, disabled=false }) {
     return (
         <button
             className={
-                ((type === "text" && "normal-button ") ||
+                ((type === "text" && "normal-button-"+ colorType + " ") ||
                 (type === "icon" && "icon-button ")) +
                 classAdditional
             }
@@ -20,6 +20,7 @@ function Button ({name="", type="text", func = () => {}, classAdditional="", chi
             type={submit ? "submit" : "button"}
             title={tooltip}
             ref={ref}
+            disabled={disabled}
         >
             {children}{name}
         </button>

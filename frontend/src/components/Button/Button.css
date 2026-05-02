@@ -1,4 +1,4 @@
-.normal-button{
+.normal-button-primary, .normal-button-secondary{
     font-size: var(--text-size);
     padding: .5em;
     border: 2px solid black;
@@ -8,12 +8,29 @@
     width: fit-content;
 }
 
-.normal-button:hover{
+.normal-button-primary:hover{
     background-color: var(--green-hover);
 }
 
-.normal-button:active{
+.normal-button-primary:active{
     background-color: var(--green-active-dark);
+}
+
+.normal-button-primary:disabled, .normal-button-secondary:disabled{
+    background-color: var(--green-active-light);
+    border-color: var(--black-disabled);
+}
+
+.normal-button-secondary{
+    background-color: var(--green-active-light);
+}
+
+.normal-button-secondary:hover{
+    background-color: var(--green-hover-secondary);
+}
+
+.normal-button-secondary:active{
+    background-color: var(--green-hover);
 }
 
 .icon-button{

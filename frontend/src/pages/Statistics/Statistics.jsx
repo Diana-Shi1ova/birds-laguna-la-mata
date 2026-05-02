@@ -16,9 +16,11 @@ import BirdCarousel from "../../components/BirdCarousel/BirdCarousel";
 import StatisticsBird from "./StatisticsBird/StatisticsBird";
 import StatisticsPark from "./StatisticsPark/StatisticsPark";
 import { useSearchUI } from "../../contexts/SearchUIProvider";
+import { useTranslation } from "react-i18next";
 
 
 function Statistics(){
+    const { t } = useTranslation();
     const location = useLocation();
     const navigate = useNavigate();
 
@@ -113,13 +115,13 @@ function Statistics(){
             <div className="chartpage-header">
                 <Tabs
                     tabs={[
-                            { label: 'Estadística general', value: 'general', url: '/statistics' },
-                            { label: 'Estadística por especie', value: 'species', url: `/statistics/bird/${birdId}` },
+                            { label: t('statistics.tabs.general'), value: 'general', url: '/statistics' },
+                            { label: t('statistics.tabs.specie'), value: 'species', url: `/statistics/bird/${birdId}` },
                         ]}
                         activeTab={activeTab}
                         onChange={setActiveTab}
                 />
-                <InputSelect name='park' options={parkList} selected={park} change={onSelectChange}></InputSelect>
+                <InputSelect name='park' options={parkList} selected={park} change={onSelectChange} title={t('select.park')}></InputSelect>
             </div>
 
             {activeTab==='general' ? (
@@ -139,9 +141,9 @@ function Statistics(){
                     <>
                         {/* No hay especie */}
                         <div className="without-data">
-                            <h1>Especie no seleccionada</h1>
+                            <h1>{t('statistics.specie.no_selected.title')}</h1>
                             <FaDove />
-                            <p>Utiliza el buscador para buscar la especie</p>
+                            <p>{t('statistics.specie.no_selected.message')}</p>
                         </div>
                     </>
                 )}

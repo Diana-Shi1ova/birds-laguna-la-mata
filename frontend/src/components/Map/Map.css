@@ -8,6 +8,10 @@
     gap: .5em;
 }
 
+.dialog-title{
+  margin-top: 0;
+}
+
 .but-map-options{
   display: flex;
   padding: .3em;

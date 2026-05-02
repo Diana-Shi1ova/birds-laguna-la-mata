@@ -7,9 +7,7 @@ const birdSchema = new mongoose.Schema(
       unique: true,
       required: [true, 'Please add a scientific name'],
     },
-    comName: {
-      type: String,
-    },
+    comName: Object,
     speciesCode: {
       type: String,
     },
@@ -47,9 +45,7 @@ const birdSchema = new mongoose.Schema(
         images: {
             type: [String],
         },
-        wikipediaURL: {
-            type: String,
-        }
+        wikipediaURL: Object
     }
   }
 );

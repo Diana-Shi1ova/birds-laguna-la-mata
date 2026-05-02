@@ -6,9 +6,11 @@ import { useState } from 'react';
 
 import { FaAngleLeft } from "react-icons/fa";
 import { FaAngleRight } from "react-icons/fa";
+import { useTranslation } from 'react-i18next';
 
 
 function Pagination({total = 1, current = 1, onCurrentChange }) {
+    const { t } = useTranslation();
     const previousPage = () => {
         if (current>1) onCurrentChange(current-1);
     }
@@ -31,11 +33,22 @@ function Pagination({total = 1, current = 1, onCurrentChange }) {
 
     return(
         <div className='pagination-container'>
-            <Button func={previousPage}><FaAngleLeft /></Button>
-            {/* <Input type={"number"} value={current} change={onPageChange} enter={onEnter}></Input> */}
+            <Button
+                func={previousPage}
+                tooltip={t('pagination.button.previous')}
+                disabled={(current-1 < 1) ? true : false}
+            >
+                <FaAngleLeft />
+            </Button>
             <InputNumber name="page" value={current} change={onPageChange} enter={onEnter} blur={onEnter} min={1} max={total} step={1}></InputNumber>
             <p className='total'>/<span>{total}</span></p>
-            <Button func={nextPage}><FaAngleRight /></Button>
+            <Button
+                func={nextPage}
+                tooltip={t('pagination.button.next')}
+                disabled={(current+1 > total) ? true : false}
+            >
+                <FaAngleRight />
+            </Button>
         </div>
     );
 }

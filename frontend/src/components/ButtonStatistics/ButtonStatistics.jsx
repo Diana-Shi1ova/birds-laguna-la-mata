@@ -10,9 +10,11 @@ import { FaRegBookmark } from "react-icons/fa";
 import { FaBookmark } from "react-icons/fa"; // filled
 import { FaTrashAlt } from "react-icons/fa";
 import { FaRegBell } from "react-icons/fa";
+import { useTranslation } from 'react-i18next';
 
 
 function ButtonStatistics ({ bird, park }) {
+    const { t } = useTranslation();
     const navigate = useNavigate();
 
     const showStatistics = () => {
@@ -20,7 +22,7 @@ function ButtonStatistics ({ bird, park }) {
     };
 
     return (
-        <Button classAdditional='chart-button' func={showStatistics}><FaChartBar />Ver dinámica</Button>
+        <Button classAdditional='chart-button' func={showStatistics}><FaChartBar />{t('button.statistics')}</Button>
     );
 };
 

@@ -2,9 +2,11 @@ import './Dialog.css';
 import { useEffect, useState, useRef } from "react";
 import Button from '../Button/Button';
 import { FaTimes } from "react-icons/fa";
+import { useTranslation } from "react-i18next";
 
 
 function Dialog({buttonTitle, buttonClass='', dialogClass='', buttonTooltip='', children}) {
+    const { t } = useTranslation();
     const dialogRef = useRef(null);
     const [isClosing, setIsClosing] = useState(false);
 
@@ -30,7 +32,7 @@ function Dialog({buttonTitle, buttonClass='', dialogClass='', buttonTooltip='', 
             {/* <button onClick={openDialog}>{buttonTitle}</button> */}
 
             <dialog ref={dialogRef} className={dialogClass+` dialog ${isClosing ? "closing" : "opening"}`}>
-                <Button classAdditional='close-button' type='icon' func={closeDialog} tooltip='Cerrar'><FaTimes /></Button>
+                <Button classAdditional='close-button' type='icon' func={closeDialog} tooltip={t('map.options.button.close')}><FaTimes /></Button>
                 <div className="dialog-content">
                     {children}
                 </div>

@@ -14,11 +14,13 @@ import InputDate from "../InputDate/InputDate";
 import InputNumber from "../InputNumber/InputNumber";
 import { UseAuth } from "../../auth/useAuth";
 import { useSearchUI } from "../../contexts/SearchUIProvider";
+import { useTranslation } from "react-i18next";
 // import { set } from "mongoose";
 // import { BsEraser } from "react-icons/bs";
 
 
 function FiltersPannel () {
+    const { t } = useTranslation();
     const [formData, setFormData] = useState({
             species: [],
             name: "",
@@ -41,15 +43,15 @@ function FiltersPannel () {
     const [showPeriodInput, setShowPeriodInput] = useState(false);
 
     const PERIOD_OPTIONS = [
-        { value: "today", label: "Hoy" },
-        { value: "week", label: "Última semana" },
-        { value: "month", label: "Último mes" },
-        { value: "custom", label: "Período personalizado" }
+        { value: "today", label: t('filters.period.select.option.today') },
+        { value: "week", label: t('filters.period.select.option.week') },
+        { value: "month", label: t('filters.period.select.option.month') },
+        { value: "custom", label: t('filters.period.select.option.custom') }
     ];
 
     const close = (e) => {
         e.preventDefault();
-        setFiltersPannel(true);
+        setFiltersPannel(false);
     }
 
     const onChange = (e) => {
@@ -269,50 +271,50 @@ function FiltersPannel () {
 
 
     return (
-        <form className={filtersPannel ? "filters-pannel closed" : "filters-pannel"}>
+        <form className={filtersPannel ? "filters-pannel" : "filters-pannel closed"}>
             <Button
                 type="icon"
                 classAdditional="close-button"
                 func={(e) => close(e)}
-                tooltip="Cerrar"
+                tooltip={t('filters.button.close')}
             >
                 <FaTimes />
             </Button>
             <section className="filter-section-general">
-                <h1>Filtros</h1>
+                <h1>{t('filters.title')}</h1>
                 {/* {showNumResults && ( */}
-                    <p className="results">Resultados encontrados: <span>{filteredBirds.length + raspResults}</span></p>
+                    <p className="results">{t('filters.results')} <span>{filteredBirds.length + raspResults}</span></p>
                 {/* )} */}
                 <section className="filter-section species-section">
-                    <h2>Especies</h2>
-                    <Input label={'Empieza a introducir las especies:'} name={'birdNames'} auto='off' placeholder={'Nombre común o científico'} enter={onEnter}></Input>
+                    <h2>{t('filters.species.title')}</h2>
+                    <Input label={t('filters.species.input.label')} name={'birdNames'} auto='off' placeholder={t('filters.species.input.placeholder')} enter={onEnter}></Input>
                     <Chips values={formData.favourites ? [] : searchQuery.species} remove={deleteSpecieFromList}></Chips>
                     {isAuth === true && (
-                        <InputCheckbox name='favourites' label='Solo favoritos' classAdditional="favourite" change={onFavouritesChange} checked={formData.favourites}></InputCheckbox>
+                        <InputCheckbox name='favourites' label={t('filters.species.checkbox.label')} classAdditional="favourite" change={onFavouritesChange} checked={formData.favourites}></InputCheckbox>
                     )}
                 </section>
                 <section className="filter-section">
-                    <h2>Filtrado temporal</h2>
-                    <InputRadiobutton id='period' label='Período' name="filtrado-temporal" value='period' checked={formData.period} change={onTemporalRadioChange}></InputRadiobutton>
-                    <InputRadiobutton id='day' label='Fecha concreta' name="filtrado-temporal" value='date' checked={!formData.period} change={onTemporalRadioChange}></InputRadiobutton>
+                    <h2>{t('filters.period.title')}</h2>
+                    <InputRadiobutton id='period' label={t('filters.period.radiobutton.period.label')} name="filtrado-temporal" value='period' checked={formData.period} change={onTemporalRadioChange}></InputRadiobutton>
+                    <InputRadiobutton id='day' label={t('filters.period.radiobutton.date.label')} name="filtrado-temporal" value='date' checked={!formData.period} change={onTemporalRadioChange}></InputRadiobutton>
                     {formData.period === true ? (
-                        <InputSelect name='period' label='Selecciona el período:' change={onPeriodChange} selected={formData.selectedPeriod} options={PERIOD_OPTIONS}></InputSelect>
+                        <InputSelect name='period' label={t('filters.period.select.label')} change={onPeriodChange} selected={formData.selectedPeriod} options={PERIOD_OPTIONS}></InputSelect>
                     ) : (
-                        <InputDate label={'Fecha:'} name={'date'} change={onChange} defValue={formatDate(formData.date)}></InputDate>
+                        <InputDate label={t('filters.period.date.label')} name={'date'} change={onChange} defValue={formatDate(formData.date)}></InputDate>
                     )}
                     { showPeriodInput === true && formData.period === true && (
-                        <InputNumber name='days' label='Días (max. 30):' defValue={formData.days} max={30} min={1} step={1} change={onDaysChange} enter={onEnter}></InputNumber>
+                        <InputNumber name='days' label={t('filters.period.days.label')} defValue={formData.days} max={30} min={1} step={1} change={onDaysChange} enter={onEnter}></InputNumber>
                     )}
                 </section>
                 <section className="filter-section">
-                <h2>Fuente</h2>
+                <h2>{t('filters.source.title')}</h2>
                     {/* Añadir botones con información */}
-                    <InputCheckbox name='ebird' label='eBird' checked={formData.ebird} change={onCheckboxesChange}></InputCheckbox>
-                    <InputCheckbox name='rpa' label='Raspberry Pi (audio)' checked={formData.rpa} change={onCheckboxesChange}></InputCheckbox>
-                    <InputCheckbox name='rpi' label='Raspberry Pi (imagen)' checked={formData.rpi} change={onCheckboxesChange}></InputCheckbox>
+                    <InputCheckbox name='ebird' label={t('filters.source.checkbox.ebird.label')} checked={formData.ebird} change={onCheckboxesChange}></InputCheckbox>
+                    <InputCheckbox name='rpa' label={t('filters.source.checkbox.rasp_audio.label')} checked={formData.rpa} change={onCheckboxesChange}></InputCheckbox>
+                    <InputCheckbox name='rpi' label={t('filters.source.checkbox.rasp_image.label')} checked={formData.rpi} change={onCheckboxesChange}></InputCheckbox>
                 </section>
             </section>
-            <Button func={resetFilters}>Reestablecer</Button>
+            <Button colorType='secondary' func={resetFilters}>{t('filters.button.reset')}</Button>
         </form>
     );
 }

@@ -9,9 +9,11 @@ import { useState, useEffect } from "react";
 import { api } from "../../api/api";
 import { useBirds } from "../../contexts/BirdsProvider";
 import { useSearchUI } from "../../contexts/SearchUIProvider";
+import { useTranslation } from "react-i18next";
 
 
 function Favourites(){
+    const { t, i18n } = useTranslation();
     const { isAuth, user } = UseAuth();
     const { favourites } = useBirds();
     const [data, setData] = useState([]);
@@ -34,7 +36,7 @@ function Favourites(){
         if(current==="") return;
         // Petición al servidor
         api.get(`/favourite/${user._id}`, {
-            params: { page: Number(current), limit:10, name: value }
+            params: { page: Number(current), limit:10, name: value, locale: i18n.resolvedLanguage }
         })
         .then(response => {
             console.log(response.data.data);
@@ -44,16 +46,16 @@ function Favourites(){
         .catch(error => {
             console.error('Error:', error);
         });
-    }, [current, favourites, value]);
+    }, [current, favourites, value, i18n]);
 
 
     return(
         <MainLayout>
-            <h1>Favoritos</h1>
+            <h1>{t('page.title.saved')}</h1>
             <GridLayout>
                 {data
                     .map(d => (
-                        <li key={d._id}>
+                        <li key={d.bird._id}>
                             <BirdCard
                                 data={d.bird}
                             />

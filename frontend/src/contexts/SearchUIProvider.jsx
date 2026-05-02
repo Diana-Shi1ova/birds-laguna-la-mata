@@ -7,7 +7,8 @@ export function SearchUIProvider({ children }) {
   const [filters, setFilters] = useState(true);               // mostrar/ocultar filtros
   const [searchType, setSearchType] = useState('map');        // tipo de búsquda a realizar ("map", "catalog", "statistics")
   const [value, setValue] = useState('');                     // valor introducido
-  const [filtersPannel, setFiltersPannel] = useState('');     // mostrar/ocultar panel con filtros
+  const [filtersPannel, setFiltersPannel] = useState(false);  // mostrar/ocultar panel con filtros
+  const [sidebarOpen, setSidebarOpen] = useState(false);      // mostrar/ocultar sidebar
 
   return (
     <SearchUIContext.Provider
@@ -23,7 +24,9 @@ export function SearchUIProvider({ children }) {
         value,
         setValue,
         filtersPannel,
-        setFiltersPannel
+        setFiltersPannel,
+        sidebarOpen,
+        setSidebarOpen
       }}
     >
       {children}
