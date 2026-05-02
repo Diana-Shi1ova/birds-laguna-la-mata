@@ -78,3 +78,9 @@ html, body, #root{
 .error-message-general.opened, .error-message.opened{
   display: block;
 }
+
+:focus-visible {
+  outline: 3px solid #2563eb;
+  outline-offset: 2px;
+  border-radius: 4px;
+}

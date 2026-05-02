@@ -10,6 +10,7 @@ import { api } from "../../api/api";
 import { useBirds } from "../../contexts/BirdsProvider";
 import { useSearchUI } from "../../contexts/SearchUIProvider";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from 'react-router-dom';
 
 
 function Favourites(){
@@ -20,6 +21,7 @@ function Favourites(){
     const [current, setCurrent] = useState(1);
     const [total, setTotal] = useState(1);
     const { setFilters, value, setValue, setSearchType } = useSearchUI();
+    const navigate = useNavigate();
     
     useEffect(() => {
         setFilters(false);
@@ -28,9 +30,15 @@ function Favourites(){
     }, []);
 
     // Si no autorizado, se redirige a login
-    if (!isAuth) {
+    /*if (!isAuth) {
         return <Navigate to="/login" replace />;
-    }
+    }*/
+
+    useEffect(() => {
+        if (!isAuth) {
+            navigate('/login');
+        }
+    }, [isAuth]);
 
     useEffect(() => {
         if(current==="") return;
