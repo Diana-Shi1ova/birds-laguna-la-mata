@@ -21,7 +21,7 @@
         padding-right: auto;
     }
     input[type="date"]::-webkit-calendar-picker-indicator {
-        margin-left: 119px;
+        margin-left: 100px;
         cursor: pointer;
     }
 

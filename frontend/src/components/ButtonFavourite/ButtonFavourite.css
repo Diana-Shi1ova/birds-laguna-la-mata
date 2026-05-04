@@ -1,10 +1,16 @@
 
 .favorite-button{
     display: flex;
-    font-size: 18pt;
+    font-size: var(--icon);
     align-items: center;
 }
 
 .saved{
-    color: #dabb0c;
+    /* color: #dabb0c; */
+
+    path{
+        stroke: black;
+        stroke-width: 40px;
+        fill: #dabb0c;
+    }
 }

@@ -21,7 +21,7 @@
   "filters": {
     "button": {
       "close": "Cerrar filtros",
-      "reset": "Reestablecer"
+      "reset": "Restablecer"
     },
     "period": {
       "date": {

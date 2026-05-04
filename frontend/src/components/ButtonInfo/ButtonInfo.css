@@ -1,5 +1,5 @@
 .but-info{
-    font-size: 16pt;
+    font-size: var(--icon);
     display: flex;
     align-items: center;
     color: #ffffff;

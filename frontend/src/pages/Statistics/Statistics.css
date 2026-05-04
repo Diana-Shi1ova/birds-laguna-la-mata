@@ -4,11 +4,12 @@
     margin-bottom: 0;
     padding-left: 1em;
     box-sizing: border-box;
-    font-size: 24pt;
+    /* font-size: 24pt; */
+    font-size: var(--h1-size);
     text-align: left;
 
     .message{
-        font-size: 16pt !important;
+        font-size: var(--text-size) !important;
         font-weight: normal;
         box-sizing: border-box;
     }
@@ -27,6 +28,10 @@
     box-sizing: border-box;
     gap: 1em;
     width: 100%;
+
+    h2{
+        word-break: break-word;
+    }
 
     .horizontal{
         display: flex;
@@ -153,7 +158,7 @@
     flex-direction: column;
 
     svg{
-        font-size: 45pt;
+        font-size: 60px;
     }
 }
 

@@ -72,8 +72,19 @@ button:focus-visible {
 /* Variables */
 :root {
   --text-colour: #000;
-  --text-size: 14pt;
-  --big-icon: 30pt;
+  --text-size: 20px;
+  --text-size-small: 16px;
+  --h1-size: 36px;
+  --h1-size-small: 18px;
+  /* --h2-size: 18pt; */
+  --h2-size: 28px;
+  --h2-size-small: 24px;
+  --h3-size: 22px;
+  /* --text-size: 16pt; */
+  /* --big-icon: 30pt; */
+  /* --icon: 18pt; */
+  --icon: 24px;
+  --big-icon: 40px;
   --green: #87ffc9;
   /* --green-hover: #3cd590; */
   --green-hover: #5fe1a7;

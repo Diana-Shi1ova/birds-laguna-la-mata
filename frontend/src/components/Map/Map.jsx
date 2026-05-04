@@ -185,7 +185,7 @@ function Map () {
 
             // Click
             el.addEventListener("click", async () => {
-                await raspImage(rasp);
+                await raspPopup(rasp);
             });
 
             // Enter o Space

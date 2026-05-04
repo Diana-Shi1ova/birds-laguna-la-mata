@@ -23,7 +23,7 @@ header{
 
     .open-sidebar{
         display: none;
-        font-size: 24pt;
+        font-size: var(--big-icon);
     }
 }
 
@@ -44,7 +44,7 @@ header{
 
         .open-sidebar{
             display: flex;
-            font-size: 24pt;
+            font-size: var(--big-icon);
         }
     }
 }

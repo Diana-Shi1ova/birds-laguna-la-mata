@@ -5,7 +5,7 @@
 .filters-pannel{
     position: fixed;
     right: 0;
-    top: 4em;
+    top: 3.5em;
     background-color: var(--green);
     padding: 1em;
     transform: translateX(0);
@@ -14,9 +14,9 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    max-height: 540px;
+    max-height: 80%;
     overflow: auto;
-    z-index: 2;
+    z-index: 100;
 
     .btns-horizontal{
         display: flex;
@@ -27,17 +27,17 @@
     }
 
     .close-button{
-        font-size: 16pt;
+        font-size: var(--text-size);
     }
 
     h1{
-        font-size: 26pt;
+        font-size: var(--h1-size);
         margin: 0;
         margin-bottom: .3em;
     }
 
     h2{
-        font-size: 18pt;
+        font-size: var(--h2-size-small);
         margin: 0;
         text-align: left;
         margin-bottom: .2em;

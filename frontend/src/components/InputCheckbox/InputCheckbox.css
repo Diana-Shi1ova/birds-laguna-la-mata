@@ -2,6 +2,8 @@
     display: flex;
     flex-direction: row;
     gap: .5em;
+    text-align: left;
+    word-break: break-word;
 
     input[type='checkbox']{
         width: 18px;

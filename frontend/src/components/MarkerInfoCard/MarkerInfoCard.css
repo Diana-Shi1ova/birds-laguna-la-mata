@@ -17,6 +17,8 @@
     border: solid 3px var(--green-active-dark);
     box-sizing: border-box;
     /* overflow-y: scroll; */
+    word-break: break-all;
+    text-align: center;
 
     .image-wrapper{
         height: 180px;
@@ -43,7 +45,7 @@
 
     audio{
         margin-top: 1.5em;
-        margin-bottom: 4em;
+        margin-bottom: 5em;
         max-width: 270px;
     }
 
@@ -64,7 +66,7 @@
         border-bottom-right-radius: 15px;
         padding: .3em;
         font-weight: bold;
-        font-size: 12pt;
+        font-size: var(--text-size-small);
         box-sizing: border-box;
     }
 
@@ -81,14 +83,14 @@
     }
 
     h1{
-        font-size: 14pt;
+        font-size: var(--h1-size-small);
         margin-top: 1.7em;
         margin-bottom: 0;
     }
 
     .lat-name{
         font-style: italic;
-        font-size: 11pt;
+        font-size: var(--text-size-small);
         margin-top: .1em;
         color: #5d5d5d;
         margin-bottom: .5em;
@@ -99,7 +101,8 @@
         width: 100%;
         gap: .5em;
         font-weight: bold;
-        font-size: 11pt;
+        /* font-size: 11pt; */
+        font-size: var(--text-size-small);
         margin: 0;
         margin-top: .2em;
         padding-left: 2.5em;
@@ -118,13 +121,13 @@
     }
 
     .save-button{
-        font-size: 18pt;
+        font-size: var(--icon);
     }
     
     .chart-button{
         gap: .5em;
         align-items: center;
-        font-size: 14pt;
+        font-size: var(--text-size);
         margin-top: 1em;
         padding: .3em;
         margin-bottom: 1em;
@@ -138,7 +141,7 @@
         width: 97%;
         justify-content: space-between;
         
-        .normal-button{
+        .normal-button-primary{
             padding: .3em;
         }
     }
@@ -149,7 +152,7 @@
     }
 
     .pages{
-        font-size: 12pt;
+        font-size: var(--text-size-small);
         display: flex;
         width: 100%;
         background-color: #cdffec;
@@ -166,7 +169,7 @@
     }
 
     .close-button{
-        font-size: 14pt;
+        font-size: var(--text-size);
     }
 
     .actions{
@@ -188,13 +191,13 @@
 }
 
 .without-detections{
-    font-size: 10pt;
+    font-size: var(--text-size-small);
 
     h1{
         margin-bottom: 1em;
     }
     svg{
-        font-size: 32pt;
+        font-size: var(--big-icon);
         color: #d9d9d9;
     }
     
