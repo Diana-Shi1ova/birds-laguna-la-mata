@@ -43,7 +43,8 @@ function MarkerInfoCard({birds, source='eBird', lat, long, popup}) {  //tipo: eB
         const [datePart, timePart] = dateTimeString.split(' ');
         const [year, month, day] = datePart.split('-');
 
-        return `${day}/${month}/${year} ${timePart}`;
+        if(timePart) return `${day}/${month}/${year} ${timePart}`;
+        else return `${day}/${month}/${year}`;
     }
 
     const formatDateTimeRasp = (isoString) => {
