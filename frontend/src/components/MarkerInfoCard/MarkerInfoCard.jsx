@@ -126,10 +126,11 @@ function MarkerInfoCard({birds, source='eBird', lat, long, popup}) {  //tipo: eB
                             rel="noopener noreferrer"
                             title={t('map.observation.link.placeholder')}
                         >
+                            {console.log("IMAGES ", wikidata)}
                             <img
                                 className='info-img'
                                 key={wikidata?.images?.length-1}
-                                src={wikidata && wikidata['images'][wikidata['images'].length-1]}
+                                src={wikidata?.images?.[wikidata?.images?.length-1]}
                                 alt={birds[current-1]['comName']}
                                 onLoad={() => setImgLoading(false)}
                                 onError={() => setImgLoading(false)}
