@@ -36,7 +36,8 @@ const getBirds = async (req, res) => {
 
     const [birds, total] = await Promise.all([
       Bird.find(filter)
-        .sort({ taxonOrder: 1 })
+        .sort({ [`comName.${locale}`]: 1, _id: 1 })
+        .collation({ locale, strength: 1 })
         .skip(skip)
         .limit(limit)
         .lean(),

@@ -200,7 +200,7 @@
       "hide": "Hide the search bar",
       "show": "Show the search bar"
     },
-    "placeholder": "Common or scientific name",
+    "placeholder": "Specie name",
     "results": {
       "button": {
         "tooltip": "Search"

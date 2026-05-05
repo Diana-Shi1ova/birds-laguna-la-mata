@@ -143,7 +143,7 @@ function MarkerInfoCard({birds, source='eBird', lat, long, popup}) {  //tipo: eB
                         </Link>
                     </div>
                     <p className='info'>{t('map.observation.observed')} <span>{formatDateTime(birds[current-1]['obsDt'])}</span></p>
-                    <p className='info'>{t('map.observation.quantity')} <span>{birds[current-1]['howMany'] ? birds[current-1]['howMany'] : 'desconocida'}</span></p>
+                    <p className='info'>{t('map.observation.quantity')} <span>{birds[current-1]['howMany'] ? birds[current-1]['howMany'] : t('map.observation.quantity.unknown')}</span></p>
                     <p className='info'>{t('map.observation.coords')} <span>({birds[current-1]['lat'].toFixed(3)}, {birds[current-1]['lng'].toFixed(3)})</span></p>
                     <div className='actions'>
                         {/* <Button classAdditional='chart-button'><FaChartBar />Ver dinámica</Button>

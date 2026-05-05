@@ -399,7 +399,7 @@ const getSpecies = async (req, res) => {
         //await Bird.insertMany(results);
 
         // Actualizar y añadir datos sin borrar todo
-        await Bird.bulkWrite(
+        /*await Bird.bulkWrite(
             enrichedResults.map(bird => ({
                 replaceOne: {
                     filter: { sciName: bird.sciName },
@@ -409,7 +409,7 @@ const getSpecies = async (req, res) => {
                     upsert: true
                 }
             }))
-        );
+        );*/
 
         res.status(200).json(enrichedResults);
 

@@ -200,7 +200,7 @@
       "hide": "Ocultar la barra de búsqueda",
       "show": "Mostrar la barra de búsqueda"
     },
-    "placeholder": "Nombre común o científico",
+    "placeholder": "Nombre de especie",
     "results": {
       "button": {
         "tooltip": "Buscar"

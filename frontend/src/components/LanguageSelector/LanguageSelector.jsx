@@ -37,9 +37,9 @@ function LanguageSelector ({id, name, selected, change=()=>{}}) {
                 onChange={change}
                 title={t('select.language.title')}
             >
-                <option value="es" title={t('select.language.option.spanish')}>ES</option>
-                <option value="en" title={t('select.language.option.english')}>EN</option>
-                <option value="ru" title={t('select.language.option.russian')}>RU</option>
+                <option value="es">{t('select.language.option.spanish')}</option>
+                <option value="en">{t('select.language.option.english')}</option>
+                <option value="ru">{t('select.language.option.russian')}</option>
             </select>
         </div>
         

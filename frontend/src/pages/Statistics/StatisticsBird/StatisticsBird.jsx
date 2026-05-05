@@ -207,9 +207,15 @@ function StatisticsBird({park, createOption = () => ({})}){
             <div className="statistics-container">
                 <div className="horizontal">
                     <div className="image-container">
-                        {birdData &&
-                        <img src={birdData?.wikidata?.images[birdData?.wikidata?.images.length-1]} alt={birdData.comName} />
-                        }
+                        {/* {(birdData && birdData!==undefined) &&
+                        <img src={birdData?.wikidata?.images[birdData?.wikidata?.images?.length-1]} alt={birdData?.comName} />
+                        } */}
+                        {birdData?.wikidata?.images?.length > 0 && (
+                            <img
+                                src={birdData.wikidata.images.at(-1)}
+                                alt={birdData.comName}
+                            />
+                        )}
                         <p>{t('statistics.specie.probability')} <span>{(data?.[0]?.overall?.probability * 100).toFixed(2) ?? ''}%</span></p>
                     </div>
                         <section className="today-statistics">

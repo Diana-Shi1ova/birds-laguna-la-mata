@@ -23,7 +23,7 @@
             /* font-size: 12pt; */
             border-radius: 25px;
             /* padding: .3em .5em .3em .5em; */
-            padding: .5em .5em .5em .5em;
+            padding: .3em .5em .3em .5em;
             box-sizing: border-box;
             border: solid 2px #000;
             box-sizing: border-box;
@@ -38,7 +38,7 @@
             background-color: transparent;
             cursor: pointer;
             position: absolute;
-            top: .3em;
+            top: .1em;
             right: .3em;
         }
     }
@@ -58,7 +58,7 @@
     }
     .searchbar{
         width: 100% !important;
-        justify-content: right !important;
+        /* justify-content: right !important; */
         height: 43px;
         align-items: end;
         justify-content: end;
