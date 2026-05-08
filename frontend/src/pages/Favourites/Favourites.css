@@ -1,0 +1,8 @@
+.without-saved{
+    margin-top: 1em;
+
+    svg{
+        font-size: 60px;
+        color: #ccc;
+    }
+}

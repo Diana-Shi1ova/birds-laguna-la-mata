@@ -36,6 +36,20 @@ function StatisticsBird({park, createOption = () => ({})}){
             xKey: "week",
             yLabel: t('statistics.specie.seasonality.probability'),
             yKey: "freq",
+            xGroups: [
+                { start: 1,  end: 5,  label: t('month.jan') },
+                { start: 5,  end: 9,  label: t('month.feb') },
+                { start: 9,  end: 14, label: t('month.mar') },
+                { start: 14, end: 18, label: t('month.apr') },
+                { start: 18, end: 23, label: t('month.may') },
+                { start: 23, end: 27, label: t('month.jun') },
+                { start: 27, end: 32, label: t('month.jul') },
+                { start: 32, end: 36, label: t('month.aug') },
+                { start: 36, end: 40, label: t('month.sep') },
+                { start: 40, end: 44, label: t('month.oct') },
+                { start: 44, end: 48, label: t('month.nov') },
+                { start: 48, end: 53, label: t('month.dec') }
+            ]
         },
         {
             title: t('statistics.specie.trend.title'),
@@ -248,7 +262,8 @@ function StatisticsBird({park, createOption = () => ({})}){
                             chart.xKey,
                             chart.xLabel,
                             chart.yKey,
-                            chart.yLabel
+                            chart.yLabel,
+                            chart.xGroups
                         )}
                     />
                 ))}

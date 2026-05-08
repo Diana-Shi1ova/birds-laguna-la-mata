@@ -2,6 +2,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+    position: relative;
     
     .arrow-button{
         margin-right: .3em;
@@ -50,6 +51,17 @@
         margin: 0;
         margin-left: .2em;
     }
+}
+
+.red-indicator{
+    width: .7em;
+    height: .7em;
+    background-color: #ff2727;
+    border: solid #000 2px;
+    border-radius: 50%;
+    position: absolute;
+    top: -5px;
+    right: -5px;
 }
 
 @media (max-width: 600px){

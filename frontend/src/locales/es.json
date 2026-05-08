@@ -16,7 +16,8 @@
   "catalog": {
     "link": {
       "placeholder": "Conocer más en Wikipedia"
-    }
+    },
+    "without": "Nada encontrado"
   },
   "filters": {
     "button": {
@@ -142,6 +143,20 @@
       "title": "Opciones del mapa"
     }
   },
+  "month": {
+    "apr": "Abr",
+    "aug": "Ago",
+    "dec": "Dic",
+    "feb": "Feb",
+    "jan": "Ene",
+    "jul": "Jul",
+    "jun": "Jun",
+    "mar": "Mar",
+    "may": "May",
+    "nov": "Nov",
+    "oct": "Oct",
+    "sep": "Sep"
+  },
   "page": {
     "title": {
       "catalog": "Catálogo de especies",
@@ -195,8 +210,12 @@
     },
     "with_account": "¿Ya tienes cuenta?"
   },
+  "saved": {
+    "without": "No tienes especies guardadas todavía"
+  },
   "searchbar": {
     "button": {
+      "clear": "Limpiar",
       "hide": "Ocultar la barra de búsqueda",
       "show": "Mostrar la barra de búsqueda"
     },

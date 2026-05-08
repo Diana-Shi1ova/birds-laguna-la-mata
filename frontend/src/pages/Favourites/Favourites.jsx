@@ -11,6 +11,8 @@ import { useBirds } from "../../contexts/BirdsProvider";
 import { useSearchUI } from "../../contexts/SearchUIProvider";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from 'react-router-dom';
+import { FaDove } from "react-icons/fa";
+import { BsFillBookmarkStarFill } from "react-icons/bs";
 
 
 function Favourites(){
@@ -60,22 +62,33 @@ function Favourites(){
     return(
         <MainLayout>
             <h1>{t('page.title.saved')}</h1>
-            <GridLayout>
-                {data
-                    .map(d => (
-                        <li key={d.bird._id}>
-                            <BirdCard
-                                data={d.bird}
-                            />
-                        </li>
-                    ))
-                }
-            </GridLayout>
-            <Pagination
-                total={total}
-                current={current}
-                onCurrentChange={setCurrent}
-            />
+            {favourites.size > 0 ? (
+                <>
+                <GridLayout>
+                    {data
+                        .map(d => (
+                            <li key={d.bird._id}>
+                                <BirdCard
+                                    data={d.bird}
+                                />
+                            </li>
+                        ))
+                    }
+                </GridLayout>
+                <Pagination
+                    total={total}
+                    current={current}
+                    onCurrentChange={setCurrent}
+                />
+                </>
+            ) : (
+                <>
+                <div className="without-saved">
+                    <BsFillBookmarkStarFill />
+                    <p>{t('saved.without')}</p>
+                </div>
+                </>
+            )}
         </MainLayout>
     );
 }

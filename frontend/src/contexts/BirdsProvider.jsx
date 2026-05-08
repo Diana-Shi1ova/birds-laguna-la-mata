@@ -9,7 +9,7 @@ const BirdsContext = createContext(null);
 // Proveedor que va a guardar los datos sobre las aves
 export function BirdsProvider({ children }) {
     const { i18n } = useTranslation();
-    const {user} = UseAuth();
+    const {user, isAuth} = UseAuth();
     const [birds, setBirds] = useState([]);                                     // todas las aves de eBird
     const [raspberryAudioBirds, setRaspberryAudioBirds] = useState([]);         // aves de Raspberry audio
     const [raspberryImageBirds, setRaspberryImageBirds] = useState([]);         // aves de Raspberry imagen
@@ -36,11 +36,14 @@ export function BirdsProvider({ children }) {
     // const [back, setBack] = useState(1);
     const [simpleSearch, setSimpleSearch] = useState([]);        // búsqueda simple por nombre
     const [favourites, setFavourites] = useState(new Map());     // favoritos
-    const [raspResults, setRaspResults] = useState(0)      // número de resultados de raspberries
+    const [raspResults, setRaspResults] = useState(0)            // número de resultados de raspberries
+    const [loading, setLoading] = useState(false);
+    const [appliedFilters, setAppliedFilters] = useState(false);
 
 
     // Hacer petición inicial de pájaros
     useEffect(() => {
+        setLoading(true);
         // Calcular resultados raspberries
         if(!searchQuery.rpa && !searchQuery.rpi) {
             setRaspResults(0);
@@ -65,6 +68,7 @@ export function BirdsProvider({ children }) {
             .then(response => {
                 console.log(response.data);
                 setRaspResults(response.data.total);
+                setLoading(false);
             })
             .catch(error => {
                 console.error('Error:', error);
@@ -73,6 +77,7 @@ export function BirdsProvider({ children }) {
         // No hacer peticiones a eBird si no está marcado
         if(!searchQuery.ebird) {
             setFilteredBirds([]);
+            setLoading(false);
             return;
         }
         
@@ -110,6 +115,7 @@ export function BirdsProvider({ children }) {
                 console.log(response.data);
                 setBirds(response.data);
                 filterByNames(response.data);
+                setLoading(false);
                 // setFilteredBirds(response.data);
             })
             .catch(error => {
@@ -130,6 +136,7 @@ export function BirdsProvider({ children }) {
                 console.log(response.data);
                 setBirds(response.data);
                 filterByNames(response.data);
+                setLoading(false);
                 // setFilteredBirds(response.data);
             })
             .catch(error => {
@@ -140,9 +147,13 @@ export function BirdsProvider({ children }) {
 
     // Favoritos
     useEffect(() => {
-        if (!user) return;
+        if (!user) {
+            setFavourites(new Map());
+            return
+        };
 
-        api.get(`/favourite/${user._id}`)
+        if(isAuth){
+            api.get(`/favourite/${user._id}`)
             .then(response => {
                 console.log(response.data);
 
@@ -155,7 +166,9 @@ export function BirdsProvider({ children }) {
             .catch(error => {
                 console.error('Error:', error);
             });
-    }, [user]);
+        }
+        
+    }, [user, isAuth]);
 
     // Tipo temporal de búsqueda
     function dateOrPeriod(){
@@ -282,7 +295,11 @@ export function BirdsProvider({ children }) {
             setParkData,
             favourites,
             setFavourites,
-            raspResults
+            raspResults,
+            loading,
+            setLoading,
+            appliedFilters,
+            setAppliedFilters
         }}>
         {children}
         </BirdsContext.Provider>

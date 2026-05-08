@@ -16,15 +16,15 @@ import { UseAuth } from "../../auth/useAuth";
 import { useSearchUI } from "../../contexts/SearchUIProvider";
 import { useTranslation } from "react-i18next";
 import ResultsList from "../ResultsList/ResultsList";
+import isEqual from 'lodash/isEqual';
 // import { set } from "mongoose";
 // import { BsEraser } from "react-icons/bs";
 
 
 function FiltersPannel () {
     const { t, i18n } = useTranslation();
-    const [formData, setFormData] = useState({
+    /*const [formData, setFormData] = useState({
             species: [],
-            name: "",
             favourites: false,
             period: true,
             selectedPeriod: 'today',
@@ -33,11 +33,14 @@ function FiltersPannel () {
             ebird: true,
             rpa: true,
             rpi: true,
-        });
+        });*/
 
-    const { area, setSearchQuery, searchQuery, filteredBirds, raspResults } = useBirds();
+    const { area, setSearchQuery, searchQuery, filteredBirds, raspResults, appliedFilters, setAppliedFilters } = useBirds();
     const { filtersPannel, setFiltersPannel } = useSearchUI();
     const { user, isAuth } = UseAuth();
+    const [formData, setFormData] = useState(searchQuery);
+
+    
 
     const [numResults, setNumResults] = useState(0);
     const [showNumResults, setshowNumResults] = useState(false);
@@ -53,34 +56,22 @@ function FiltersPannel () {
         { value: "custom", label: t('filters.period.select.option.custom') }
     ];
 
+    useEffect(() => {
+        if(isEqual(searchQuery, formData)) setAppliedFilters(false);
+        else  setAppliedFilters(true);
+    }, [searchQuery]);
+
     const close = (e) => {
         e.preventDefault();
         setFiltersPannel(false);
     }
 
     const onChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
-        console.log(formData);
+        // setFormData({ ...formData, [e.target.name]: e.target.value });
+        // console.log(formData);
+        setSearchQuery({ ...searchQuery, [e.target.name]: e.target.value })
     }
 
-    /*const onEnter = (e) => {
-        e.preventDefault();
-        if(e.target.name === 'birdNames'){ // Añadir elementos sin repetir
-            const value = e.target.value.trim();
-            e.target.value="";
-
-            if (value === "") return;
-
-            setFormData(prev => ({
-                ...prev,
-                species: prev.species.includes(value)
-                    ? prev.species
-                    : [...prev.species, value]
-            }));
-        }
-        else e.target.blur();
-            // setFormData({ ...formData, [e.target.name]: e.target.value });
-    }*/
    const onEnter = (e) => {
         e.preventDefault();
         console.log('enter')
@@ -97,7 +88,14 @@ function FiltersPannel () {
     };
 
     function addBirdToList(value){
-        setFormData(prev => ({
+        /*setFormData(prev => ({
+            ...prev,
+            species: prev.species.includes(value)
+                ? prev.species
+                : [...prev.species, value]
+        }));*/
+
+        setSearchQuery(prev => ({
             ...prev,
             species: prev.species.includes(value)
                 ? prev.species
@@ -109,14 +107,22 @@ function FiltersPannel () {
     }
 
     const deleteSpecieFromList = (value) => {
-        setFormData(prevFormData => ({
+        /*setFormData(prevFormData => ({
+            ...prevFormData,
+            species: prevFormData.species.filter(species => species !== value)
+        }));*/
+        setSearchQuery(prevFormData => ({
             ...prevFormData,
             species: prevFormData.species.filter(species => species !== value)
         }));
     }
 
     const clearSpecieFromList = () => {
-        setFormData(prevFormData => ({
+        /*setFormData(prevFormData => ({
+            ...prevFormData,
+            species: []
+        }));*/
+        setSearchQuery(prevFormData => ({
             ...prevFormData,
             species: []
         }));
@@ -146,65 +152,31 @@ function FiltersPannel () {
         addBirdToList(sciName);
     }
 
-    // Hacer petición del historial en una fecha
     /*useEffect(() => {
-        // Petición al servidor
-        api.get('/eBird/history', {
-            params: {
-                hotspot: area,
-                date: formatDateAPI(formData.date)
-            }
-        })
-        .then(response => {
-            console.log(response.data);
-            // setBirds(response.data);
-            // setFilteredBirds(response.data);
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-    }, [formData.date, area]);*/
-
-    useEffect(() => {
-        // Petición al servidor
-        /*api.get('/eBird/history', {
-            params: {
-                hotspot: area,
-                date: formatDateAPI(formData.date)
-            }
-        })
-        .then(response => {
-            console.log(response.data);
-            // setBirds(response.data);
-            // setFilteredBirds(response.data);
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });*/
-        setSearchQuery(formData);
-    }, [formData]);
-
-    /*// Formatear fecha al formato aaaa/mm/dd para hacer petición al API
-    function formatDateAPI(date = new Date()) {
-        const d = new Date(date);
-
-        const yyyy = d.getFullYear();
-        const mm = String(d.getMonth() + 1).padStart(2, '0');
-        const dd = String(d.getDate()).padStart(2, '0');
-
-        return `${yyyy}/${mm}/${dd}`;
-    }*/
+        setFormData(prevFormData => ({
+            ...prevFormData,
+            species: searchQuery.species
+        }));
+    }, [formData]);*/
 
     const onTemporalRadioChange = (e) => {
         console.log(e.target.value);
         if(e.target.value === 'date'){
-            setFormData(prevFormData => ({
+            /*setFormData(prevFormData => ({
+                ...prevFormData,
+                period: false
+            }));*/
+            setSearchQuery(prevFormData => ({
                 ...prevFormData,
                 period: false
             }));
         }
         else{
-            setFormData(prevFormData => ({
+            /*setFormData(prevFormData => ({
+                ...prevFormData,
+                period: true
+            }));*/
+            setSearchQuery(prevFormData => ({
                 ...prevFormData,
                 period: true
             }));
@@ -218,19 +190,11 @@ function FiltersPannel () {
         if(value === 'custom') setShowPeriodInput(true);
         else setShowPeriodInput(false);
 
-        /*switch(value){
-            case 'today':
-                setBack(1);
-                break;
-            case 'week':
-                setBack(7);
-                break;
-            case 'month':
-                setBack(30);
-                break;
-        }*/
-
-        setFormData(prevFormData => ({
+        /*setFormData(prevFormData => ({
+            ...prevFormData,
+            selectedPeriod: value
+        }));*/
+        setSearchQuery(prevFormData => ({
             ...prevFormData,
             selectedPeriod: value
         }));
@@ -239,7 +203,12 @@ function FiltersPannel () {
     const onCheckboxesChange = (e) => {
         const { name, checked } = e.target;
 
-        setFormData(prev => ({
+        /*setFormData(prev => ({
+            ...prev,
+            [name]: checked
+        }));*/
+
+        setSearchQuery(prev => ({
             ...prev,
             [name]: checked
         }));
@@ -254,7 +223,11 @@ function FiltersPannel () {
 
         // Si desmarcado
         if (!checked) {
-            setFormData(prev => ({
+            /*setFormData(prev => ({
+                ...prev,
+                species: []
+            }));*/
+            setSearchQuery(prev => ({
                 ...prev,
                 species: []
             }));
@@ -268,7 +241,11 @@ function FiltersPannel () {
 
                 const sciNames = data.map(item => item.bird.sciName);
 
-                setFormData(prev => ({
+                /*setFormData(prev => ({
+                    ...prev,
+                    species: sciNames
+                }));*/
+                setSearchQuery(prev => ({
                     ...prev,
                     species: sciNames
                 }));
@@ -285,15 +262,11 @@ function FiltersPannel () {
         // Si vacío, dejamos vacío
         if (val === "") return;
 
-        // // En caso contrario convertimos
-        // e.target.value = Number(val.replace(/\D/g, ""));
-
-        // if (e.target.value < 1) e.target.value = 1;
-        // if (e.target.value > 30) e.target.value = 30;
-
-        // setBack(e.target.value);
-
-        setFormData(prev => ({
+        /*setFormData(prev => ({
+            ...prev,
+            [e.target.name]: e.target.value
+        }));*/
+        setSearchQuery(prev => ({
             ...prev,
             [e.target.name]: e.target.value
         }));
@@ -308,7 +281,7 @@ function FiltersPannel () {
     };
 
     const resetFilters = () => {
-        setFormData({
+        /*setFormData({
             species: [],
             name: "",
             favourites: false,
@@ -319,9 +292,25 @@ function FiltersPannel () {
             ebird: true,
             rpa: true,
             rpi: true,
-        });
+        });*/
+        const data = {
+            species: [],
+            // name: "",
+            favourites: false,
+            period: true,
+            selectedPeriod: 'today',
+            date: new Date(),
+            days: 1,
+            ebird: true,
+            rpa: true,
+            rpi: true,
+        }
+        setSearchQuery(data);
+        setFormData(data);
         setShowPeriodInput(false);
     }
+
+    
 
 
     return (
@@ -336,12 +325,9 @@ function FiltersPannel () {
             </Button>
             <section className="filter-section-general">
                 <h1>{t('filters.title')}</h1>
-                {/* {showNumResults && ( */}
                     <p className="results">{t('filters.results')} <span>{filteredBirds.length + raspResults}</span></p>
-                {/* )} */}
                 <section className="filter-section species-section">
                     <h2>{t('filters.species.title')}</h2>
-                    {/* <div className="specie-input-container"> */}
                         <Input
                             label={t('filters.species.input.label')}
                             name={'birdNames'}
@@ -354,34 +340,34 @@ function FiltersPannel () {
                             resultsListFunc={addSpecie}
                         >
                         </Input>
-                        {/* {suggestions && ( */}
-                            {/* <ResultsList results={results}></ResultsList> */}
-                        {/* )} */}
-                        <Chips values={formData.favourites ? [] : searchQuery.species} remove={deleteSpecieFromList}></Chips>
-                    {/* </div> */}
+                        {/* <Chips values={formData.favourites ? [] : searchQuery.species} remove={deleteSpecieFromList}></Chips> */}
+                        <Chips values={searchQuery.favourites ? [] : searchQuery.species} remove={deleteSpecieFromList}></Chips>
                     {isAuth === true && (
-                        <InputCheckbox name='favourites' label={t('filters.species.checkbox.label')} classAdditional="favourite" change={onFavouritesChange} checked={formData.favourites}></InputCheckbox>
+                        // <InputCheckbox name='favourites' label={t('filters.species.checkbox.label')} classAdditional="favourite" change={onFavouritesChange} checked={formData.favourites}></InputCheckbox>
+                        <InputCheckbox name='favourites' label={t('filters.species.checkbox.label')} classAdditional="favourite" change={onFavouritesChange} checked={searchQuery.favourites}></InputCheckbox>
                     )}
                 </section>
                 <section className="filter-section">
                     <h2>{t('filters.period.title')}</h2>
-                    <InputRadiobutton id='period' label={t('filters.period.radiobutton.period.label')} name="filtrado-temporal" value='period' checked={formData.period} change={onTemporalRadioChange}></InputRadiobutton>
-                    <InputRadiobutton id='day' label={t('filters.period.radiobutton.date.label')} name="filtrado-temporal" value='date' checked={!formData.period} change={onTemporalRadioChange}></InputRadiobutton>
-                    {formData.period === true ? (
-                        <InputSelect name='period' label={t('filters.period.select.label')} change={onPeriodChange} selected={formData.selectedPeriod} options={PERIOD_OPTIONS}></InputSelect>
+                    {/* <InputRadiobutton id='period' label={t('filters.period.radiobutton.period.label')} name="filtrado-temporal" value='period' checked={formData.period} change={onTemporalRadioChange}></InputRadiobutton>
+                    <InputRadiobutton id='day' label={t('filters.period.radiobutton.date.label')} name="filtrado-temporal" value='date' checked={!formData.period} change={onTemporalRadioChange}></InputRadiobutton> */}
+                    <InputRadiobutton id='period' label={t('filters.period.radiobutton.period.label')} name="filtrado-temporal" value='period' checked={searchQuery.period} change={onTemporalRadioChange}></InputRadiobutton>
+                    <InputRadiobutton id='day' label={t('filters.period.radiobutton.date.label')} name="filtrado-temporal" value='date' checked={!searchQuery.period} change={onTemporalRadioChange}></InputRadiobutton>                    
+                    {searchQuery.period === true ? (
+                        <InputSelect name='period' label={t('filters.period.select.label')} change={onPeriodChange} selected={searchQuery.selectedPeriod} options={PERIOD_OPTIONS}></InputSelect>
                     ) : (
-                        <InputDate label={t('filters.period.date.label')} name={'date'} change={onChange} defValue={formatDate(formData.date)}></InputDate>
+                        <InputDate label={t('filters.period.date.label')} name={'date'} change={onChange} defValue={formatDate(searchQuery.date)}></InputDate>
                     )}
-                    { showPeriodInput === true && formData.period === true && (
-                        <InputNumber name='days' label={t('filters.period.days.label')} defValue={formData.days} max={30} min={1} step={1} change={onDaysChange} enter={onEnter}></InputNumber>
+                    { showPeriodInput === true && searchQuery.period === true && (
+                        <InputNumber name='days' label={t('filters.period.days.label')} defValue={searchQuery.days} max={30} min={1} step={1} change={onDaysChange} enter={onEnter}></InputNumber>
                     )}
                 </section>
                 <section className="filter-section">
                 <h2>{t('filters.source.title')}</h2>
                     {/* Añadir botones con información */}
-                    <InputCheckbox name='ebird' label={t('filters.source.checkbox.ebird.label')} checked={formData.ebird} change={onCheckboxesChange}></InputCheckbox>
-                    <InputCheckbox name='rpa' label={t('filters.source.checkbox.rasp_audio.label')} checked={formData.rpa} change={onCheckboxesChange}></InputCheckbox>
-                    <InputCheckbox name='rpi' label={t('filters.source.checkbox.rasp_image.label')} checked={formData.rpi} change={onCheckboxesChange}></InputCheckbox>
+                    <InputCheckbox name='ebird' label={t('filters.source.checkbox.ebird.label')} checked={searchQuery.ebird} change={onCheckboxesChange}></InputCheckbox>
+                    <InputCheckbox name='rpa' label={t('filters.source.checkbox.rasp_audio.label')} checked={searchQuery.rpa} change={onCheckboxesChange}></InputCheckbox>
+                    <InputCheckbox name='rpi' label={t('filters.source.checkbox.rasp_image.label')} checked={searchQuery.rpi} change={onCheckboxesChange}></InputCheckbox>
                 </section>
             </section>
             <Button colorType='secondary' func={resetFilters}>{t('filters.button.reset')}</Button>

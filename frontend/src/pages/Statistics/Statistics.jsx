@@ -64,22 +64,38 @@ function Statistics(){
 
 
     // Datos y estilos de gráficas
-    const createOption = (arr, xKey, xLabel, yKey, yLabel) => ({
+    const createOption = (arr, xKey, xLabel, yKey, yLabel, xGroups) => ({
         tooltip: { trigger: "axis" },
 
-        xAxis: {
-            type: "category",
-            data: arr?.map(d => d[xKey]) || [],
-            name: xLabel,
-            nameLocation: "middle",
-            nameGap: 30,
-            nameTextStyle: {
-            color: "#000",
-            fontSize: 14,
-            fontWeight: "bold",
-            fontFamily: "Arial",
+        xAxis: [
+            {
+                type: "category",
+                data: arr?.map(d => d[xKey]) || [],
+                name: xLabel,
+                nameLocation: "middle",
+                nameGap: 30,
+                nameTextStyle: {
+                color: "#000",
+                fontSize: 14,
+                fontWeight: "bold",
+                fontFamily: "Arial",
+                },
             },
-        },
+            {
+                type: "category",
+                position: "top",
+                axisLine: { show: false },
+                axisPointer: {
+                    show: false
+                },
+                axisLabel: {
+                    fontSize: 12,
+                    fontWeight: 'bold',
+                    margin: 20
+                },
+                data: xGroups ? xGroups.map(g => g.label) : []
+            }
+        ],
 
         yAxis: {
             type: "value",
@@ -96,11 +112,21 @@ function Statistics(){
 
         series: [
             {
-            data: arr?.map(d => d[yKey]) || [],
-            type: "line",
-            smooth: true,
-            },
-        ],
+                type: "line",
+                smooth: true,
+                data: arr?.map(d => d[yKey]) || [],
+                // Вместо текста используем markArea только для фоновой заливки (зебра)
+                markArea: xGroups ? {
+                    itemStyle: {
+                        color: '#009dff2b'
+                    },
+                    data: xGroups.filter((_, i) => i % 2 === 0).map(g => ([
+                        { xAxis: g.start.toString() },
+                        { xAxis: g.end.toString() }
+                    ]))
+                } : {}
+            }
+        ]
     });
 
     // Cambio de parque

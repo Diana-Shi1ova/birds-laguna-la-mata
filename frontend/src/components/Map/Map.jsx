@@ -13,6 +13,7 @@ import Button from "../Button/Button";
 import { FaCog } from "react-icons/fa";
 import Dialog from "../Dialog/Dialog";
 import { useTranslation } from "react-i18next";
+import Spinner from "../Spinner/Spinner";
 
 
 // Componente mapa
@@ -38,6 +39,8 @@ function Map () {
     const [parks, setParks] = useState();
     const [parkOptions, setParksOptions] = useState();
 
+    const [markersDrawing, setMarkersDrawing] = useState(false);
+
     const {
         birds,
         raspberryAudioBirds,
@@ -50,7 +53,8 @@ function Map () {
         dateOrPeriod,
         simpleSearch,
         parkData,
-        setParkData
+        setParkData,
+        loading,
     } = useBirds();
 
     // Array para guardar enlaces a root en useRef
@@ -334,6 +338,7 @@ function Map () {
     }, [birds]);*/
     
     useEffect(() => {
+        setMarkersDrawing(true);
         if (!map.current) return;
 
         // Borramos marcadores antiguos
@@ -347,7 +352,10 @@ function Map () {
         });
         rootsRef.current = [];
 
-        if (!filteredBirds?.length) return;
+        if (!filteredBirds?.length) {
+            setMarkersDrawing(false);
+            return;
+        }
 
         // Creamos marcadores nuevos
         const grouped = Object.values(groupByCoords(filteredBirds));
@@ -417,6 +425,7 @@ function Map () {
         });
 
         setPopups(newPopups);
+        setMarkersDrawing(false);
     }, [filteredBirds]);
 
     // Cambiar el estilo del mapa
@@ -498,6 +507,7 @@ function Map () {
 
     return (
         <>
+            {(loading || markersDrawing) && <Spinner></Spinner>}
             <InputSelect name="park" classAdditional="park-select" options={parkOptions} change={(e) => showPark(e)} selected={parkData.parkId} title={t('select.park')}></InputSelect>
             {/* <div className="map-controls-container"> */}
                 {/* <InputSelect name="park" options={parkOptions} change={(e) => showPark(e)} selected={parkData.parkId}></InputSelect> */}

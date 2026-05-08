@@ -18,7 +18,7 @@
   position: absolute;
   z-index: 2;
   /* top: calc(40% + 100px); */
-  top: calc(40% + 5em);
+  top: 55%;
   right: 8px;
 }
 
@@ -218,6 +218,18 @@
   opacity: 0.6;
   animation: pulse 1.5s infinite;
   z-index: 1;
+}
+
+.spinner{
+  z-index: 9999;
+}
+
+.spinner-wrapper{
+  width: auto;
+  height: auto;
+  box-sizing: border-box;
+  position: absolute;
+  top: 50%;
 }
 
 @keyframes pulse {

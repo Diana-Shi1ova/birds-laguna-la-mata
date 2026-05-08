@@ -18,13 +18,13 @@ export function AuthProvider({ children }) {
   const login = (userData) => {
     setUser(userData);
     setIsAuth(true);
-    localStorage.setItem("user", JSON.stringify(userData));
+    sessionStorage.setItem("user", JSON.stringify(userData));
   };
 
   const logout = () => {
     setUser(null);
     setIsAuth(false);
-    localStorage.removeItem("user");
+    sessionStorage.removeItem("user");
   };
 
   return (

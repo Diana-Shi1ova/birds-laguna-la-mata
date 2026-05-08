@@ -16,7 +16,8 @@
   "catalog": {
     "link": {
       "placeholder": "Learn more on Wikipedia"
-    }
+    },
+    "without": "Nothing found"
   },
   "filters": {
     "button": {
@@ -142,6 +143,20 @@
       "title": "Map options"
     }
   },
+  "month": {
+    "apr": "Apr",
+    "aug": "Aug",
+    "dec": "Dec",
+    "feb": "Feb",
+    "jan": "Jan",
+    "jul": "Jul",
+    "jun": "Jun",
+    "mar": "Mar",
+    "may": "May",
+    "nov": "Nov",
+    "oct": "Oct",
+    "sep": "Sep"
+  },
   "page": {
     "title": {
       "catalog": " Species catalog",
@@ -195,8 +210,12 @@
     },
     "with_account": "Already have an account?"
   },
+  "saved": {
+    "without": "You don't have any saved species yet"
+  },
   "searchbar": {
     "button": {
+      "clear": "Clear",
       "hide": "Hide the search bar",
       "show": "Show the search bar"
     },

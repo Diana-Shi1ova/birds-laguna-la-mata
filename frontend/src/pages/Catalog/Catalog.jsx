@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 import { api } from "../../api/api";
 import { useSearchUI } from "../../contexts/SearchUIProvider";
 import { useTranslation } from "react-i18next";
+import { FaSearch } from "react-icons/fa";
 
 
 function Catalog(){
@@ -41,37 +42,41 @@ function Catalog(){
     }, [current, value, i18n]);
 
 
+    useEffect(() => {
+        setCurrent(1);
+    }, [value]);
+
     return(
         <MainLayout>
             <h1>{t('page.title.catalog')}</h1>
-            <GridLayout>
-                {/* <BirdCard data={data}></BirdCard>
-                <BirdCard data={data}></BirdCard>
-                <BirdCard data={data}></BirdCard>
-                <BirdCard data={data}></BirdCard>
-                <BirdCard data={data}></BirdCard> */}
-                {/*birds.map((bird) => (
-                <BirdCard
-                    key={bird.speciesCode}
-                    data={normalizeBird(bird)}
-                    />
-                ))*/}
-                {birds
-                    .filter(bird => !bird.comName?.toLowerCase().includes('(híbrido)'))
-                    .map(bird => (
-                        <li key={bird._id}>
-                            <BirdCard
-                                data={bird}
-                            />
-                        </li>
-                    ))
-                }
-            </GridLayout>
-            <Pagination
-                total={total}
-                current={current}
-                onCurrentChange={setCurrent}
-            />
+            {total>0 ? (
+                <>
+                <GridLayout>
+                    {birds
+                        .filter(bird => !bird.comName?.toLowerCase().includes('(híbrido)'))
+                        .map(bird => (
+                            <li key={bird._id}>
+                                <BirdCard
+                                    data={bird}
+                                />
+                            </li>
+                        ))
+                    }
+                </GridLayout>
+                <Pagination
+                    total={total}
+                    current={current}
+                    onCurrentChange={setCurrent}
+                />
+                </>
+            ) : (
+                <div className="no-results">
+                    <FaSearch />
+                    <p>{t('catalog.without')}</p>
+                </div>
+            )}
+            
+            
         </MainLayout>
     );
 }

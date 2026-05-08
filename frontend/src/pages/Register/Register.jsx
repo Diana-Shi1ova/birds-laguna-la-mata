@@ -3,10 +3,15 @@ import Input from "../../components/Input/Input";
 import { useState } from "react";
 import { api } from "../../api/api";
 import { useTranslation } from "react-i18next";
+import { UseAuth } from "../../auth/useAuth";
+import { useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
 
 function Register () {
     const { t } = useTranslation();
+    const { login, isAuth } = UseAuth();
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         name: "",
         email: "",
@@ -43,7 +48,7 @@ function Register () {
         } else if (formData.password.length < 8) {
             newErrors.password = t('register.error.password.length');
         } else {
-            const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).+$/;
+            const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>-_]).+$/;
             if (!passwordRegex.test(formData.password)) {
                 newErrors.password = t('register.error.password.content');
             }
@@ -79,6 +84,8 @@ function Register () {
             .then(response => {
                 console.log(response.data);
                 setResponseData(response.data);
+                login(response.data);
+                navigate('/');
             })
             .catch(error => {
                 console.error('Error:', error);
@@ -88,6 +95,11 @@ function Register () {
             });
         }
     };
+
+    // Si autorizado, se redirige a inicio
+    if (isAuth) {
+        return <Navigate to="/" replace />;
+    }
 
     return (
         <>

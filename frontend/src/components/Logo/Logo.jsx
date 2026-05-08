@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 function Logo () {
     return (
         <>
-            <Link to="/about" title='Avistory'>
+            <Link to="/" title='Avistory'>
                 <div className='logo-container'>
                     <FaFeatherAlt />
                 </div>

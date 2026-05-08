@@ -1,6 +1,7 @@
 import "./Searchbar.css";
 import { FaSearch } from "react-icons/fa";
 import { FaFilter } from "react-icons/fa";
+import { FaTimes } from "react-icons/fa";
 import Button from "../Button/Button";
 import { useRef, useState, useEffect, use } from "react";
 import { useSearchUI } from "../../contexts/SearchUIProvider";
@@ -21,7 +22,7 @@ function Searchbar () {
     const [mobile, setMobile] = useState(false);
 
     const { isSearchOpen, openSearch, closeSearch, searchType, filters, value, setValue, filtersPannel, setFiltersPannel } = useSearchUI();
-    const { filteredBirds, setFilteredBirds, birds, setSimpleSearch, searchQuery, setSearchQuery } = useBirds();
+    const { filteredBirds, setFilteredBirds, birds, setSimpleSearch, searchQuery, setSearchQuery, appliedFilters } = useBirds();
     // const {searchQuery, setSearchQuery} = useBirds();
 
     const [results, setResults] = useState([]);
@@ -39,7 +40,7 @@ function Searchbar () {
         const handleResize = () => {
             setWidth(window.innerWidth);
 
-            if(window.innerWidth<=600) setSearchButtonTooltip(t('searchbar.button.open'));
+            if(window.innerWidth<=600) setSearchButtonTooltip(t('searchbar.button.show'));
             else setSearchButtonTooltip('');
         };
 
@@ -88,16 +89,6 @@ function Searchbar () {
     };
 
     const dynamicSearch = (e) => {
-        /*const value = e.target.value.toLowerCase();
-
-        const result = birds.filter(bird => 
-            normalizeText(bird.comName).includes(value) ||
-            normalizeText(bird.sciName).includes(value)
-        );
-        
-        console.log(result);
-        setFilteredBirds(result);
-        setSimpleSearch(value);*/
         if (searchType==='catalog'){
             setSuggentions(false);
             setValue(e.target.value);
@@ -120,30 +111,6 @@ function Searchbar () {
                 console.error('Error:', error);
             });
         }
-        /*switch(searchType){
-            case 'map':
-                if(e.target.value) setSuggentions(true);
-                else setSuggentions(false);
-                
-                setValue(e.target.value);
-
-                // Hacer petición de especies
-                api.get('/bird', {
-                    params: { page: 1, limit: 10, name: e.target.value.toLowerCase()}
-                })
-                .then(response => {
-                    console.log(response.data.data);
-                    setResults(response.data.data);
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-                break;
-            case 'catalog':
-                setSuggentions(false);
-                setValue(e.target.value);
-                break;
-        }*/
     }
 
     // Aplicar al pulsar sobre sugerencia
@@ -168,6 +135,16 @@ function Searchbar () {
         setSuggentions(false);
     }
 
+    function clear(){
+        setSearchQuery(prevFormData => ({
+            ...prevFormData,
+            species: prevFormData.species.filter(
+                specie => specie !== value
+            )
+        }));
+        setValue("");
+    }
+
 
     return (
         <div className="searchbar-container">
@@ -188,19 +165,32 @@ function Searchbar () {
                     name="searchbar"
                     value={value}
                 />
-                <Button
-                    type="icon"
-                    classAdditional="search-button"
-                    func={showSearchbar}
-                    tooltip={searchButtonTooltip}
-                >
-                    <FaSearch />
-                </Button>
+                {value ? (
+                    <Button
+                        type="icon"
+                        classAdditional="search-button"
+                        func={clear}
+                        tooltip={t('searchbar.button.clear')}
+                    >
+                        <FaTimes />
+                    </Button>
+                ) : (
+                    <Button
+                        type="icon"
+                        classAdditional="search-button"
+                        func={showSearchbar}
+                        tooltip={searchButtonTooltip}
+                    >
+                        <FaSearch />
+                    </Button>
+                )}
+                
                 {suggestions && (
                     <ResultsList results={results} func={updateSearch}></ResultsList>
                 )}
             </div>
             {filters && (
+                <>
                 <Button
                     // ref={filtersRef}
                     // classAdditional={`filters${mobile ? '-show' : ''}`}
@@ -210,6 +200,8 @@ function Searchbar () {
                 >
                     <FaFilter />
                 </Button>
+                    {appliedFilters && <div className="red-indicator"></div>}
+                </>
             )}
             
         </div>
