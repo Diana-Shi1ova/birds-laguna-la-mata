@@ -220,16 +220,17 @@
   z-index: 1;
 }
 
-.spinner{
-  z-index: 9999;
-}
 
-.spinner-wrapper{
+.map-spinner{
   width: auto;
   height: auto;
   box-sizing: border-box;
   position: absolute;
   top: 50%;
+
+  .spinner{
+    z-index: 9999;
+  }
 }
 
 @keyframes pulse {

@@ -507,7 +507,7 @@ function Map () {
 
     return (
         <>
-            {(loading || markersDrawing) && <Spinner></Spinner>}
+            {(loading || markersDrawing) && <Spinner classAdditional="map-spinner"></Spinner>}
             <InputSelect name="park" classAdditional="park-select" options={parkOptions} change={(e) => showPark(e)} selected={parkData.parkId} title={t('select.park')}></InputSelect>
             {/* <div className="map-controls-container"> */}
                 {/* <InputSelect name="park" options={parkOptions} change={(e) => showPark(e)} selected={parkData.parkId}></InputSelect> */}

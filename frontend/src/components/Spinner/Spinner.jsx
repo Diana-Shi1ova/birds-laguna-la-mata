@@ -1,9 +1,9 @@
 import './Spinner.css';
 
 
-function Spinner({}) {
+function Spinner({classAdditional}) {
     return(
-        <div className='spinner-wrapper'>
+        <div className={'spinner-wrapper '+classAdditional}>
             <div className="spinner"></div>
         </div>
     );
