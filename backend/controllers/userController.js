@@ -32,10 +32,14 @@ const getUserByID = async (req, res) => {
 // Crear un user (registro)
 const createUser = async (req, res) => {
     try{   
-        /*if(!req.body){
+        if(!req.body){
             return res.status(400).json({ message: 'Missing body' });
-        }*/
+        }
         const { name, email, password } = req.body;
+
+        if(!name) return res.status(400).json({ message: 'Fied "name" is required' });
+        if(!email) return res.status(400).json({ message: 'Fied "email" is required' });
+        if(!password) return res.status(400).json({ message: 'Fied "password" is required' });
 
         // Comprobar si existe
         const existingUser = await User.findOne({ email });
@@ -207,18 +211,25 @@ const generateToken = (id) => {
 // Login
 const loginUser = async (req, res) => {
     try{
+        if(!req.body){
+            return res.status(400).json({ message: 'Missing body' });
+        }
+
         const {email, password} = req.body;
+
+        if(!email) return res.status(400).json({ message: 'Fied "email" is required' });
+        if(!password) return res.status(400).json({ message: 'Fied "password" is required' });
 
         //Comprobar si existe
         const user = await User.findOne({email});
         if (!user) {
-            return res.status(400).json({ message: 'Invalid credentials' });
+            return res.status(401).json({ message: 'Invalid credentials' });
         }
 
         // Comparar hashes de contraseña
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
-            return res.status(400).json({ message: 'Invalid credentials' });
+            return res.status(401).json({ message: 'Invalid credentials' });
         }
 
         user.lastLogin = new Date();

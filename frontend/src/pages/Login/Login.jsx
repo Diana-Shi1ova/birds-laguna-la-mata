@@ -38,7 +38,7 @@ function Login () {
             navigate('/');
         })
         .catch(error => {
-            if(error.status === 400) setError(t('login.invalid'));
+            if(error.status === 401) setError(t('login.invalid'));
             else setError(t('sever_error'));
         });
     };

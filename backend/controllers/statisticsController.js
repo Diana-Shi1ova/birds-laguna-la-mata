@@ -447,7 +447,7 @@ const buildSpeciesStatistics = async (req, res) => {
     await Statistics.insertMany(results);
 
     console.log("Done.");
-    res.status(200).json(results);
+    res.status(201).json(results);
   } catch (error) {
     res.status(500).json({
       message: "Server error",
