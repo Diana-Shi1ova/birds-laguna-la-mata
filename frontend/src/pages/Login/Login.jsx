@@ -32,7 +32,6 @@ function Login () {
         // Petición al servidor
         api.post('/user/login', formData)
         .then(response => {
-            console.log(response.data);
             setResponseData(response.data);
             login(response.data);
             navigate('/');
@@ -50,7 +49,6 @@ function Login () {
 
     return (
         <>
-            {/* <h1>Login</h1> */}
             <FormLayout title={t('page.title.login')} url="login" submit={t('login.button.login')} submitFunction={handleSubmit} close={true}>
                 <p className={error ? ('error-message-general opened') : ('error-message-general')}>{error}</p>
                 <Input label={t('login.email.label')} req={true} name="email" auto="email" change={handleChange} type="email"></Input>

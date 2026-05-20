@@ -17,13 +17,10 @@
         width: fit-content;
         justify-content: center;
         width: 350px;
-        /* overflow: hidden; */
 
         .searchbar-input{
             font-size: var(--text-size);
-            /* font-size: 12pt; */
             border-radius: 25px;
-            /* padding: .3em .5em .3em .5em; */
             padding: .3em .5em .3em .5em;
             box-sizing: border-box;
             border: solid 2px #000;
@@ -70,7 +67,6 @@
     }
     .searchbar{
         width: 100% !important;
-        /* justify-content: right !important; */
         height: 43px;
         align-items: end;
         justify-content: end;

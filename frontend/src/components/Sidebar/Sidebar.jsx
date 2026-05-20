@@ -31,7 +31,6 @@ function Sidebar () {
 
     return (
         <div className={sidebarOpen ? "sidebar-container sidebar-container-opened" : "sidebar-container"}>
-            {/* <input type="checkbox" id="menu-toggle" /> */}
             <ul className="sidebar">
                 <li className="logo">
                     <Logo></Logo>

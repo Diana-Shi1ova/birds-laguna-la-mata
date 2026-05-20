@@ -20,15 +20,10 @@ function Input ({name, id, classAdditional="", label, type, req=false, auto=null
                     required={req}
                     name={name}
                     id={id}
-                    // className={classAdditional}
-                    // autoComplete={auto}
                     {...(auto ? { autoComplete: auto } : {})} 
                     onChange={change}
                     onKeyDown={handleKeyDown}
                     placeholder={placeholder}
-                    // {...(isControlled
-                    //     ? { value }
-                    //     : { defaultValue: "" })}
                     value={value}
                     defaultValue={defaultValue}
                 />

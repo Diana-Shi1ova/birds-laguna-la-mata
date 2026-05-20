@@ -27,7 +27,6 @@ function InputNumber ({id, name, classAdditional="", label, change=()=>{}, enter
                 type='number'
                 id={id}
                 name={name}
-                // className={classAdditional}
                 onChange={validChange}
                 onKeyDown={handleKeyDown}
                 onBlur={blur}

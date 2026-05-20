@@ -66,7 +66,6 @@ export function BirdsProvider({ children }) {
                 }
             })
             .then(response => {
-                console.log(response.data);
                 setRaspResults(response.data.total);
                 setLoading(false);
             })
@@ -82,7 +81,6 @@ export function BirdsProvider({ children }) {
         }
         
         // Petición de aves del período
-        //const [date, period] = dateOrPeriod();
         if(searchQuery.period){ 
             // Definir período
             let period = 1;
@@ -105,18 +103,14 @@ export function BirdsProvider({ children }) {
             api.get('/eBird', {
                 params: {
                     parkId: parkData.parkId,
-                    // back: searchQuery.back
-                    // back: back
                     back: period,
                     locale: i18n.resolvedLanguage
                 }
             })
             .then(response => {
-                console.log(response.data);
                 setBirds(response.data);
                 filterByNames(response.data);
                 setLoading(false);
-                // setFilteredBirds(response.data);
             })
             .catch(error => {
                 console.error('Error:', error);
@@ -124,7 +118,6 @@ export function BirdsProvider({ children }) {
         }
         // Petición del histórico en una fecha
         else{
-            console.log(formatDateAPI(searchQuery.date))
             api.get('/eBird/history', {
                 params: {
                     parkId: parkData.parkId,
@@ -133,11 +126,9 @@ export function BirdsProvider({ children }) {
                 }
             })
             .then(response => {
-                console.log(response.data);
                 setBirds(response.data);
                 filterByNames(response.data);
                 setLoading(false);
-                // setFilteredBirds(response.data);
             })
             .catch(error => {
                 console.error('Error:', error);
@@ -155,7 +146,6 @@ export function BirdsProvider({ children }) {
         if(isAuth){
             api.get(`/favourite/${user._id}`)
             .then(response => {
-                console.log(response.data);
 
                 const favMap = new Map(
                     (response.data.data || []).map(f => [f.specieId, f._id])
@@ -201,18 +191,15 @@ export function BirdsProvider({ children }) {
     }
 
     async function getRaspberryDetections(rasp) {
-        searchQuery.species.length>0 ? console.log(searchQuery.species.join(',')) : console.log(simpleSearch)
         if(!searchQuery.rpa && rasp.type==='audio') return;
         if(!searchQuery.rpi && rasp.type==='image') return;
 
         const [date, period] = dateOrPeriod();
-        console.log(searchQuery.species);
         try {
             const res = await api.get(`/raspBird/${rasp.type}/${rasp._id}`, {
                 params: {
                     period: period,
                     date: date,
-                    // names: searchQuery.species.join(',')
                     names: searchQuery.species.length>0 ? searchQuery.species.join(',') : simpleSearch
                 }
             });
@@ -222,9 +209,7 @@ export function BirdsProvider({ children }) {
 
         } catch (err) {
             console.error("Error loading rasp data:", err);
-        } /*finally {
-            return data;
-        }*/
+        }
     }
     
 
@@ -240,7 +225,6 @@ export function BirdsProvider({ children }) {
                 )
         );
 
-        console.log('Filtered:', filtered)
         setFilteredBirds(filtered);
     }
 

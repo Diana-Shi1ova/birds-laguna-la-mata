@@ -82,7 +82,6 @@ function Register () {
         if (validate()) {
             api.post('/user', formData)
             .then(response => {
-                console.log(response.data);
                 setResponseData(response.data);
                 login(response.data);
                 navigate('/');

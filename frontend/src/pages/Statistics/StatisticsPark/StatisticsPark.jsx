@@ -18,8 +18,6 @@ function StatisticsPark({park, createOption = () => ({})}){
         // Datos del parque
         api.get(`/park/${park}`)
         .then(response => {
-            console.log(park);
-            console.log(response.data);
             setParkData(response.data);
         })
         .catch(error => {
@@ -33,7 +31,6 @@ function StatisticsPark({park, createOption = () => ({})}){
             }
         )
         .then(response => {
-            console.log(response.data);
             setData(response.data);
         })
         .catch(error => {

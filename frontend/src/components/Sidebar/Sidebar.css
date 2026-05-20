@@ -11,7 +11,6 @@
 }
 
 .sidebar{
-    /* height: 100vh; */
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -41,9 +40,6 @@
     }
 
     .li-exit{
-        /*position: fixed;
-        bottom: 0;
-        left: 0;*/
         margin-top: auto;
     }
 
@@ -73,17 +69,13 @@
     .menu-button{
         display: flex;
         font-size: 15pt !important;
-        /* background-color: var(--green); */
         padding: .2em !important;
-        /* border: 2px solid #000; */
         position: absolute;
         top: 0;
         right: 0;
     }
 
     .sidebar-container{
-        /* left: -13.7em; */
-        /* left: -291px; */
         left: -1000px;
         transition: left 0.3s ease;
         position: absolute;
@@ -96,7 +88,6 @@
             font-size: var(--text-size);
             align-items: center;
             gap: .5em;
-            /* padding: .5em; */
             padding-left: 1em;
             padding-right: 1em;
 

@@ -1,15 +1,3 @@
-/*.dialog-overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,0.6);
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  z-index: 1000;
-}*/
-
 .dialog {
   background: white;
   border: 3px solid var(--green-active-dark);
@@ -17,15 +5,9 @@
   padding: 30px;
   min-width: 300px;
   max-width: 80%;
-  /* max-height: 85vh; */
   height: 80vh;;
   overflow: auto;
   position: relative;
-  /* margin: 5em; */
-
-  /* display: flex;
-  align-items: center;
-  justify-content: center; */
 
   width: min(900px, 90vw);
   max-height: 90vh;
@@ -33,11 +15,10 @@
   overflow: hidden;
 
   box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-  /* animation: popIn 0.3s ease; */
 }
 
 .dialog-content {
-  height: calc(90vh - 60px); /* учитываем кнопку */
+  height: calc(90vh - 60px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -82,5 +63,4 @@
     width: auto;
     height: auto;
     object-fit: contain;
-    /* display: block; */
 }

@@ -19,7 +19,6 @@ function Header () {
 
     return (
         <header>
-            {/* <Sidebar></Sidebar> */}
             {!isSearchOpen && (
                 <Button type="icon" classAdditional="open-sidebar" func={showSidebar} tooltip={sidebarOpen ? t('sidebar.menu.close') : t('sidebar.menu.open')}><FaBars /></Button>
             )}

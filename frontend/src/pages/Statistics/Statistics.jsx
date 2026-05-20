@@ -50,7 +50,6 @@ function Statistics(){
     useEffect(() => {
         api.get(`/park`)
             .then(response => {
-                console.log(response.data);
                 const result = response.data.map(item => ({
                     value: item._id,
                     label: item.name
@@ -115,7 +114,6 @@ function Statistics(){
                 type: "line",
                 smooth: true,
                 data: arr?.map(d => d[yKey]) || [],
-                // Вместо текста используем markArea только для фоновой заливки (зебра)
                 markArea: xGroups ? {
                     itemStyle: {
                         color: '#009dff2b'
@@ -131,7 +129,6 @@ function Statistics(){
 
     // Cambio de parque
     const onSelectChange = (e) => {
-        console.log(e.target.value);
         setPark(e.target.value);
     }
 

@@ -46,13 +46,6 @@ const getBirds = async (req, res) => {
 
     const totalPages = Math.ceil(total / limit);
 
-    // idiomas
-    /*const updatedBirds = birds.map(bird => ({
-      ...bird,
-      comName: bird.comName[locale],
-      'wikidata.wikipediaURL': wikidata.wikipediaURL[locale]
-    }));*/
-
     const updatedBirds = birds.map(bird => ({
       ...bird,
 
@@ -156,8 +149,6 @@ const getDirectWikidata = async (req, res) => {
             SERVICE wikibase:label { bd:serviceParam wikibase:language "es". }
         }
     `;
-
-    console.log(sparql);
 
     const url =
         "https://query.wikidata.org/sparql?format=json&query=" +

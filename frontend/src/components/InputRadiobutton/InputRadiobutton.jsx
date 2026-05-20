@@ -17,28 +17,6 @@ function InputRadiobutton ({id, name="", value, classAdditional="", label, chang
         </div>
     );
 };
-/*function InputRadiobutton ({id, name, value, classAdditional="", label, change=()=>{}, checked}) {
-    const inputProps = {
-        type: 'radio',
-        id: id,
-        name: name,
-        value: value,
-        // className: classAdditional,
-        onChange: change
-    };
-
-    // Añadir defaultChecked solo si checked es true
-    if (checked) {
-        inputProps.defaultChecked = true;
-    }
-
-    return (
-        <label className={"input-radio-container  "+classAdditional}>
-            <input {...inputProps} />
-            {label}
-        </label>
-    );
-}*/
 
 
 export default InputRadiobutton;

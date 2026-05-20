@@ -26,7 +26,6 @@ function App() {
           <SiteTitle />
           <Routes>
             <Route path='/' element={<Index/>}/>
-            {/* <Route path='/home' element={<Home/>}/> */}
             <Route path='/catalog' element={<Catalog/>}/>
             <Route path='/favourites' element={<Favourites/>}/>
             <Route path='/statistics' element={<Statistics/>}/>

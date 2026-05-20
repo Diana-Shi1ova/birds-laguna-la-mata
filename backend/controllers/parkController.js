@@ -14,7 +14,6 @@ const getParks = async (req, res) => {
 const getParkById = async (req, res) => {
     try{
         const { id } = req.params;
-        console.log(id)
         const park = await Park.findById(id);
 
         if(!park) res.status(404).json({message: 'Park not found'});

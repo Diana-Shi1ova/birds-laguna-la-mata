@@ -45,11 +45,6 @@ function ButtonFavourite ({ bird }) {
                     console.log(response.data);
                     if(response.data){
                         setSaved(true);
-                        /*setFavourites(prev => {
-                            const newSet = new Set(prev);
-                            newSet.add(bird);
-                            return newSet;
-                        });*/
                         setFavourites(prev => {
                             const newMap = new Map(prev);
                             newMap.set(bird, response.data._id);
@@ -71,11 +66,6 @@ function ButtonFavourite ({ bird }) {
                     console.log(response.data);
                     if(response.data.favourite){
                         setSaved(false);
-                        /*setFavourites(prev => {
-                            const newSet = new Set(prev);
-                            newSet.add(bird);
-                            return newSet;
-                        });*/
                         setFavourites(prev => {
                             const newMap = new Map(prev);
                             newMap.delete(bird);

@@ -9,11 +9,7 @@
     border-radius: 15px;
 
     li{
-        /*display: flex;
-        height: fit-content;
-        width: fit-content;*/
         max-width: 300px;
-        /* min-width: 50px; */
     }
 
     button{

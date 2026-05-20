@@ -5,26 +5,12 @@ import { useTranslation } from "react-i18next";
 
 function ResultsList ({results, func=() => {}, display}) {
     const { t } = useTranslation();
-    /*const {searchQuery, setSearchQuery} = useBirds();
-
-    function updateSearch(sciName){
-        // setSearchQuery()
-
-        let names = [];
-        names.push(sciName);
-
-        setSearchQuery(prevFormData => ({
-            ...prevFormData,
-            species: names
-        }));
-    }*/
 
     function onEnter(e, sci, id){
         if (e.key === "Enter") func(sci, id);
     }
 
     return (
-        // <ul className={display ? "results-list" : "results-list results-hidden"}>
         <ul className="results-list">
             {results.map((item) => (
                 <li key={item._id}>

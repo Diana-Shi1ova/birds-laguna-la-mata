@@ -23,10 +23,8 @@ function Searchbar () {
 
     const { isSearchOpen, openSearch, closeSearch, searchType, filters, value, setValue, filtersPannel, setFiltersPannel } = useSearchUI();
     const { filteredBirds, setFilteredBirds, birds, setSimpleSearch, searchQuery, setSearchQuery, appliedFilters } = useBirds();
-    // const {searchQuery, setSearchQuery} = useBirds();
 
     const [results, setResults] = useState([]);
-    // const [value, setValue] = useState('');
     const [suggestions, setSuggentions] = useState(false);
 
     const navigate = useNavigate();
@@ -68,9 +66,6 @@ function Searchbar () {
     }
 
     const handleBlur = () => {
-        /*setFocus(false);
-        setMobile(false);
-        closeSearch(); // uso del contexto para volver a mostrar otros elementos*/
         setSuggentions(false);
     }
 
@@ -104,7 +99,6 @@ function Searchbar () {
                 params: { page: 1, limit: 10, name: e.target.value.toLowerCase(), locale: i18n.resolvedLanguage}
             })
             .then(response => {
-                console.log(response.data.data);
                 setResults(response.data.data);
             })
             .catch(error => {
@@ -192,8 +186,6 @@ function Searchbar () {
             {filters && (
                 <>
                 <Button
-                    // ref={filtersRef}
-                    // classAdditional={`filters${mobile ? '-show' : ''}`}
                     classAdditional='filters'
                     func={open}
                     tooltip={t('button.open_filters')}

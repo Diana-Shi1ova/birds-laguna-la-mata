@@ -14,9 +14,6 @@ function Dialog({buttonTitle, buttonClass='', dialogClass='', buttonTooltip='', 
         dialogRef.current?.showModal();
     };
 
-    /*const closeDialog = () => {
-        dialogRef.current?.close();
-    };*/
     const closeDialog = () => {
         setIsClosing(true);
 
@@ -29,7 +26,6 @@ function Dialog({buttonTitle, buttonClass='', dialogClass='', buttonTooltip='', 
     return (
         <>
             <Button func={openDialog} classAdditional={buttonClass} tooltip={buttonTooltip}>{buttonTitle}</Button>
-            {/* <button onClick={openDialog}>{buttonTitle}</button> */}
 
             <dialog ref={dialogRef} className={dialogClass+` dialog ${isClosing ? "closing" : "opening"}`}>
                 <Button classAdditional='close-button' type='icon' func={closeDialog} tooltip={t('map.options.button.close')}><FaTimes /></Button>

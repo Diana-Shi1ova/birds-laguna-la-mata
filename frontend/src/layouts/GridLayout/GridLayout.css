@@ -15,7 +15,6 @@
     padding: 0;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    /* grid-template-columns: repeat(auto-fill, minmax(300px, max-content)); */
     gap: 1em;
     width: 100%;
     box-sizing: border-box;
@@ -29,8 +28,6 @@
     box-sizing: border-box;
 
     img{
-        /*height: 300px;
-        width: 300px !important;*/
         width: 100%;
         object-fit: cover;
     }

@@ -1,7 +1,5 @@
-// import fs from "fs";
 const fs = require('fs');
 const readline = require('readline');
-// import readline from "readline";
 const Bird = require('../models/birdModel');
 const Statistics = require('../models/statisticsModel');
 const Park = require('../models/parkModel');
@@ -86,11 +84,6 @@ function getSpeciesRichnessTrend(data) {
 
   const points = data.map((d, i) => [i, d.speciesCount]);
 
-  /*const lr = ss.linearRegression(points);
-  const slope = lr.m;
-
-  const r2 = ss.rSquared(points, lr);*/
-
   const regression = ss.linearRegression(points);
   const slope = regression.m;
   const line = ss.linearRegressionLine(regression);
@@ -157,17 +150,6 @@ const getParkStatistics = async (req, res) => {
     const birds = await Bird.find({
       _id: { $in: topSpeciesIds },
     }).lean();
-
-    /*const top10 = ranked.map(stat => {
-      const bird = birds.find(
-        b => b._id.toString() === stat.specieId.toString()
-      );
-
-      return {
-        // ...stat,
-        bird,
-      };
-    });*/
     
     const top10 = ranked.map(stat => {
       const bird = birds.find(
@@ -227,7 +209,6 @@ const getParkStatistics = async (req, res) => {
       totalChecklists,
       totalSpecies: filteredStats.length,
       top10: localizedTop10,
-      // allSpecies: filteredStats,
       yearlySpecies,
       trend: trend
     });
@@ -527,14 +508,7 @@ function getHourlyInsight(hourly) {
   };
 }
 
-/*function buildInsights({ trend, seasonality, hourly }) {
-  return {
-    trend: getTrendInsight(trend),
-    seasonality: getSeasonalityInsight(seasonality),
-    hourly: getHourlyInsight(hourly),
-  };
-}*/
-
+// Crear resumen
 function buildInsights( trend, seasonality, hourly, totalDetections ) {
   if (totalDetections === 0) {
     return {
@@ -564,6 +538,7 @@ function buildInsights( trend, seasonality, hourly, totalDetections ) {
   };
 }
 
+// Fiabilidad
 function getConfidence(n) {
   let level = "none";
   let score = 0;
@@ -591,158 +566,6 @@ function getConfidence(n) {
     n,
   };
 }
-
-
-/*const buildSpeciesStatistics = async (req, res) => {
-    try{
-        console.log("Loading species...");
-
-        const speciesList = await Bird.find().lean();
-        const speciesNames = speciesList.map(s => s.sciName);
-
-        console.log("Reading SED (last 5 years)...");
-
-        const sedStream = fs.createReadStream(sedPath);
-        const sedRl = readline.createInterface({ input: sedStream });
-
-        let sedHeaders = [];
-        const sedMap = new Map(); // checklist_id → metadata
-
-        for await (const line of sedRl) {
-            if (!sedHeaders.length) {
-            sedHeaders = line.split("\t");
-            continue;
-            }
-
-            const row = parseTSVLine(line, sedHeaders);
-
-            const id = row["SAMPLING EVENT IDENTIFIER"];
-            const dateStr = row["OBSERVATION DATE"];
-
-            if (!id || !dateStr) continue;
-
-            const year = new Date(dateStr).getFullYear();
-
-            // 🔥 FILTER: last 5 years only
-            if (year < MIN_YEAR) continue;
-
-            sedMap.set(id, {
-            date: dateStr,
-            year,
-            week: getWeek(dateStr),
-            hour: Number((row["TIME OBSERVATIONS STARTED"] || "0:00").slice(0, 2)) || 0
-            });
-        }
-
-        console.log(`SED loaded: ${sedMap.size} checklists`);
-
-        console.log("Reading EBD (last 5 years)...");
-
-        const ebdStream = fs.createReadStream(ebdPath);
-        const ebdRl = readline.createInterface({ input: ebdStream });
-
-        let ebdHeaders = [];
-
-        // checklistId_species → presence
-        const presenceMap = new Set();
-
-        for await (const line of ebdRl) {
-            if (!ebdHeaders.length) {
-            ebdHeaders = line.split("\t");
-            continue;
-            }
-
-            const row = parseTSVLine(line, ebdHeaders);
-
-            const checklistId = row["SAMPLING EVENT IDENTIFIER"];
-            const species = row["SCIENTIFIC NAME"];
-
-            if (!checklistId || !species) continue;
-
-            // 🔥 FILTER: only if checklist exists in SED (last 5 years)
-            if (!sedMap.has(checklistId)) continue;
-
-            presenceMap.add(`${checklistId}_${species}`);
-        }
-
-        console.log("Computing statistics...");
-
-        const results = [];
-
-        for (const sp of speciesList) {
-            const speciesName = sp.sciName;
-
-            const weekAgg = {};
-            const hourAgg = {};
-            const yearAgg = {};
-
-            let total = 0;
-            let detected = 0;
-
-            for (const [checklistId, meta] of sedMap.entries()) {
-            const key = `${checklistId}_${speciesName}`;
-            const present = presenceMap.has(key) ? 1 : 0;
-
-            total++;
-            detected += present;
-
-            // WEEK
-            weekAgg[meta.week] ??= { t: 0, d: 0 };
-            weekAgg[meta.week].t++;
-            weekAgg[meta.week].d += present;
-
-            // HOUR
-            hourAgg[meta.hour] ??= { t: 0, d: 0 };
-            hourAgg[meta.hour].t++;
-            hourAgg[meta.hour].d += present;
-
-            // YEAR
-            yearAgg[meta.year] ??= { t: 0, d: 0 };
-            yearAgg[meta.year].t++;
-            yearAgg[meta.year].d += present;
-            }
-
-            const seasonality = Object.entries(weekAgg).map(([week, v]) => ({
-            week: Number(week),
-            freq: v.t ? v.d / v.t : 0
-            }));
-
-            const hourly = Object.entries(hourAgg).map(([hour, v]) => ({
-            hour: Number(hour),
-            freq: v.t ? v.d / v.t : 0
-            }));
-
-            const trend = Object.entries(yearAgg).map(([year, v]) => ({
-            year: Number(year),
-            freq: v.t ? v.d / v.t : 0
-            }));
-
-            results.push({
-            speciesCode: sp.speciesCode,
-            sciName: speciesName,
-            comName: sp.comName,
-
-            seasonality,
-            hourly,
-            trend,
-
-            overall: {
-                probability: total ? detected / total : 0
-            }
-            });
-        }
-
-        console.log("Saving to MongoDB...");
-
-        await Statistics.deleteMany({});
-        await Statistics.insertMany(results);
-
-        console.log("Done.");
-        res.status(200).json(results);
-    } catch(error){
-        res.status(500).json({ message: 'Server error', error: error.message });
-    }
-}*/
 
 
 module.exports = {

@@ -29,7 +29,6 @@ function MarkerInfoCard({birds, source='eBird', lat, long, popup}) {  //tipo: eB
     const [total, setTotal] = useState(1);
     const [wikidata, setWikidata] = useState();
     const [imgLoading, setImgLoading] = useState(true);
-    // const [showBig, setShowBig] = useState(false);
 
     const nextPage = () => {
         if(current<total) setCurrent(current+1);
@@ -54,15 +53,14 @@ function MarkerInfoCard({birds, source='eBird', lat, long, popup}) {  //tipo: eB
         const month = String(date.getMonth() + 1).padStart(2, '0');
         const year = date.getFullYear();
 
-        const hours = date.getHours(); // как у тебя — без 0 спереди
+        const hours = date.getHours();
         const minutes = String(date.getMinutes()).padStart(2, '0');
-        const seconds = String(date.getSeconds()).padStart(2, '0'); // 👈 добавили
+        const seconds = String(date.getSeconds()).padStart(2, '0');
 
         return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
     };
 
     const formatFromFilename = (filename) => {
-        // 2025-02-21_12-38-26.jpg
         const [datePart, timePart] = filename.split('_');
 
         const [year, month, day] = datePart.split('-');
@@ -78,11 +76,8 @@ function MarkerInfoCard({birds, source='eBird', lat, long, popup}) {  //tipo: eB
     };
 
     useEffect(() => {
-        // console.log('Birds: ', birds);
-        // console.log('Birds length: ', birds.length);
         setImgLoading(true);
         setTotal(birds.length);
-        console.log(birds)
 
         if(source==='eBird'){
             // Petición al servidor
@@ -90,7 +85,6 @@ function MarkerInfoCard({birds, source='eBird', lat, long, popup}) {  //tipo: eB
                 params: { sciName: birds[current-1]['sciName'], locale: i18n.resolvedLanguage }
             })
             .then(response => {
-                // console.log(response.data);
                 setWikidata(response.data);
             })
             .catch(error => {
@@ -103,10 +97,7 @@ function MarkerInfoCard({birds, source='eBird', lat, long, popup}) {  //tipo: eB
     if(source==='eBird'){
         return(
             <div className={'marker-info-container'}>
-                {/* <Button><FaCaretLeft /></Button> */}
-                {/* <div className='marker-info-main'> */}
                     <p className={'source '+source}>{source}</p>
-                    {/* <Button type='icon' classAdditional='save-button'><FaRegBookmark /></Button> */}
                     <Button type='icon' classAdditional='close-button' tooltip={t('map.observation.button.close')} func={closePopup}><FaTimes /></Button>
                     <Link 
                         to={wikidata && wikidata['wikipediaURL']} 
@@ -127,7 +118,6 @@ function MarkerInfoCard({birds, source='eBird', lat, long, popup}) {  //tipo: eB
                             rel="noopener noreferrer"
                             title={t('map.observation.link.placeholder')}
                         >
-                            {console.log("IMAGES ", wikidata)}
                             <img
                                 className='info-img'
                                 key={wikidata?.images?.length-1}
@@ -143,11 +133,9 @@ function MarkerInfoCard({birds, source='eBird', lat, long, popup}) {  //tipo: eB
                         </Link>
                     </div>
                     <p className='info'>{t('map.observation.observed')} <span>{formatDateTime(birds[current-1]['obsDt'])}</span></p>
-                    <p className='info'>{t('map.observation.quantity')} <span>{birds[current-1]['howMany'] ? birds[current-1]['howMany'] : t('map.observation.quantity.unknown')}</span></p>
+                    <p className='info'>{t('map.observation.quantity')} <span>{birds[current-1]['howMany'] ? birds[current-1]['howMany'] : t('map.quantity.unknown')}</span></p>
                     <p className='info'>{t('map.observation.coords')} <span>({birds[current-1]['lat'].toFixed(3)}, {birds[current-1]['lng'].toFixed(3)})</span></p>
                     <div className='actions'>
-                        {/* <Button classAdditional='chart-button'><FaChartBar />Ver dinámica</Button>
-                        <Button type='icon' classAdditional='save-button' tooltip='Guardar especie'><FaRegBookmark /></Button> */}
                         <ButtonStatistics bird={wikidata?.id} park={parkData.parkId}></ButtonStatistics>
                         <ButtonFavourite bird={wikidata?.id}></ButtonFavourite>
                     </div>
@@ -168,17 +156,11 @@ function MarkerInfoCard({birds, source='eBird', lat, long, popup}) {  //tipo: eB
     else if(source==='audio'){
         return(
             <div className={'marker-info-container'}>
-                {/* <Button><FaCaretLeft /></Button> */}
-                {/* <div className='marker-info-main'> */}
                     <p className={'source RPA'}>RPA</p>
-                    {/* <Button type='icon' classAdditional='save-button'><FaRegBookmark /></Button> */}
-                    {/* <a href={wikidata && wikidata['wikipediaURL']}> */}
-                        {/* <h1>{birds && birds[current-1]['name_eng']}</h1> */}
                         <Button type='icon' classAdditional='close-button' tooltip={t('map.observation.button.close')} func={closePopup}><FaTimes /></Button>
                         {birds.length>0 ? (
                             <>
                             <h1>{birds?.[current - 1]?.name_eng}</h1>
-                            {/* <audio src='https://www.dropbox.com/scl/fi/glmr0fehfrtxcupqh17c1/Eurasian_Coot-71-2024-09-24-birdnet-09_50_11.mp3?rlkey=qpf1uphf2fbhuv8u2treapme7&st=wpnkbg86&dl=1' controls></audio> */}
                             <audio
                                 key={birds?.[current - 1]?.path}
                                 controls
@@ -200,28 +182,10 @@ function MarkerInfoCard({birds, source='eBird', lat, long, popup}) {  //tipo: eB
                             </div>
                         )}
 
-
-                        {/* <audio src={birds?.[current - 1]?.path} controls></audio> */}
-
-                        {/* <iframe width="711" height="144" frameBorder="0" src="https://mega.nz/embed/CwxSjKZC#OZlCqU3o0gC2G9QBGhF1ughYvby1FipeyYie3zyhTEc!1v1c" allowFullScreen ></iframe> */}
-
-
-
-                    {/* </a> */}
-                    {/* <p className='lat-name'>({birds[current-1]['sciName']})</p>
-                    <a href={wikidata && wikidata['wikipediaURL']}>
-                        <img className='info-img' src={wikidata && wikidata['images'][0]} alt={birds[current-1]['comName']} />
-                    </a>
-                    <p className='info'>Avistado: <span>{formatDateTime(birds[current-1]['obsDt'])}</span></p>
-                    <p className='info'>Cantidad: <span>{birds[current-1]['howMany']}</span></p>
-                    <p className='info'>Coordenadas: <span>({birds[current-1]['lat'].toFixed(3)}, {birds[current-1]['lng'].toFixed(3)})</span></p>
-                    <Button classAdditional='chart-button'><FaChartBar />Ver dinámica</Button> */}
                     {total>1 && (
                         <>
                             <p className='pages'><span>{current}</span>/<span>{total}</span></p>
                             <div className='buttons audio'>
-                                {/* <Button func={previousPage} tooltip={t('map.observation.button.previous')}><FaCaretLeft /></Button>
-                                <Button func={nextPage} tooltip={t('map.observation.button.next')}><FaCaretRight /></Button> */}
                                 <Button func={previousPage} tooltip={t('map.observation.button.previous')} disabled={(current-1<1) ? true : false}><FaCaretLeft /></Button>
                                 <Button func={nextPage} tooltip={t('map.observation.button.next')}  disabled={(current+1>total) ? true : false}><FaCaretRight /></Button>
                             </div>
@@ -234,11 +198,7 @@ function MarkerInfoCard({birds, source='eBird', lat, long, popup}) {  //tipo: eB
     else if(source==='image'){
         return(
             <div className={'marker-info-container'}>
-                {/* <Button><FaCaretLeft /></Button> */}
-                {/* <div className='marker-info-main'> */}
                     <p className={'source RPI'}>RPI</p>
-                    {/* <Button type='icon' classAdditional='save-button'><FaRegBookmark /></Button>
-                    <a href={wikidata && wikidata['wikipediaURL']}> */}
                     <Button type='icon' classAdditional='close-button' tooltip={t('map.observation.button.close')} func={closePopup}><FaTimes /></Button>
                     {birds.length>0 ? (
                             <>
@@ -247,7 +207,6 @@ function MarkerInfoCard({birds, source='eBird', lat, long, popup}) {  //tipo: eB
                                     ? birds?.[current - 1]?.species_detected
                                     : t('map.observation.raspberry.unknown')}
                             </h1>
-                            {/* <img className='info-img' src="https://raw.githubusercontent.com/Diana-Shi1ova/Avistory-audio-storage/refs/heads/main/frame_2025-02-21_12-38-26.jpg?token=GHSAT0AAAAAAD2VHW65QSB5Y6EYZO5EWTQW2PC25UQ" alt="" /> */}
                             <img src={import.meta.env.VITE_RASPBERRIES_IMAGES_PATH+'frame_'+birds?.[current - 1]?.image_name} className='info-img rpi' alt={
                                     birds?.[current - 1]?.species_detected !== 'x'
                                         ? birds?.[current - 1]?.species_detected
@@ -255,9 +214,7 @@ function MarkerInfoCard({birds, source='eBird', lat, long, popup}) {  //tipo: eB
 
                             <p className='info'>{t('map.observation.observed')} <span>{formatFromFilename(birds[current-1]['image_name'])}</span></p>
                             <p className='info'>{t('map.observation.coords')} <span>({lat.toFixed(3)}, {long.toFixed(3)})</span></p>
-                            {/* <Button classAdditional='chart-button' func={() => {setShowBig(!showBig)}}>Abrir imagen</Button> */}
                             <Dialog buttonTitle={t('map.observation.raspberry.open_image')} buttonClass='chart-button'>
-                                {/* <div className='big-image-wrapper'></div> */}
                                 <img src={import.meta.env.VITE_RASPBERRIES_IMAGES_PATH+'frame_'+birds?.[current - 1]?.image_name} className='big-image' alt={
                                     birds?.[current - 1]?.species_detected !== 'x'
                                         ? birds?.[current - 1]?.species_detected
@@ -271,22 +228,10 @@ function MarkerInfoCard({birds, source='eBird', lat, long, popup}) {  //tipo: eB
                                 <p>{t('map.observation.raspberry.message')}</p>
                             </div>
                         )}
-
-                    {/* </a> */}
-                    {/* <p className='lat-name'>({birds[current-1]['sciName']})</p>
-                    <a href={wikidata && wikidata['wikipediaURL']}>
-                        <img className='info-img' src={wikidata && wikidata['images'][0]} alt={birds[current-1]['comName']} />
-                    </a>
-                    <p className='info'>Avistado: <span>{formatDateTime(birds[current-1]['obsDt'])}</span></p>
-                    <p className='info'>Cantidad: <span>{birds[current-1]['howMany']}</span></p>
-                    <p className='info'>Coordenadas: <span>({birds[current-1]['lat'].toFixed(3)}, {birds[current-1]['lng'].toFixed(3)})</span></p>
-                    <Button classAdditional='chart-button'><FaChartBar />Ver dinámica</Button> */}
                     {total>1 && (
                         <>
                             <p className='pages'><span>{current}</span>/<span>{total}</span></p>
                             <div className='buttons'>
-                                {/* <Button func={previousPage} tooltip={t('map.observation.button.previous')}><FaCaretLeft /></Button>
-                                <Button func={nextPage} tooltip={t('map.observation.button.next')}><FaCaretRight /></Button> */}
                                 <Button func={previousPage} tooltip={t('map.observation.button.previous')} disabled={(current-1<1) ? true : false}><FaCaretLeft /></Button>
                                 <Button func={nextPage} tooltip={t('map.observation.button.next')}  disabled={(current+1>total) ? true : false}><FaCaretRight /></Button>
                             </div>

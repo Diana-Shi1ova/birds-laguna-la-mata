@@ -12,10 +12,6 @@ const userSchema = new mongoose.Schema(
       unique: true,
       lowercase: true,
     },
-    phone: {
-      type: String,
-      //required: [true, 'Please add a phone number'],
-    },
     password: {
       type: String,
       required: [true, 'Please add a password hash'],
@@ -24,10 +20,6 @@ const userSchema = new mongoose.Schema(
       type: Date,
       default: null,
     },
-    /*registeredAt: {
-      type: Date,
-      default: Date.now,
-    },*/
     avatar: {
       type: String,
       default: '',

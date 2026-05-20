@@ -17,7 +17,6 @@
   padding: .3em;
   position: absolute;
   z-index: 2;
-  /* top: calc(40% + 100px); */
   top: 56%;
   right: 8px;
 }
@@ -38,12 +37,6 @@
     margin-bottom: 0;
     font-size: var(--h1-size);
   }
-
-  /*.select-container, button{
-    max-width: 200px;
-  }*/
-
-  
 }
 
 .maplibregl-map{
@@ -65,11 +58,6 @@
     background-color: transparent;
 }
 
-.maplibregl-popup{
-    /*max-width: 240px;
-    transform: translate(-50%, 0px) translate(201px, 184px);*/
-}
-
 .maplibregl-popup-close-button{
     display: none;
 }
@@ -80,7 +68,6 @@
     border-radius: 50%;
     border: 2px solid white;
     box-shadow: 0 0 6px rgba(0,0,0,0.3);
-    /* position: relative; */
 }
 
 .marker-image, .marker-pulse-image{
@@ -91,93 +78,6 @@
     background-color: #3c94e7;
 }
 
-
-/*.marker-pulse-audio {
-  width: 20px;
-  height: 20px;
-  background: #3c94e7;
-  border-radius: 50%;
-  position: relative;
-  box-shadow: 0 0 6px rgba(0,0,0,0.5);
-}
-
-
-.marker-pulse-audio::before {
-  content: "";
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  background: #3c94e7;
-  border: 2px solid white;
-  border-radius: 50%;
-  top: 0;
-  left: 0;
-}
-
-
-.marker-pulse-audio::after {
-  content: "";
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  background: #3c94e7;
-  border: 2px solid white;
-  border-radius: 50%;
-  top: 0;
-  left: 0;
-  animation: pulse 1.5s infinite;
-  opacity: 0.6;
-}
-
-
-.marker-pulse-image {
-  width: 20px;
-  height: 20px;
-  background: #d8e356;
-  border-radius: 50%;
-  position: relative;
-  box-shadow: 0 0 6px rgba(0,0,0,0.5);
-}
-
-
-.marker-pulse-image::before {
-  content: "";
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  background: #d8e356;
-  border: 2px solid white;
-  border-radius: 50%;
-  top: 0;
-  left: 0;
-}
-
-
-.marker-pulse-image::after {
-  content: "";
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  background: #d8e356;
-  border: 2px solid white;
-  border-radius: 50%;
-  top: 0;
-  left: 0;
-  animation: pulse 1.5s infinite;
-  opacity: 0.6;
-}
-
-@keyframes pulse {
-  0% {
-    transform: scale(1);
-    opacity: 0.6;
-  }
-  100% {
-    transform: scale(3);
-    opacity: 0;
-  }
-}*/
-
 .marker-pulse-audio,
 .marker-pulse-image {
   width: 23px;
@@ -186,7 +86,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  /* position: relative; */
 }
 
 .marker-pulse-audio {

@@ -6,51 +6,6 @@ const Raspberry = require('../models/raspberryModel');
 // Obtener detecciones realizadas por imágen
 const getObservationsAudio = async (req, res) => {
   try {
-    /*const { id } = req.params;
-    const { date, period, names } = req.query;
-
-    const query = {
-      raspberry: id
-    };
-
-    // Filtrado por nombres
-    // if (names) {
-    //   const namesArray = Array.isArray(names)
-    //     ? names
-    //     : names.split(',');
-
-    //   query.name_eng = { $in: namesArray };
-    // }
-    // 🔹 1. NAMES: partial match (ANY of them)
-    if (names) {
-      const namesArray = Array.isArray(names)
-        ? names
-        : names.split(',').map(n => n.trim());
-
-      query.name_eng = {
-        $in: namesArray.map(name => new RegExp(name, 'i'))
-      };
-    }
-
-    // Filtrado por fecha (YYYY-MM-DD)
-    if (date) {
-      query.date = date;
-    }
-
-    // Filtrado por período (últimos 1-30 días)
-    if (period) {
-      const days = parseInt(period, 10);
-
-      const end = new Date();
-      const start = new Date();
-      start.setDate(end.getDate() - days);
-
-      query.timestamp = {
-        $gte: start,
-        $lte: end
-      };
-    }*/
-
     const query = buildAudioQuery({
       ids: req.params.id,
       ...req.query
@@ -70,52 +25,6 @@ const getObservationsAudio = async (req, res) => {
 // Obtener detecciones realizadas por imágen
 const getObservationsImage = async (req, res) => {
   try {
-    /*const { date, period, names } = req.query;
-    const { id } = req.params;
-
-    const query = {
-      raspberry: id
-    };
-
-    // 🔹 1. NAMES: partial match (ANY of them)
-    if (names) {
-      const namesArray = Array.isArray(names)
-        ? names
-        : names.split(',').map(n => n.trim());
-
-      query.names_detected = {
-        $in: namesArray.map(name => new RegExp(name, 'i'))
-      };
-    }
-
-    // 🔹 2. DATE + PERIOD (combined safely)
-    const imageNameFilter = {};
-
-    if (date) {
-      imageNameFilter.$gte = `${date}_00-00-00.jpg`;
-      imageNameFilter.$lte = `${date}_23-59-59.jpg`;
-    }
-
-    if (period) {
-      const days = parseInt(period, 10);
-
-      const end = new Date();
-      const start = new Date();
-      start.setDate(end.getDate() - days);
-
-      const formatDate = (d) => d.toISOString().slice(0, 10);
-
-      const startStr = formatDate(start);
-      const endStr = formatDate(end);
-
-      imageNameFilter.$gte = `${startStr}_00-00-00.jpg`;
-      imageNameFilter.$lte = `${endStr}_23-59-59.jpg`;
-    }
-
-    // apply only if something exists
-    if (Object.keys(imageNameFilter).length > 0) {
-      query.image_name = imageNameFilter;
-    }*/
     const query = buildImageQuery({
       ids: req.params.id,
       ...req.query

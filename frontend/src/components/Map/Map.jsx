@@ -28,9 +28,7 @@ function Map () {
     const [zoom, setZoom] = useState(12); // zoom
     const [style, setStyle] = // estilo mapa (satélite)
         useState(`https://api.maptiler.com/maps/019a6b22-5021-75fc-9452-2530f937c6dc/style.json?key=${import.meta.env.VITE_MAPTILER_KEY}`);
-    //const [area, setArea] = useState("L3906629"); // Área a mostrar
     const [marker, setMarker] = useState(null); // marker
-    //const [birds, setBirds] = useState([]); // Birds list
     const [is3D, setIs3D] = useState(false); // cambio 3D/2D
     const [raspImage, setRaspImage] = useState();
     const [raspAudio, setRaspAudio] = useState();
@@ -90,10 +88,6 @@ function Map () {
         const [date,period] = dateOrPeriod();
         api.get('/raspberry', {
             params: {
-                // hotspot: area,
-                // back: searchQuery.back
-                // back: back
-                // period: period
                 date: date,
                 period: period,
                 names: searchQuery.species.length>0 ? searchQuery.species.join(',') : simpleSearch,
@@ -102,7 +96,6 @@ function Map () {
             }
         })
         .then(response => {
-            console.log(response.data);
             setRaspberries(response.data);
             addRaspberriesMarkers(response.data);
         })
@@ -116,7 +109,6 @@ function Map () {
     useEffect(() => {
         api.get('/park')
         .then(response => {
-            console.log(response.data);
             setParks(response.data);
             const options = response.data.map(park => ({
                 value: park._id,
@@ -184,7 +176,6 @@ function Map () {
 
             const marker = new maplibregl.Marker({ element: el })
                 .setLngLat([rasp.long, rasp.lat])
-                // .setPopup(popup)
                 .addTo(map.current);
 
             // Click
@@ -206,7 +197,6 @@ function Map () {
 
     // Abrir popup de raspberry
     async function raspPopup(rasp){
-        console.log(rasp._id)
 
         let data = [];
         data = await getRaspberryDetections(rasp);
@@ -217,19 +207,7 @@ function Map () {
             .setLngLat([rasp.long, rasp.lat])
             .setDOMContent(container)
             .addTo(map.current);
-
-        /*const root = createRoot(container);
-        root.render(
-            <MarkerInfoCard
-                birds={data}
-                source={rasp.type}
-                long={rasp.long}
-                lat={rasp.lat}
-                popup={popup}
-            />
-        );
-
-            rootsRefRasp.current.push(root);*/
+            
         const newPopup = {
             container,
             birds: data,
@@ -287,56 +265,6 @@ function Map () {
 
 
     // Mostrar marcadores
-    /*useEffect(() => {
-        if (!map.current || !birds?.length) return;
-
-        const grouped = Object.values(groupByCoords(birds));
-
-        grouped.forEach(group => {
-            const container = document.createElement("div");
-            const root = createRoot(container);
-            
-            root.render(<MarkerInfoCard birds={group.items} />);
-            
-            // Guardamos root para poder limpiarlo correctamente
-            rootsRef.current.push(root);
-
-            const popup = new maplibregl.Popup({ 
-                offset: 25,
-                anchor: 'bottom', // Fuerza a que la "punta" del popup esté abajo (el contenido arriba)
-            })
-                .setDOMContent(container);
-
-            const marker = new maplibregl.Marker({ color: "#e74c3c" })
-                .setLngLat([group.lng, group.lat])
-                .setPopup(popup)
-                .addTo(map.current);
-
-            // Añadimos el evento de centrado
-            marker.getElement().addEventListener('click', () => {
-                map.current.flyTo({
-                    center: [group.lng, group.lat],
-                    offset: [0, 200],
-                    zoom: 12,      // Ajusta el nivel de zoom deseado al acercarse
-                    speed: 0.8,    // Velocidad del vuelo (opcional)
-                    curve: 1,      // Suavidad del vuelo (opcional)
-                    essential: true // Asegura que la animación se ejecute incluso si el usuario tiene "reduce motion"
-                });
-            });
-
-            markersRef.current.push(marker);
-        });
-
-        // Limpieza
-        return () => {
-            // Esta función se ejecuta ANTES de la siguiente ejecución del useEffect
-            const rootsToCleanup = [...rootsRef.current];
-            setTimeout(() => {
-                rootsToCleanup.forEach(r => r.unmount());
-            }, 0);
-        };
-    }, [birds]);*/
-    
     useEffect(() => {
         setMarkersDrawing(true);
         if (!map.current) return;
@@ -363,14 +291,6 @@ function Map () {
         const newPopups = [];
 
         grouped.forEach(group => {
-            /*const container = document.createElement("div");
-            const root = createRoot(container);
-            root.render(<MarkerInfoCard birds={group.items} />);
-            rootsRef.current.push(root);
-
-            const popup = new maplibregl.Popup({ offset: 25, anchor: 'bottom' })
-                .setDOMContent(container);*/
-
             const container = document.createElement("div");
             container.tabIndex = 0;
             container.setAttribute("role", "button");
@@ -378,10 +298,6 @@ function Map () {
 
             const popup = new maplibregl.Popup({ offset: 25, anchor: 'bottom' })
                 .setDOMContent(container);
-
-            /*const root = createRoot(container);
-            root.render(<MarkerInfoCard birds={group.items} popup={popup} />);
-            rootsRef.current.push(root);*/
 
             const marker = new maplibregl.Marker({ color: "#e74c3c" })
                 .setLngLat([group.lng, group.lat])
@@ -403,7 +319,6 @@ function Map () {
             // Enter o Space
             marker.getElement().addEventListener("keydown", (e) => {
                 if (e.key === "Enter" || e.key === " ") {
-                    // e.preventDefault();
                     map.current.flyTo({
                         center: [group.lng, group.lat],
                         offset: [0, 250],
@@ -450,11 +365,7 @@ function Map () {
             });
             map.current.setPitch(60);
             map.current.setBearing(-45);
-            
-            // Mostrar todo el planeta
-            // map.current.flyTo({ zoom: 1 }); 
-            
-            // add3DBuildings();
+
         } else {
             // Volver a 2D
             map.current.setProjection({
@@ -462,29 +373,13 @@ function Map () {
             });
             map.current.setPitch(0);
             map.current.setBearing(0);
-            
-            if (map.current.getLayer("3d-buildings")) {
-                map.current.removeLayer("3d-buildings");
-            }
         }
         setIs3D(!is3D);
     };
 
     // Mostrar parque
-    /*const showPark = (e) => {
-        setArea(e.target.value);
-
-        setLat(parks[e.target.value].lat);
-        setLng(parks[e.target.value].lng);
-        setZoom(parks[e.target.value].zoom);
-
-        map.current.flyTo({
-            center: [parks[e.target.value].lng, parks[e.target.value].lat], zoom: parks[e.target.value].zoom ?? map.current.getZoom()});
-    }*/
     const showPark = (e) => {
         const selectedCode = e.target.value;
-
-        console.log(selectedCode)
 
         const park = parks.find(p => p._id === selectedCode);
 
@@ -509,12 +404,6 @@ function Map () {
         <>
             {(loading || markersDrawing) && <Spinner classAdditional="map-spinner"></Spinner>}
             <InputSelect name="park" classAdditional="park-select" options={parkOptions} change={(e) => showPark(e)} selected={parkData.parkId} title={t('select.park')}></InputSelect>
-            {/* <div className="map-controls-container"> */}
-                {/* <InputSelect name="park" options={parkOptions} change={(e) => showPark(e)} selected={parkData.parkId}></InputSelect> */}
-                {/* <Button classAdditional="map-settings"><FaCog /></Button> */}
-                
-                
-            {/* </div> */}
             <Dialog buttonTitle={<FaCog />} buttonTooltip={t('map.button.options')} buttonClass='but-map-options' dialogClass="map-options">
                 <h1 className="dialog-title">{t('map.options.title')}</h1>
                 <InputSelect label={t('map.options.select.style.label')} name="mapStyles" options={mapStyles} change={(e) => setStyle(e.target.value)}></InputSelect>

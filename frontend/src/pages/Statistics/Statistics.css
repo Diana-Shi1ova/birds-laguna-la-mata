@@ -4,7 +4,6 @@
     margin-bottom: 0;
     padding-left: 1em;
     box-sizing: border-box;
-    /* font-size: 24pt; */
     font-size: var(--h1-size);
     text-align: left;
 
@@ -76,14 +75,6 @@
             width: 55%;
             box-sizing: border-box;
 
-            /*.circles{
-                display: flex;
-                flex-direction: row;
-                width: 100%;
-                justify-content: space-around;
-                margin-bottom: 1.3em;
-            }*/
-
             h3{
                 margin-top: 2.5em;
                 text-align: left;
@@ -127,12 +118,6 @@
             }
         }
     }
-
-    /*.trends{
-        border: 5px solid var(--green);
-        width: 100%;
-        box-sizing: border-box;
-    }*/
 }
 
 .chartpage-header{

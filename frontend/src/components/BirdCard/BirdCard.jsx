@@ -22,32 +22,6 @@ function BirdCard ({ type='normal', data }) {
 
     return (
         <>
-        {/*<li className='bird-list-element'>
-            <div className='bird'>
-                <Link to={data.link} className='bird-image-link'>
-                    <img className='bird-image' src={data.imagelink} alt={data.name} />
-                </Link>
-                <div className='bird-names'>
-                    <Link to={data.link} className='common'>
-                        {data.name}
-                    </Link>
-                    <p className='scientific'>({data.scientific})</p>
-                </div>
-            </div>
-            
-            <p className='obs'>Observación: <span>{data.observation}</span></p>
-            <div className='buttons'>
-                <Button type='icon'>
-                    <FaChartBar />
-                </Button>
-                <Button type='icon'>
-                    <FaRegBell />
-                </Button>
-                <Button  type='icon'>
-                    {type==="normal" ? (<FaRegBookmark />) : (<FaTrashAlt />)}
-                </Button>
-            </div>
-        </li>*/}
         <div className='bird-card'>
             <Link 
                 to={data?.wikidata?.wikipediaURL}
@@ -59,7 +33,6 @@ function BirdCard ({ type='normal', data }) {
                 {data?.comName}
             </Link>
             <p className='scientific'>({data?.sciName})</p>
-            {/* <div  className='image-wrapper'> */}
             {imgLoading && (
                 <Spinner></Spinner>
             )}
@@ -83,15 +56,6 @@ function BirdCard ({ type='normal', data }) {
                 </Link>
             {/* </div> */}
             <div className='buttons'>
-                {/* <Button type='icon'>
-                    <FaChartBar />
-                </Button> */}
-                {/* <Button type='icon'>
-                    <FaRegBell />
-                </Button> */}
-                {/* <Button  type='icon'>
-                    {type==="normal" ? (<FaRegBookmark />) : (<FaTrashAlt />)}
-                </Button> */}
                 <ButtonStatistics bird={data._id}></ButtonStatistics>
                 <ButtonFavourite bird={data._id}></ButtonFavourite>
             </div>

@@ -141,6 +141,9 @@
         }
       },
       "title": "Opciones del mapa"
+    },
+    "quantity": {
+      "unknown": "desconocida"
     }
   },
   "month": {

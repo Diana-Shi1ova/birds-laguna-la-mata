@@ -32,7 +32,6 @@ function Catalog(){
             params: { page: Number(current), limit:10, name: value, locale: i18n.resolvedLanguage }
         })
         .then(response => {
-            console.log(response.data.data);
             setBirds(response.data.data);
             setTotal(response.data.totalPages);
         })

@@ -10,10 +10,8 @@ function InputDate ({id, name, classAdditional="", auto, label, req=false, value
                     required={req}
                     name={name}
                     id={id}
-                    // className={classAdditional}
                     autoComplete={auto}
                     onChange={change}
-                    // onKeyDown={handleKeyDown}
                     placeholder={placeholder}
                     defaultValue={defValue}
                     value={value}

@@ -8,35 +8,6 @@ function SiteTitle() {
     const location = useLocation();
     const { t } = useTranslation();
     const title = t('site.title');
-    /*const { bird } = useParams();
-
-    useEffect(() => {
-        switch (location.pathname) {
-        case "/":
-            document.title = title;
-            break;
-        case "/login":
-            document.title = "Login | " + title;
-            break;
-        case "/register":
-            document.title = "Register | " + title;
-            break;
-        case "/favourites":
-            document.title = "Especies guardadas | " + title;
-            break;
-        case "/catalog":
-            document.title = "Catálogo de especies | " + title;
-            break;
-        case "/statistics":
-            document.title = "Estadísticas | " + title;
-            break;
-        case `/statistics/${bird}`:
-            document.title = "Estadísticas de especie | " + title;
-            break;
-        default:
-            document.title = title;
-        }
-    }, [location.pathname, bird]);*/
 
     useEffect(() => {
         const path = location.pathname;

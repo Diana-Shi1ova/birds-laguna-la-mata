@@ -69,7 +69,6 @@ function StatisticsBird({park, createOption = () => ({})}){
             }
         })
         .then(response => {
-            console.log(response.data);
             setData(response.data);
         })
         .catch(error => {
@@ -79,7 +78,6 @@ function StatisticsBird({park, createOption = () => ({})}){
         // Datos de especie
         api.get(`/bird/${bird}`, {params: { locale: i18n.resolvedLanguage }})
         .then(response => {
-            console.log(response.data);
             setBirdData(response.data);
         })
         .catch(error => {
@@ -109,15 +107,12 @@ function StatisticsBird({park, createOption = () => ({})}){
                 setToday(todayTotal);
                 setWeek(weekTotal);
                 setMonth(monthTotal);
-                console.log(todayTotal)
 
             } catch (error) {
                 console.error('Error:', error);
             }
         };
         
-        console.log(bird);
-        console.log(park);
         if (bird && park) {
             fetchData();
         }
@@ -221,9 +216,6 @@ function StatisticsBird({park, createOption = () => ({})}){
             <div className="statistics-container">
                 <div className="horizontal">
                     <div className="image-container">
-                        {/* {(birdData && birdData!==undefined) &&
-                        <img src={birdData?.wikidata?.images[birdData?.wikidata?.images?.length-1]} alt={birdData?.comName} />
-                        } */}
                         {birdData?.wikidata?.images?.length > 0 && (
                             <img
                                 src={birdData.wikidata.images.at(-1)}

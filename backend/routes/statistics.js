@@ -3,7 +3,6 @@ const {
         buildSpeciesStatistics,
         getSpecieStatistics,
         getParkStatistics
-        // getWikidata
     } = require('../controllers/statisticsController');
 const router = express.Router();
 

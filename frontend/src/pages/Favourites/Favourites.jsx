@@ -31,11 +31,6 @@ function Favourites(){
         setValue('');
     }, []);
 
-    // Si no autorizado, se redirige a login
-    /*if (!isAuth) {
-        return <Navigate to="/login" replace />;
-    }*/
-
     useEffect(() => {
         if (!isAuth) {
             navigate('/login');
@@ -49,7 +44,6 @@ function Favourites(){
             params: { page: Number(current), limit:10, name: value, locale: i18n.resolvedLanguage }
         })
         .then(response => {
-            console.log(response.data.data);
             setData(response.data.data);
             setTotal(response.data.totalPages);
         })

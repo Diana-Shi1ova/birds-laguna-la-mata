@@ -8,7 +8,6 @@ function InputCheckbox ({id, name, classAdditional="", label, change=()=>{}, che
                 type='checkbox'
                 id={id}
                 name={name}
-                // className={classAdditional}
                 onChange={change}
                 checked={checked}
             />

@@ -20,15 +20,11 @@ function Pagination({total = 1, current = 1, onCurrentChange }) {
     }
 
     const onPageChange = (event) => {
-        // onCurrentChange(Number(event.target.value));
         onCurrentChange(Number(event.target.value));
     }
 
     const onEnter = (event) => {
         event.target.blur();
-        // const value = Number(event.target.value);
-        // if(value>total) onCurrentChange(total);
-        // if(value<1) onCurrentChange(1);
     }
 
     return(

@@ -2,33 +2,8 @@ const Raspberry = require('../models/raspberryModel');
 const Raspberry_Audio_Birds = require('../models/raspberryAudioBirdsModel');
 const Raspberry_Image_Birds = require('../models/raspberryImageBirdsModel');
 
-/*const getRaspberries = async (req, res) => {
-  try {
-    const { park, type } = req.query;
 
-    const query = {};
-
-    // Filtrado por parque
-    if (park) {
-      query.park = park;
-    }
-
-    // Filtrado por tipo
-    if (type) {
-      query.type = type;
-    }
-
-    const raspberries = await Raspberry.find(query);
-
-    res.status(200).json(raspberries);
-  } catch (error) {
-    res.status(500).json({
-      message: 'Server error',
-      error: error.message
-    });
-  }
-};*/
-
+// Obtener sensores IoT
 const getRaspberries = async (req, res) => {
   try {
     const { parkId, type, date, period, names } = req.query;
@@ -151,16 +126,6 @@ const getRaspberries = async (req, res) => {
     });
   }
 };
-
-/*const getRaspberries = async (req, res) => {
-    try{
-        const raspberries = await Raspberry.find();
-        res.status(200).json(raspberries);
-    }
-    catch(error){
-        res.status(500).json({ message: 'Server error', error: error.message });
-    }
-};*/
 
 
 module.exports = {

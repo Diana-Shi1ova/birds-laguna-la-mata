@@ -5,8 +5,14 @@
     height: fit-content;
     width: fit-content;
     padding: .3em;
+    overflow: hidden;
 
     svg{
         font-size: 32px;
+    }
+
+    .logo{
+        width: 500px;
+        overflow: hidden;
     }
 }

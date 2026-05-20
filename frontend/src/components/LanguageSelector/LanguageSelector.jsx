@@ -7,19 +7,13 @@ import { FaAngleDown } from "react-icons/fa";
 
 function LanguageSelector ({id, name, selected, change=()=>{}}) {
     const { t, i18n } = useTranslation();
-    // const selectRef = useRef(null);
     const [language, setLanguage] = useState(i18n.resolvedLanguage);
-    console.log(i18n)
 
     function change(e){
         setLanguage(e.target.value);
         i18n.changeLanguage(e.target.value);
     }
 
-    /*function openSelect() {
-        selectRef.current?.focus();
-        selectRef.current?.click();
-    }*/
 
     return (
         <div className="language-selector-container" title={t('select.language.title')}>
